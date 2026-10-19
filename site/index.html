@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>9 Degrees East</title>
-<meta name="theme-color" content="#081A2E">
+<meta name="description" content="9 Degrees East: commercial advisory for low-carbon fuels.">
+<meta name="theme-color" content="#061527">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -12,266 +13,149 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
 <style>
-  :root { --bg: #081A2E; --fg: #EEF2F5; --muted: #8FA6BF; --accent: #D8B66E; --glow: rgba(216,182,110,0.55); --ease: cubic-bezier(.16,1,.3,1); }
+  /* One idea: arriving at 9° East. A gold meridian draws down the page, the longitude counts to 9, the mark writes itself. */
+  :root { --ink: #061527; --text: #EEF2F5; --muted: #A8B7C6; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E; --ease: cubic-bezier(.16,1,.3,1); }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; }
-  body { background: radial-gradient(ellipse at 50% 45%, #0E2A4C 0%, var(--bg) 62%); color: var(--fg); font-family: Manrope, system-ui, sans-serif; overflow: hidden; -webkit-font-smoothing: antialiased; }
-  .vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.38) 100%); }
+  body { background: var(--ink); color: var(--text); font-family: Manrope, system-ui, sans-serif; overflow: hidden; -webkit-font-smoothing: antialiased; }
+  main { height: 100%; display: flex; flex-direction: column; align-items: center; }
 
-  .scene { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-  .lockup { position: relative; display: flex; align-items: center; gap: clamp(18px, 3vw, 36px); }
-  .v5.play .lockup { will-change: transform, filter; }
-  .ring.settled { animation: none !important; opacity: 1 !important; transform: none !important; }
-  .mark { width: clamp(120px, 19vw, 220px); height: auto; overflow: visible; color: var(--fg); }
-  .mark .d { fill: none; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; }
+  /* The meridian, in two halves that part around the content */
+  .mer { flex: 1; width: 1px; position: relative; }
+  .mer::before { content: ""; position: absolute; inset: 0; background: linear-gradient(var(--accent), var(--accent)); transform: scaleY(0); }
+  .mer.top::before { transform-origin: top; background: linear-gradient(rgba(216,182,110,0), var(--accent) 70%); }
+  .mer.bot::before { transform-origin: top; background: linear-gradient(var(--accent), rgba(216,182,110,0)); }
+  .play .mer.top::before { animation: grow 1100ms 200ms cubic-bezier(.6,0,.2,1) forwards; }
+  .play .mer.bot::before { animation: grow 900ms 1500ms cubic-bezier(.6,0,.2,1) forwards; }
+  @keyframes grow { to { transform: scaleY(1); } }
+
+  .core { display: flex; flex-direction: column; align-items: center; padding-block: 34px; }
+  .lon { margin: 0 0 34px; font-size: 10px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--faint); font-variant-numeric: tabular-nums; opacity: 0; }
+  .lon b { color: var(--accent); font-weight: 600; }
+  .play .lon { animation: show 500ms 250ms ease forwards; }
+
+  .lockup { display: flex; align-items: center; gap: clamp(18px, 2.6vw, 30px); }
+  .mark { width: clamp(84px, 11vw, 132px); height: auto; overflow: visible; color: var(--text); }
+  .d { fill: none; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
   .ring { fill: none; stroke: var(--accent); transform-origin: 71px 25px; transform-box: view-box; opacity: 0; }
-  .ping, .ping2 { fill: none; stroke: var(--accent); transform-origin: 71px 25px; transform-box: view-box; opacity: 0; }
-  .flare { fill: var(--glow); opacity: 0; transform-origin: 71px 25px; transform-box: view-box; filter: blur(4px); }
-  .comet { fill: #FFE9B8; opacity: 0; filter: drop-shadow(0 0 3px #F0CF85); }
-
-  .word { display: flex; flex-direction: column; gap: clamp(8px, 1.2vw, 14px); font-weight: 600; font-size: clamp(16px, 2.5vw, 29px); letter-spacing: 0.32em; line-height: 1; }
-  .word .row { display: flex; align-items: center; gap: clamp(10px, 1.4vw, 16px); }
-  .word .l { display: inline-block; opacity: 0; }
-  .word .rule { height: 2px; width: 0; background: var(--accent); }
-
-  .tag { margin-top: clamp(30px, 4.5vw, 52px); font-size: clamp(9px, 1vw, 11px); letter-spacing: 0.34em; text-transform: uppercase; color: var(--muted); opacity: 0; text-align: center; }
-  .enter { margin-top: clamp(34px, 5vw, 60px); display: inline-flex; align-items: center; gap: 14px; min-height: 48px; padding: 0 6px; color: var(--fg); text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 0.42em; text-transform: uppercase; opacity: 0; transform: translateY(8px); pointer-events: none; }
-  .enter .ln { width: 28px; height: 1px; background: var(--accent); transition: width 500ms var(--ease); }
-  .enter .ar { color: var(--accent); transition: transform 500ms var(--ease); }
-  .enter:hover .ln { width: 56px; } .enter:hover .ar { transform: translateX(6px); }
-  .enter:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
-  .done .enter { pointer-events: auto; }
-
-  /* shared end-state animations */
-  @keyframes dash { 0% { stroke-dashoffset: 1; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 1; } }
-  @keyframes show { to { opacity: 1; } }
+  .ping { fill: none; stroke: var(--accent); transform-origin: 71px 25px; transform-box: view-box; opacity: 0; }
+  .play .orbit { animation: dash 1200ms 1300ms cubic-bezier(.6,0,.2,1) forwards; }
+  .play .bowl { animation: dash 800ms 1900ms cubic-bezier(.6,0,.2,1) forwards; }
+  .play .stem { animation: dash 420ms 2500ms cubic-bezier(.6,0,.2,1) forwards; }
+  .play .ring { animation: pop 560ms 2850ms cubic-bezier(.2,1.6,.4,1) forwards; }
+  .play .ping { animation: ping 1600ms 2900ms ease-out forwards; }
+  @keyframes dash { to { stroke-dashoffset: 0; } }
   @keyframes pop { from { opacity: 0; transform: scale(0.2); } to { opacity: 1; transform: scale(1); } }
-  @keyframes flare { 0% { opacity: 0; transform: scale(0.4); } 25% { opacity: 1; } 100% { opacity: 0; transform: scale(3.4); } }
   @keyframes ping { 0% { opacity: 0.9; transform: scale(1); } 100% { opacity: 0; transform: scale(5); } }
+
+  .word { display: flex; flex-direction: column; gap: clamp(8px, 1vw, 12px); font-weight: 600; font-size: clamp(15px, 2vw, 24px); letter-spacing: 0.32em; line-height: 1; }
+  .word .row { display: flex; align-items: center; gap: clamp(10px, 1.2vw, 14px); }
+  .word .rule { height: 2px; width: clamp(20px, 2.6vw, 34px); background: var(--accent); transform: scaleX(0); transform-origin: left; }
+  .word span.w { opacity: 0; transform: translateX(-10px); display: inline-block; }
+  .play .word span.w { animation: slide 900ms var(--ease) forwards; }
+  .play .word .r1 { animation-delay: 2700ms; }
+  .play .word .r2 { animation-delay: 2950ms; }
+  .play .word .rule { animation: rule 700ms 2850ms var(--ease) forwards; }
+  @keyframes slide { to { opacity: 1; transform: none; } }
+  @keyframes rule { to { transform: scaleX(1); } }
+
+  .tag { margin: 30px 0 0; font-family: 'Instrument Serif', Georgia, serif; font-size: clamp(18px, 1.9vw, 23px); color: var(--muted); text-align: center; opacity: 0; }
+  .tag em { color: var(--text); font-style: italic; }
+  .play .tag { animation: show 1000ms 3500ms ease forwards; }
+
+  .enter { margin-top: 30px; display: inline-flex; align-items: center; gap: 14px; min-height: 48px; padding: 0 8px; color: var(--text); text-decoration: none; font-size: 11px; font-weight: 600; letter-spacing: 0.42em; text-transform: uppercase; opacity: 0; transform: translateY(8px); }
+  .enter .ln { width: 26px; height: 1px; background: var(--accent); transition: width 500ms var(--ease); }
+  .enter .ar { color: var(--accent); transition: transform 500ms var(--ease); }
+  .enter:hover .ln, .enter:focus-visible .ln { width: 54px; }
+  .enter:hover .ar, .enter:focus-visible .ar { transform: translateX(6px); }
+  .enter:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+  .play .enter { animation: rise 900ms 3900ms var(--ease) forwards; }
   @keyframes rise { to { opacity: 1; transform: none; } }
-  @keyframes rule { to { width: clamp(22px, 3vw, 40px); } }
-  @keyframes letter-blur { from { opacity: 0; transform: translateY(10px); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0); } }
-  @keyframes letter-slide { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
-  @keyframes letter-fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes show { to { opacity: 1; } }
 
-  .play .tag { animation: show 1000ms var(--d-tag, 4200ms) ease forwards; }
-  .play .enter { animation: rise 900ms var(--d-enter, 4800ms) var(--ease) forwards; }
-  .play .rule { animation: rule 800ms var(--d-rule, 3400ms) var(--ease) forwards; }
+  /* Second visit in the same session, or no motion: show the finished frame at once */
+  .still .mer::before, .still .word .rule { transform: none; }
+  .still .d { stroke-dashoffset: 0; }
+  .still .ring, .still .lon, .still .tag, .still .word span.w { opacity: 1; transform: none; }
+  .still .enter { opacity: 1; transform: none; }
 
-  /* 1 · DRAW: the mark writes itself, the ring lands with a flash */
-  .v1.play .orbit { animation: dash 1400ms 300ms cubic-bezier(.6,0,.2,1) forwards; }
-  .v1.play .bowl { animation: dash 950ms 1100ms cubic-bezier(.6,0,.2,1) forwards; }
-  .v1.play .stem { animation: dash 520ms 1800ms cubic-bezier(.6,0,.2,1) forwards; }
-  .v1.play .ring { animation: pop 650ms 2250ms cubic-bezier(.2,1.7,.4,1) forwards; }
-  .v1.play .flare { animation: flare 1200ms 2250ms ease-out forwards; }
-  .v1.play .ping { animation: ping 1500ms 2300ms ease-out forwards; }
-  .v1 { --d-rule: 3000ms; --d-tag: 3700ms; --d-enter: 4300ms; }
+  /* Leaving: the meridian widens into the next page */
+  .wipe { position: fixed; top: 0; bottom: 0; left: 50%; width: 1px; background: var(--ink); transform: translateX(-50%); pointer-events: none; z-index: 5; opacity: 0; }
+  .leaving .wipe { opacity: 1; }
+  .wipe::after { content: ""; position: absolute; inset: 0; background: var(--accent); opacity: 0.9; }
+  .leaving .wipe { animation: widen 650ms cubic-bezier(.7,0,.2,1) forwards; }
+  .leaving .wipe::after { animation: dim 650ms ease forwards; }
+  @keyframes widen { to { width: 100vw; } }
+  @keyframes dim { to { opacity: 0; } }
+  .leaving .core { transition: opacity 300ms ease; opacity: 0; }
 
-  /* 2 · ORBIT: a spark travels the orbit, drawing it, then settles as the degree */
-  .v2.play .bowl { animation: dash 1000ms 1050ms cubic-bezier(.6,0,.2,1) forwards; }
-  .v2.play .stem { animation: dash 520ms 1950ms cubic-bezier(.6,0,.2,1) forwards; }
-  .v2.play .flare { animation: flare 1200ms 2400ms ease-out forwards; }
-  .v2.play .ring { animation: pop 520ms 2380ms cubic-bezier(.2,1.7,.4,1) forwards; }
-  .v2.play .ping { animation: ping 1500ms 2420ms ease-out forwards; }
-  .v2.play .ping2 { animation: ping 1800ms 2680ms ease-out forwards; }
-  .v2 { --d-rule: 3100ms; --d-tag: 3800ms; --d-enter: 4400ms; }
+  .corner { position: fixed; bottom: 22px; left: 0; right: 0; display: flex; justify-content: space-between; padding-inline: max(22px, env(safe-area-inset-left, 0px)) max(22px, env(safe-area-inset-right, 0px)); font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--faint); opacity: 0; }
+  .play .corner { animation: show 1200ms 3900ms ease forwards; }
+  .still .corner { opacity: 1; }
 
-  /* 3 · LIGHT SWEEP: the finished lockup is revealed by a passing band of light */
-  .v3 .lockup { -webkit-mask-image: linear-gradient(100deg, #000 40%, rgba(0,0,0,0) 55%); mask-image: linear-gradient(100deg, #000 40%, rgba(0,0,0,0) 55%); -webkit-mask-size: 320% 100%; mask-size: 320% 100%; -webkit-mask-position: 100% 0; mask-position: 100% 0; }
-  .v3.play .lockup { animation: unmask 2200ms 400ms cubic-bezier(.5,0,.2,1) forwards; }
-  @keyframes unmask { to { -webkit-mask-position: 0 0; mask-position: 0 0; } }
-  .v3 .d, .v3 .ring, .v3 .word .l { opacity: 1; stroke-dashoffset: 0; }
-  .v3 .word .rule { width: clamp(22px, 3vw, 40px); }
-  .v3.play .rule { animation: none; }
-  .glint { position: absolute; top: -10%; bottom: -10%; width: 9%; left: -40%; pointer-events: none; transform: skewX(-18deg); background: linear-gradient(90deg, rgba(255,236,190,0) 0%, rgba(255,236,190,0.65) 50%, rgba(255,236,190,0) 100%); mix-blend-mode: overlay; opacity: 0; }
-  .v3.play .glint { animation: glint 2200ms 500ms cubic-bezier(.5,0,.2,1) forwards; }
-  @keyframes glint { 0% { left: -40%; opacity: 0; } 15% { opacity: 1; } 80% { opacity: 1; } 100% { left: 110%; opacity: 0; } }
-  .v3.play .ping { animation: ping 1500ms 1300ms ease-out forwards; }
-  .v3 { --d-tag: 2700ms; --d-enter: 3300ms; }
-
-  /* 4 · ASSEMBLE: a cloud of particles gathers into the logo (canvas, see script) */
-  #dust { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; }
-  .v4 #dust { opacity: 1; }
-  .v4 .lockup { opacity: 0; }
-  .v4 .d, .v4 .ring, .v4 .word .l { opacity: 1; stroke-dashoffset: 0; }
-  .v4 .word .rule { width: clamp(22px, 3vw, 40px); }
-  .v4.play .rule { animation: none; }
-  .v4.resolved .lockup { opacity: 1; transition: opacity 900ms ease; }
-  .v4.resolved #dust { opacity: 0; transition: opacity 1200ms ease; }
-  .v4.resolved .ping { animation: ping 1500ms 200ms ease-out forwards; }
-  .v4 { --d-tag: 3500ms; --d-enter: 4100ms; }
-
-  /* 5 · PULL BACK: we start inside the degree ring and pull back to reveal the name */
-  .v5 .d { opacity: 1; stroke-dashoffset: 0; }
-  .v5 .ring { opacity: 1; }
-  .v5 .lockup { transform: scale(var(--zoom, 5)); filter: blur(3px); }
-  .v5.play .lockup { animation: pull 2500ms 350ms cubic-bezier(.55,0,.1,1) forwards; }
-  @keyframes pull { to { transform: scale(1); filter: blur(0); } }
-  .v5.play .flare { animation: flare 1400ms 2500ms ease-out forwards; }
-  .v5 { --d-rule: 2900ms; --d-tag: 3500ms; --d-enter: 4100ms; }
-
-  /* picker */
-  .picker { position: fixed; top: 22px; left: 50%; transform: translateX(-50%); z-index: 5; display: flex; gap: 6px; padding: 6px; border: 1px solid rgba(160,190,220,0.18); border-radius: 999px; background: rgba(8,26,46,0.6); backdrop-filter: blur(8px); }
-  .picker button { min-height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: inherit; font-size: 12px; cursor: pointer; white-space: nowrap; }
-  .picker button[aria-pressed="true"] { background: var(--accent); color: var(--bg); font-weight: 600; }
-  .picker button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .note { position: fixed; bottom: 22px; left: 0; right: 0; text-align: center; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #5F7896; }
-  @media (max-width: 640px) {
-    .lockup { flex-direction: column; }
+  @media (max-width: 560px) {
+    .lockup { flex-direction: column; gap: 22px; }
     .word { align-items: center; }
-    .picker { top: 12px; max-width: calc(100% - 16px); overflow-x: auto; }
-    .picker button { padding: 0 12px; }
+    .core { padding-block: 26px; }
+    .lon { margin-bottom: 26px; }
+    .corner { display: none; }
   }
 </style>
 </head>
-<body class="v2">
-  <canvas id="dust" aria-hidden="true"></canvas>
-
-  <main class="scene">
-    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">9 Degrees East</h1>
-    <div class="lockup" id="lockup">
-      <svg class="mark" id="mark" viewBox="0 0 100 100" aria-hidden="true">
-        <circle class="flare" cx="71" cy="25" r="9"/>
-        <path class="d orbit" pathLength="1" d="M28 88.11 A44 44 0 1 1 92.3 62.13" stroke="currentColor" stroke-width="2.4"/>
-        <g class="nine">
-          <path class="d bowl" pathLength="1" d="M46 27 A16 16 0 1 1 46 59 A16 16 0 1 1 46 27" stroke="currentColor" stroke-width="8"/>
-          <path class="d stem" pathLength="1" d="M60.5 49.8 L46.8 79" stroke="currentColor" stroke-width="8"/>
-        </g>
+<body>
+<main>
+  <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">9 Degrees East</h1>
+  <div class="mer top" aria-hidden="true"></div>
+  <div class="core">
+    <p class="lon" aria-hidden="true">Longitude <b id="lon">0.00° E</b></p>
+    <div class="lockup">
+      <svg class="mark" viewBox="0 0 100 100" aria-hidden="true">
+        <path class="d orbit" pathLength="1" d="M28 88.11 A44 44 0 1 1 92.3 62.13" stroke="currentColor" stroke-width="2.6"/>
+        <path class="d bowl" pathLength="1" d="M46 27 A16 16 0 1 1 46 59 A16 16 0 1 1 46 27" stroke="currentColor" stroke-width="8"/>
+        <path class="d stem" pathLength="1" d="M60.5 49.8 L46.8 79" stroke="currentColor" stroke-width="8"/>
         <circle class="ping" cx="71" cy="25" r="5" stroke-width="1"/>
-        <circle class="ping2" cx="71" cy="25" r="5" stroke-width="0.8"/>
-        <circle class="ring" cx="71" cy="25" r="5" stroke-width="3.2"/>
-        <path id="cometPath" d="M28 88.11 A44 44 0 1 1 92.3 62.13 Q96 30 71 25" fill="none" stroke="none"/>
-        <circle class="comet" id="comet" r="2.6" cx="28" cy="88.11"/>
+        <circle class="ring" cx="71" cy="25" r="5" stroke-width="3.4"/>
       </svg>
       <div class="word" aria-hidden="true">
-        <div class="row" id="w1"></div>
-        <div class="row"><span class="rule"></span><span id="w2" style="display:flex"></span></div>
+        <div class="row"><span class="w r1">DEGREES</span></div>
+        <div class="row"><span class="rule"></span><span class="w r2">EAST</span></div>
       </div>
-      <span class="glint" aria-hidden="true"></span>
     </div>
-    <p class="tag">Low-carbon fuels · Commercial advisory</p>
-    <a class="enter" href="home.html"><span class="ln" aria-hidden="true"></span>Enter<span class="ar" aria-hidden="true">→</span></a>
-  </main>
-  <div class="vignette" aria-hidden="true"></div>
-
+    <p class="tag">Commercial advisory for <em>low-carbon fuels</em></p>
+    <a class="enter" id="enter" href="home.html"><span class="ln" aria-hidden="true"></span>Enter<span class="ar" aria-hidden="true">→</span></a>
+  </div>
+  <div class="mer bot" aria-hidden="true"></div>
+  <div class="corner" aria-hidden="true"><span>London</span><span>Est. 2018</span></div>
+  <div class="wipe" aria-hidden="true"></div>
+</main>
 <script>
 (function () {
-  var body = document.body, lockup = document.getElementById('lockup');
-  var w1 = document.getElementById('w1'), w2 = document.getElementById('w2');
-  var LETTER = { 1: ['letter-blur', 2550, 55], 2: ['letter-slide', 2500, 45], 3: [null], 4: [null], 5: ['letter-fade', 2350, 40] };
-  var timers = [];
-
-  function letters(el, text, v, offset) {
-    el.innerHTML = '';
-    var cfg = LETTER[v];
-    text.split('').forEach(function (ch, i) {
-      var s = document.createElement('span'); s.className = 'l'; s.textContent = ch;
-      if (cfg[0]) s.style.animation = cfg[0] + ' 650ms ' + (cfg[1] + offset + i * cfg[2]) + 'ms cubic-bezier(.2,.8,.2,1) forwards';
-      el.appendChild(s);
-    });
-  }
-
-  function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
-  var ring = document.querySelector('.ring');
-  ring.addEventListener('animationend', function () { ring.classList.add('settled'); });
-
-  function play(v) {
-    timers.forEach(clearTimeout); timers = [];
-    body.className = 'v' + v; ring.classList.remove('settled');
-    letters(w1, 'DEGREES', v, 0);
-    letters(w2, 'EAST', v, 420);
-    if (v === 5) { // zoom so we start inside the degree ring
-      lockup.style.transform = 'none'; lockup.style.animation = 'none';
-      var mr = document.getElementById('mark').getBoundingClientRect(), lr = lockup.getBoundingClientRect();
-      lockup.style.transform = ''; lockup.style.animation = '';
-      var ox = mr.left - lr.left + mr.width * 0.71, oy = mr.top - lr.top + mr.height * 0.25;
-      var m = { width: mr.width };
-      lockup.style.transformOrigin = ox + 'px ' + oy + 'px';
-      lockup.style.setProperty('--zoom', Math.min(7, Math.max(4, Math.round(Math.min(innerWidth, innerHeight) * 0.55 / (m.width * 0.1)))));
-    } else { lockup.style.transformOrigin = ''; }
-    void body.offsetWidth;
+  // Before launch, set this to true so visitors who ask for less motion get the finished frame.
+  var RESPECT_REDUCED_MOTION = false;
+  var body = document.body, lon = document.getElementById('lon');
+  var seen = false; try { seen = sessionStorage.getItem('9de-intro') === '1'; sessionStorage.setItem('9de-intro', '1'); } catch (e) {}
+  var reduced = RESPECT_REDUCED_MOTION && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (seen || reduced) { body.classList.add('still'); lon.textContent = '9.00° E'; }
+  else {
     body.classList.add('play');
-    var orbit = document.querySelector('.orbit');
-    orbit.style.opacity = ''; orbit.style.strokeDashoffset = '';
-    if (v === 2) later(function () { spark(orbit); }, 300);
-    if (v === 4) dust();
-    later(function () { body.classList.add('done'); }, 4600);
-  }
-
-  // ---- 2 · Orbit + Draw: one clock moves the spark and draws the orbit behind it ----
-  function spark(orbit) {
-    var path = document.getElementById('cometPath'), c = document.getElementById('comet');
-    var total = path.getTotalLength(), arc = 2 * Math.PI * 44 * (256 / 360), dur = 2100, t0 = performance.now();
-    function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
-    c.style.transition = 'opacity 300ms'; c.style.opacity = 1; orbit.style.opacity = 1;
-    (function frame(now) {
-      if (!body.classList.contains('v2')) { c.style.opacity = 0; return; }
-      var t = Math.min(1, (now - t0) / dur), d = ease(t) * total, pt = path.getPointAtLength(d);
-      c.setAttribute('cx', pt.x); c.setAttribute('cy', pt.y);
-      orbit.style.strokeDashoffset = String(1 - Math.min(1, d / arc));
-      if (t < 1) requestAnimationFrame(frame); else c.style.opacity = 0;
-    })(t0);
-  }
-
-  // ---- 4 · Assemble: sample the real lockup, then fly particles into it ----
-  function dust() {
-    var cv = document.getElementById('dust'), ctx = cv.getContext('2d');
-    var dpr = Math.min(window.devicePixelRatio || 1, 2), W = innerWidth, H = innerHeight;
-    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    // draw the lockup into an offscreen canvas at the same place it sits on screen
-    var off = document.createElement('canvas'); off.width = W; off.height = H;
-    var o = off.getContext('2d');
-    var mr = document.getElementById('mark').getBoundingClientRect(), s = mr.width / 100;
-    o.save(); o.translate(mr.left, mr.top); o.scale(s, s); o.lineCap = 'round'; o.strokeStyle = '#fff';
-    o.lineWidth = 2.4; o.beginPath(); o.arc(50, 50, 44, 120 * Math.PI / 180, 16 * Math.PI / 180 + 2 * Math.PI); o.stroke();
-    o.lineWidth = 8; o.beginPath(); o.arc(46, 43, 16, 0, Math.PI * 2); o.stroke();
-    o.beginPath(); o.moveTo(60.5, 49.8); o.lineTo(46.8, 79); o.stroke();
-    o.strokeStyle = '#f00'; o.lineWidth = 3.2; o.beginPath(); o.arc(71, 25, 5, 0, Math.PI * 2); o.stroke();
-    o.restore();
-    var cs = getComputedStyle(document.querySelector('.word'));
-    o.fillStyle = '#fff'; o.textBaseline = 'middle';
-    o.font = cs.fontWeight + ' ' + cs.fontSize + ' Manrope, sans-serif';
-    document.querySelectorAll('.word .l').forEach(function (sp) { var r = sp.getBoundingClientRect(); o.fillText(sp.textContent, r.left, r.top + r.height / 2); });
-    var rr = document.querySelector('.word .rule').getBoundingClientRect(); o.fillStyle = '#f00'; o.fillRect(rr.left, rr.top, rr.width, Math.max(2, rr.height));
-    var data = o.getImageData(0, 0, W, H).data, pts = [], step = W < 700 ? 3 : 4;
-    for (var y = 0; y < H; y += step) for (var x = 0; x < W; x += step) {
-      var i = (y * W + x) * 4; if (data[i + 3] > 128) pts.push({ tx: x, ty: y, gold: data[i + 1] < 100 });
-    }
-    pts.forEach(function (p) {
-      var a = Math.random() * Math.PI * 2, r = Math.max(W, H) * (0.4 + Math.random() * 0.5);
-      p.sx = W / 2 + Math.cos(a) * r; p.sy = H / 2 + Math.sin(a) * r;
-      p.delay = Math.random() * 700; p.dur = 1500 + Math.random() * 900; p.sz = Math.random() < 0.1 ? 2.2 : 1.4;
+    // Count the longitude from 0 to 9 as the meridian draws
+    var t0 = null, DUR = 1500, DELAY = 250;
+    requestAnimationFrame(function tick(now) {
+      if (t0 === null) t0 = now;
+      var k = Math.min(1, Math.max(0, (now - t0 - DELAY) / DUR)), e = 1 - Math.pow(1 - k, 3);
+      lon.textContent = (9 * e).toFixed(2) + '° E';
+      if (k < 1) requestAnimationFrame(tick);
     });
-    var t0 = performance.now(), resolved = false;
-    function ease(t) { return 1 - Math.pow(1 - t, 4); }
-    (function frame(now) {
-      if (!body.classList.contains('v4')) return;
-      var e = now - t0; ctx.clearRect(0, 0, W, H);
-      var allIn = true;
-      for (var k = 0; k < pts.length; k++) {
-        var p = pts[k], t = Math.max(0, Math.min(1, (e - 300 - p.delay) / p.dur)), q = ease(t);
-        if (t < 1) allIn = false;
-        var x = p.sx + (p.tx - p.sx) * q + Math.sin((1 - q) * 6 + k) * 18 * (1 - q);
-        var y = p.sy + (p.ty - p.sy) * q + Math.cos((1 - q) * 5 + k) * 18 * (1 - q);
-        ctx.fillStyle = p.gold ? 'rgba(240,207,133,' + (0.25 + 0.75 * q) + ')' : 'rgba(225,235,245,' + (0.2 + 0.8 * q) + ')';
-        ctx.fillRect(x, y, p.sz, p.sz);
-      }
-      if (allIn && !resolved) { resolved = true; body.classList.add('resolved'); }
-      if (e < 6000) requestAnimationFrame(frame);
-    })(t0);
   }
-
-  var current = 2;
-  [].forEach(function (b) {
-    b.addEventListener('click', function () {
-      current = +b.dataset.v;
-      document.querySelectorAll('.picker button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-      play(current);
-    });
+  // Enter: widen the meridian, then go
+  var enter = document.getElementById('enter');
+  enter.addEventListener('click', function (ev) {
+    if (reduced || ev.metaKey || ev.ctrlKey || ev.shiftKey) return;
+    ev.preventDefault(); body.classList.add('leaving');
+    setTimeout(function () { location.href = enter.href; }, 620);
   });
-  lockup.addEventListener('click', function () { play(current); });
-  lockup.addEventListener('animationend', function (e) { if (e.target === lockup) { lockup.style.willChange = 'auto'; } });
-  document.fonts && document.fonts.ready ? document.fonts.ready.then(function () { play(2); }) : play(2);
+  // Coming back with the browser's Back button shows the finished frame, not a covered page
+  addEventListener('pageshow', function (e) { if (e.persisted) { body.classList.remove('leaving', 'play'); body.classList.add('still'); lon.textContent = '9.00° E'; } });
 })();
 </script>
 </body>
