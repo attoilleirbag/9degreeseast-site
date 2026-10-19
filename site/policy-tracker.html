@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Policy Tracker | 9 Degrees East</title>
+<meta name="description" content="The rules shaping low-carbon fuels in the US, EU, UK, China and global shipping, checked every week.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<style>
+  :root { --ink: #061527; --panel: rgba(9,28,50,0.72); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --line: rgba(160,190,220,0.18); --accent: #D8B66E;
+          --US: #8FC7E8; --EU: #9EB8F5; --UK: #F0B27A; --IMO: #7FD1C2; --China: #E89A9A; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--ink); color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  body { min-height: 100vh; background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(216,182,110,0.08), transparent 60%),
+    radial-gradient(900px 700px at -10% 30%, rgba(143,199,232,0.07), transparent 60%), var(--ink); }
+  a { color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 32px 40px 60px; }
+
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+  .home { display: inline-flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; }
+  .home svg { width: 34px; height: 34px; }
+  .home span { font-size: 10px; font-weight: 600; letter-spacing: 0.24em; }
+  .sitenav { display: flex; gap: 22px; font-size: 13px; }
+  .sitenav a { color: var(--muted); text-decoration: none; padding: 10px 0; }
+  .sitenav a:hover, .sitenav a[aria-current="page"] { color: var(--text); }
+  .sitenav .cta { color: var(--accent); }
+
+  header.intro { margin: 64px 0 40px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: end; }
+  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+  h1 { margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(44px, 6vw, 80px); line-height: 0.98; letter-spacing: -0.02em; }
+  h1 em { color: var(--accent); }
+  .sub { margin: 16px 0 0; max-width: 520px; font-size: 14px; line-height: 1.75; color: var(--muted); }
+  .stamp { justify-self: end; text-align: right; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); line-height: 1.9; padding: 10px 14px; border: 1px solid var(--line); border-radius: 2px; }
+  .stamp b { color: var(--text); font-weight: 600; }
+
+  /* Region strip: count per region, doubles as the filter */
+  .regions { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin-bottom: 34px; }
+  .reg { text-align: left; font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 3px; padding: 14px 14px 12px; cursor: pointer; transition: border-color 250ms ease, transform 250ms ease, opacity 250ms ease; }
+  .reg:hover { border-color: rgba(160,190,220,0.45); transform: translateY(-2px); }
+  .reg[aria-pressed="true"] { border-color: var(--c); box-shadow: 0 0 0 1px var(--c) inset; }
+  .reg:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .reg .nm { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; }
+  .reg .nm i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
+  .reg .n { margin-top: 10px; font-family: 'Instrument Serif', Georgia, serif; font-size: 30px; line-height: 1; }
+  .reg .n small { font-family: Manrope, sans-serif; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-left: 6px; }
+
+  /* Timeline */
+  .list { position: relative; margin: 0; padding: 0; list-style: none; }
+  .list::before { content: ""; position: absolute; left: 118px; top: 6px; bottom: 6px; width: 1px; background: var(--line); }
+  .item { position: relative; display: grid; grid-template-columns: 118px 1fr; gap: 0 34px; padding: 0 0 30px; opacity: 0; transform: translateY(10px); transition: opacity 500ms ease, transform 500ms ease; }
+  .item.in { opacity: 1; transform: none; }
+  .item[hidden] { display: none; }
+  .item::before { content: ""; position: absolute; left: 114px; top: 7px; width: 9px; height: 9px; border-radius: 50%; background: var(--ink); border: 1.5px solid var(--c); box-shadow: 0 0 10px var(--c); }
+  .date { padding-right: 22px; text-align: right; font-size: 11px; letter-spacing: 0.08em; color: var(--muted); line-height: 1.6; font-variant-numeric: tabular-nums; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 3px; padding: 18px 22px 16px; transition: border-color 250ms ease; }
+  .card:hover { border-color: rgba(160,190,220,0.4); }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .tag { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 8px; border-radius: 2px; border: 1px solid var(--line); color: var(--muted); }
+  .tag.r { color: var(--c); border-color: color-mix(in srgb, var(--c) 45%, transparent); }
+  .card h2 { margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: 25px; line-height: 1.15; }
+  .card p { margin: 8px 0 0; font-size: 13.5px; line-height: 1.7; color: var(--soft); max-width: 720px; }
+  .card .src { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); }
+  .card .src a { color: var(--accent); font-weight: 600; text-decoration: none; }
+  .card .src a:hover { text-decoration: underline; }
+  .empty { margin: 0 0 30px 152px; font-size: 13px; color: var(--muted); }
+
+  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 10.5px; letter-spacing: 0.04em; line-height: 1.7; color: #6F87A3; }
+
+  @media (max-width: 900px) {
+    .wrap { padding: 24px 18px 48px; }
+    .top { flex-direction: column; gap: 10px; }
+    header.intro { grid-template-columns: 1fr; margin: 40px 0 28px; gap: 20px; }
+    .stamp { justify-self: start; text-align: left; }
+    .regions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .list::before { left: 4px; }
+    .item { grid-template-columns: 1fr; padding-left: 24px; }
+    .item::before { left: 0; }
+    .date { text-align: left; padding: 0 0 6px; }
+    .empty { margin-left: 24px; }
+  }
+  @media (max-width: 420px) { .sitenav .cta { display: none; } .card { padding: 16px 16px 14px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="home" href="home.html" aria-label="9 Degrees East home">
+      <svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" aria-hidden="true"><circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="2.6" stroke-dasharray="196.5 80" transform="rotate(120 50 50)"/><circle cx="46" cy="43" r="16" stroke="currentColor" stroke-width="8"/><path d="M60.5 49.8 L46.8 79" stroke="currentColor" stroke-width="8"/><circle cx="71" cy="25" r="5" stroke="#D8B66E" stroke-width="3.4"/></svg>
+      <span>9 DEGREES EAST</span>
+    </a>
+    <nav class="sitenav" aria-label="Main">
+      <a href="fuel-weather.html">Fuel Weather</a>
+      <a href="policy-tracker.html" aria-current="page">Policy</a>
+      <a href="about.html">About</a>
+      <a class="cta" href="mailto:tomfox@9degreeseast.com">Get in touch</a>
+    </nav>
+  </div>
+
+  <header class="intro">
+    <div>
+      <p class="eyebrow">Regulation</p>
+      <h1>Policy <em>Tracker</em></h1>
+      <p class="sub">The rules that set demand and price for low-carbon fuels: mandates, credits and carbon standards across the US, the EU, the UK, China and global shipping. Checked every week against official sources.</p>
+    </div>
+    <div class="stamp" id="stamp"></div>
+  </header>
+
+  <div class="regions" id="regions" role="group" aria-label="Filter by region"></div>
+  <ol class="list" id="list"></ol>
+  <p class="empty" id="empty" hidden>Nothing tracked for this region yet. New items appear here as they are published.</p>
+
+  <div class="foot">
+    <span>Summaries are ours; follow the source link for the official text. Not legal advice.</span>
+    <span>Sources: Federal Register, GOV.UK, European Commission, IMO, NDRC and NEA</span>
+  </div>
+</div>
+
+<script>
+/* ===== DATA ===== Written by scripts/update-policy.mjs each week and published automatically. */
+var POLICY = /*DATA:START*/{
+  "updated": "2026-10-19",
+  "items": [
+    {
+      "id": "us-2026-04-01-rfs",
+      "region": "US",
+      "date": "2026-04-01",
+      "status": "Final rule",
+      "title": "Renewable Fuel Standard volumes set for 2026 and 2027",
+      "summary": "EPA's final rule sets the RFS blending requirements for 2026 and 2027, partially waives the 2025 cellulosic biofuel volume, and makes other programme changes. The volumes drive RIN demand, and with it a large part of the economics of renewable diesel and SAF in the US.",
+      "source": "Environmental Protection Agency",
+      "url": "https://www.federalregister.gov/documents/2026/04/01/2026-06275/renewable-fuel-standard-rfs-program-standards-for-2026-and-2027-partial-waiver-of-2025-cellulosic"
+    },
+    {
+      "id": "us-2026-02-04-45z",
+      "region": "US",
+      "date": "2026-02-04",
+      "status": "Proposed rule",
+      "title": "Section 45Z Clean Fuel Production Credit: proposed regulations",
+      "summary": "Treasury and the IRS proposed rules for the 45Z credit, which pays US producers of low-emission transportation fuels, including SAF, according to the carbon intensity of the fuel.",
+      "source": "Treasury Department, Internal Revenue Service",
+      "url": "https://www.federalregister.gov/documents/2026/02/04/2026-02246/section-45z-clean-fuel-production-credit"
+    },
+    {
+      "id": "imo-2025-10-nzf",
+      "region": "IMO",
+      "date": "2025-10-17",
+      "status": "Under negotiation",
+      "title": "IMO Net-Zero Framework: adoption postponed, talks resume in 2026",
+      "summary": "Member states adjourned the extraordinary session that was due to adopt the Net-Zero Framework, a global fuel standard and greenhouse gas pricing mechanism for shipping. Negotiations continue, with the next decision point expected in late 2026.",
+      "source": "International Maritime Organization",
+      "url": "https://www.imo.org/en/mediacentre/pressbriefings/pages/imo-net-zero-shipping-talks-to-resume-in-2026.aspx"
+    },
+    {
+      "id": "uk-2025-01-01-saf",
+      "region": "UK",
+      "date": "2025-01-01",
+      "status": "In force",
+      "title": "UK SAF Mandate starts",
+      "summary": "Jet fuel suppliers must include a rising share of sustainable aviation fuel: 2% in 2025, rising to 10% in 2030 and 22% in 2040, with a cap on HEFA-based fuel and a separate obligation for power-to-liquid fuels.",
+      "source": "Department for Transport",
+      "url": "https://www.gov.uk/government/collections/sustainable-aviation-fuel-mandate"
+    },
+    {
+      "id": "eu-2025-01-01-refueleu",
+      "region": "EU",
+      "date": "2025-01-01",
+      "status": "In force",
+      "title": "ReFuelEU Aviation: 2% SAF minimum at EU airports",
+      "summary": "Fuel suppliers at EU airports must supply at least 2% SAF from 2025, rising to 6% in 2030 (including 1.2% synthetic fuels) and 70% in 2050. Regulation (EU) 2023/2405.",
+      "source": "European Commission",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/2405/oj"
+    },
+    {
+      "id": "eu-2025-01-01-fueleu",
+      "region": "EU",
+      "date": "2025-01-01",
+      "status": "In force",
+      "title": "FuelEU Maritime: greenhouse gas intensity limits for ships",
+      "summary": "Ships above 5,000 gross tonnes calling at EU ports must cut the greenhouse gas intensity of the energy they use by 2% from 2025, tightening to 80% by 2050. Regulation (EU) 2023/1805.",
+      "source": "European Commission",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/1805/oj"
+    },
+    {
+      "id": "eu-2023-10-31-red3",
+      "region": "EU",
+      "date": "2023-10-31",
+      "status": "In force",
+      "title": "Renewable Energy Directive (RED III) published",
+      "summary": "Raises the EU's 2030 renewable energy target to 42.5% and sets transport sub-targets for advanced biofuels and renewable fuels of non-biological origin, such as e-fuels and renewable hydrogen. Member states had to transpose most provisions by May 2025. Directive (EU) 2023/2413.",
+      "source": "European Parliament and Council",
+      "url": "https://eur-lex.europa.eu/eli/dir/2023/2413/oj"
+    }
+  ]
+}/*DATA:END*/;
+
+var REGIONS = ['All', 'US', 'EU', 'UK', 'IMO', 'China'];
+var NAMES = { All: 'All regions', US: 'United States', EU: 'European Union', UK: 'United Kingdom', IMO: 'Shipping (IMO)', China: 'China' };
+var COLORS = { All: '#D8B66E', US: '#8FC7E8', EU: '#9EB8F5', UK: '#F0B27A', IMO: '#7FD1C2', China: '#E89A9A' };
+var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var active = 'All';
+try { var saved = localStorage.getItem('9de-policy-region'); if (REGIONS.indexOf(saved) > -1) active = saved; } catch (e) {}
+
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+function fmt(d) { var p = String(d).split('-'); return p.length === 3 ? (+p[2]) + ' ' + MONTHS[+p[1] - 1] + '<br>' + p[0] : esc(d); }
+
+var items = POLICY.items.slice().sort(function (a, b) { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; });
+
+document.getElementById('stamp').innerHTML = 'Last checked<br><b>' + fmt(POLICY.updated).replace('<br>', ' ') + '</b><br>' + items.length + ' items tracked';
+
+var list = document.getElementById('list');
+list.innerHTML = items.map(function (it) {
+  return '<li class="item" data-r="' + esc(it.region) + '" style="--c:' + (COLORS[it.region] || '#A8B7C6') + '">' +
+    '<div class="date">' + fmt(it.date) + '</div>' +
+    '<article class="card"><div class="tags"><span class="tag r">' + esc(NAMES[it.region] || it.region) + '</span><span class="tag">' + esc(it.status) + '</span></div>' +
+    '<h2>' + esc(it.title) + '</h2>' + (it.summary ? '<p>' + esc(it.summary) + '</p>' : '') +
+    '<div class="src"><span>' + esc(it.source) + (it.lang ? ' · Translated from ' + esc(it.lang) + ' (DeepL)' : '') + '</span><a href="' + esc(it.url) + '" target="_blank" rel="noopener">Official source →</a></div></article></li>';
+}).join('');
+
+var regions = document.getElementById('regions');
+regions.innerHTML = REGIONS.map(function (r) {
+  var n = r === 'All' ? items.length : items.filter(function (i) { return i.region === r; }).length;
+  return '<button class="reg" type="button" data-r="' + r + '" style="--c:' + COLORS[r] + '" aria-pressed="false"><span class="nm"><i></i>' + NAMES[r] + '</span><span class="n">' + n + '<small>' + (n === 1 ? 'item' : 'items') + '</small></span></button>';
+}).join('');
+
+function show(r) {
+  active = r;
+  try { localStorage.setItem('9de-policy-region', r); } catch (e) {}
+  regions.querySelectorAll('.reg').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.r === r ? 'true' : 'false'); });
+  var shown = 0;
+  list.querySelectorAll('.item').forEach(function (li) { var on = r === 'All' || li.dataset.r === r; li.hidden = !on; if (on) shown++; });
+  document.getElementById('empty').hidden = shown > 0;
+}
+regions.addEventListener('click', function (e) { var b = e.target.closest('.reg'); if (b) show(b.dataset.r); });
+show(active);
+
+// Items drift in as they scroll into view.
+var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+  es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { rootMargin: '0px 0px -8% 0px' }) : null;
+list.querySelectorAll('.item').forEach(function (li, i) { li.style.transitionDelay = Math.min(i, 6) * 60 + 'ms'; io ? io.observe(li) : li.classList.add('in'); });
+</script>
+</body>
+</html>
