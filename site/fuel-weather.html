@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fuel Weather | 9 Degrees East</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<style>
+  :root { --ink: #061527; --text: #EEF2F5; --muted: #A8B7C6; --line: rgba(160,190,220,0.18); --accent: #D8B66E; --up: #F0B27A; --down: #8FC7E8; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--ink); color: var(--text); font-family: Manrope, system-ui, sans-serif; overflow: hidden; -webkit-font-smoothing: antialiased; }
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  .ui { position: fixed; inset: 0; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 32px 40px 26px; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+  .title { position: relative; }
+  .title::before { content: ""; position: absolute; z-index: -1; left: -40px; top: -32px; width: min(760px, 120vw); height: 360px; background: radial-gradient(ellipse at 20% 35%, rgba(6,21,39,0.92) 0%, rgba(6,21,39,0.55) 45%, rgba(6,21,39,0) 75%); }
+  .home { pointer-events: auto; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 26px; color: var(--text); text-decoration: none; }
+  .home svg { width: 34px; height: 34px; }
+  .home span { font-size: 10px; font-weight: 600; letter-spacing: 0.24em; }
+  .sitenav { pointer-events: auto; display: flex; gap: 22px; justify-content: flex-end; margin-bottom: 14px; font-size: 13px; }
+  .sitenav a { color: var(--muted); text-decoration: none; padding: 10px 0; }
+  .sitenav a:hover, .sitenav a[aria-current="page"] { color: var(--text); }
+  .sitenav .cta { color: var(--accent); }
+  .right { display: flex; flex-direction: column; align-items: flex-end; }
+  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+  h1 { margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(40px, 5vw, 70px); line-height: 1; letter-spacing: -0.02em; }
+  h1 em { color: var(--accent); }
+  .sub { margin: 12px 0 0; max-width: 460px; font-size: 13px; line-height: 1.7; color: var(--muted); }
+  .stamp { pointer-events: auto; text-align: right; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); line-height: 1.9; background: rgba(6,21,39,0.6); padding: 10px 14px; border: 1px solid var(--line); border-radius: 2px; backdrop-filter: blur(6px); }
+  .stamp b { color: var(--text); font-weight: 600; }
+
+  .deck { position: relative; pointer-events: auto; }
+  .deck::before { content: ""; position: absolute; z-index: -1; left: -40px; right: -40px; bottom: -26px; height: 330px; background: linear-gradient(0deg, rgba(6,21,39,0.95), rgba(6,21,39,0)); }
+  .cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+  .card { text-align: left; font: inherit; color: var(--text); background: rgba(9,28,50,0.72); border: 1px solid var(--line); border-radius: 3px; padding: 14px 14px 12px; cursor: pointer; backdrop-filter: blur(8px); transition: border-color 250ms ease, transform 250ms ease, opacity 250ms ease; }
+  .card:hover { border-color: rgba(160,190,220,0.45); transform: translateY(-2px); }
+  .card[aria-pressed="true"] { border-color: var(--c); box-shadow: 0 0 0 1px var(--c) inset; }
+  .card.off { opacity: 0.45; }
+  .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .card .nm { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; }
+  .card .nm i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
+  .card .read { margin-top: 10px; font-family: 'Instrument Serif', Georgia, serif; font-size: 22px; line-height: 1.05; }
+  .card .read .dir { color: var(--up); } .card .read .dir.down { color: var(--down); } .card .read .dir.flat { color: var(--muted); }
+  .card .meta { margin-top: 6px; font-size: 10px; letter-spacing: 0.08em; color: var(--muted); }
+  .card svg { display: block; width: 100%; height: 28px; margin-top: 8px; }
+
+  .panel { margin-bottom: 12px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; padding: 20px 22px; background: rgba(9,28,50,0.86); border: 1px solid var(--line); border-radius: 3px; backdrop-filter: blur(10px); animation: in 380ms ease both; }
+  .panel[hidden] { display: none; }
+  @keyframes in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .panel h2 { margin: 0 0 6px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: 28px; }
+  .panel .bench { margin: 0 0 12px; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .panel p { margin: 0 0 10px; font-size: 13.5px; line-height: 1.7; color: #C9D6E3; }
+  .panel .caveat { font-size: 11.5px; color: var(--muted); }
+  .panel .nums { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px 18px; margin: 0 0 12px; }
+  .panel .nums div span { display: block; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .panel .nums div strong { display: block; margin-top: 4px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: 24px; }
+  .panel table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .panel td { padding: 5px 0; border-bottom: 1px solid var(--line); color: #C9D6E3; }
+  .panel td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+  .panel a { color: var(--accent); font-size: 12px; font-weight: 600; text-decoration: none; }
+  .panel a:hover { text-decoration: underline; }
+  .close { position: absolute; right: 10px; top: 8px; width: 40px; height: 40px; border: 0; background: none; color: var(--muted); font-size: 20px; cursor: pointer; }
+  .close:focus-visible { outline: 2px solid var(--accent); }
+  .panel-wrap { position: relative; }
+
+  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 12px; font-size: 10px; letter-spacing: 0.06em; color: #6F87A3; }
+  .foot a { color: #8FA6BF; }
+  @media (max-width: 900px) {
+    html, body { overflow: auto; }
+    .ui { position: relative; min-height: 100vh; padding: 24px 18px; gap: 40vh; }
+    .top { flex-direction: column; }
+    .stamp { text-align: left; }
+    .right { align-items: flex-start; }
+    .sitenav { justify-content: flex-start; }
+    .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .panel { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <canvas id="c" aria-hidden="true"></canvas>
+  <div class="ui">
+    <div class="top">
+      <div class="title">
+        <a class="home" href="home.html" aria-label="9 Degrees East home">
+          <svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" aria-hidden="true"><circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="2.6" stroke-dasharray="196.5 80" transform="rotate(120 50 50)"/><circle cx="46" cy="43" r="16" stroke="currentColor" stroke-width="8"/><path d="M60.5 49.8 L46.8 79" stroke="currentColor" stroke-width="8"/><circle cx="71" cy="25" r="5" stroke="#D8B66E" stroke-width="3.4"/></svg>
+          <span>9 DEGREES EAST</span>
+        </a>
+        <p class="eyebrow">Market conditions</p>
+        <h1>Fuel <em>Weather</em></h1>
+        <p class="sub">The motion follows real public market data. <b style="color:#EEF2F5;font-weight:600">Pressure</b> is the three-month price trend of each fuel's benchmark; <b style="color:#EEF2F5;font-weight:600">turbulence</b> is how volatile it has been. Select a fuel for the numbers behind it.</p>
+      </div>
+      <div class="right">
+        <nav class="sitenav" aria-label="Main">
+          <a href="fuel-weather.html" aria-current="page">Fuel Weather</a>
+          <a href="about.html">About</a>
+          <a class="cta" href="mailto:tomfox@9degreeseast.com">Get in touch</a>
+        </nav>
+        <div class="stamp" id="stamp"></div>
+      </div>
+    </div>
+
+    <div class="deck">
+      <div class="panel-wrap"><div class="panel" id="panel" hidden role="region" aria-live="polite"></div></div>
+      <div class="cards" id="cards" role="group" aria-label="Fuels"></div>
+      <div class="foot">
+        <span>Public data from the U.S. EIA, Methanex and ENTSO-E. Benchmarks, not quotes for low-carbon fuels themselves. Not investment advice.</span>
+        <span>Updated automatically each week</span>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ===== DATA ===== In production this block is written each week by a script; nothing else needs editing. */
+var WEATHER = /*DATA:START*/{
+  "updated": "2026-10-19",
+  "fuels": [
+    {
+      "id": "methanol",
+      "name": "Green methanol",
+      "c": "#5EC8D8",
+      "bench": "Methanex posted methanol prices",
+      "unit": "change vs last month",
+      "regions": [
+        {
+          "r": "Europe",
+          "price": "€875 /t",
+          "prev": 915,
+          "now": 875
+        },
+        {
+          "r": "North America",
+          "price": "$4.36 /gal",
+          "prev": 4.25,
+          "now": 4.36
+        },
+        {
+          "r": "Asia Pacific",
+          "price": "$700 /t",
+          "prev": 550,
+          "now": 700
+        },
+        {
+          "r": "China",
+          "price": "$625 /t",
+          "prev": 525,
+          "now": 625
+        }
+      ],
+      "source": "Methanex posted contract prices, October 2026",
+      "url": "https://www.methanex.com/about-methanol/pricing/",
+      "caveat": "Conventional (grey) methanol. Green methanol trades at a premium to it and is not publicly priced."
+    },
+    {
+      "id": "saf",
+      "name": "SAF",
+      "c": "#F0C877",
+      "bench": "Conventional jet fuel, U.S. Gulf Coast",
+      "unit": "$/gal",
+      "months": [
+        "Apr 2026",
+        "May 2026",
+        "Jun 2026",
+        "Jul 2026",
+        "Aug 2026",
+        "Sep 2026"
+      ],
+      "series": [
+        3.928,
+        3.943,
+        3.042,
+        3.403,
+        3.724,
+        4.388
+      ],
+      "source": "U.S. EIA spot prices, monthly",
+      "url": "https://www.eia.gov/dnav/pet/pet_pri_spt_s1_m.htm",
+      "caveat": "The fossil jet fuel SAF replaces. SAF itself is priced by paid services and cannot be shown here.",
+      "upText": "Fossil jet fuel is getting more expensive, which narrows the price gap SAF has to close.",
+      "downText": "Fossil jet fuel is getting cheaper, which widens the premium SAF has to justify."
+    },
+    {
+      "id": "efuels",
+      "name": "eFuels",
+      "c": "#E9F3FF",
+      "bench": "Wholesale electricity, Germany (day-ahead)",
+      "unit": "€/MWh",
+      "months": [
+        "Sep 2026",
+        "Oct 2026*"
+      ],
+      "series": [
+        144.2,
+        172.8
+      ],
+      "source": "ENTSO-E Transparency Platform via euenergy.live",
+      "url": "https://euenergy.live/germany/de-lu",
+      "note": "*October to date",
+      "caveat": "Power is the single biggest cost in making eFuels, so it is the clearest public signal for them.",
+      "upText": "Power is getting more expensive, which raises the cost of producing eFuels.",
+      "downText": "Power is getting cheaper, which lowers the cost of producing eFuels."
+    },
+    {
+      "id": "rd",
+      "name": "Renewable diesel",
+      "c": "#E39A55",
+      "bench": "Ultra-low sulfur diesel, New York Harbor",
+      "unit": "$/gal",
+      "months": [
+        "Apr 2026",
+        "May 2026",
+        "Jun 2026",
+        "Jul 2026",
+        "Aug 2026",
+        "Sep 2026"
+      ],
+      "series": [
+        3.988,
+        3.969,
+        3.401,
+        3.913,
+        4.253,
+        4.956
+      ],
+      "source": "U.S. EIA spot prices, monthly",
+      "url": "https://www.eia.gov/dnav/pet/pet_pri_spt_s1_m.htm",
+      "caveat": "The fossil diesel renewable diesel competes with. Renewable diesel and credit prices are not shown.",
+      "upText": "Fossil diesel is getting more expensive, which improves renewable diesel's relative economics.",
+      "downText": "Fossil diesel is getting cheaper, which squeezes renewable diesel's relative economics."
+    },
+    {
+      "id": "rng",
+      "name": "Renewable natural gas",
+      "c": "#A9A2F0",
+      "bench": "Natural gas, Henry Hub spot",
+      "unit": "$/MMBtu",
+      "months": [
+        "Apr 2026",
+        "May 2026",
+        "Jun 2026",
+        "Jul 2026",
+        "Aug 2026",
+        "Sep 2026"
+      ],
+      "series": [
+        2.77,
+        2.94,
+        3.15,
+        2.89,
+        2.78,
+        2.95
+      ],
+      "source": "U.S. EIA natural gas spot prices, monthly",
+      "url": "https://www.eia.gov/dnav/ng/hist/rngwhhdm.htm",
+      "caveat": "The fossil gas RNG replaces. Much of RNG's value comes from environmental credits, not shown here.",
+      "upText": "Fossil gas is getting more expensive, which helps RNG compete on commodity price alone.",
+      "downText": "Fossil gas is getting cheaper, which leaves RNG more reliant on its environmental credits."
+    }
+  ]
+}/*DATA:END*/;
+
+/* ===== READINGS: worked out from the numbers, never typed by hand ===== */
+function read(f) {
+  var chg, turb, moves = [];
+  if (f.regions) {
+    f.regions.forEach(function (g) { moves.push((g.now - g.prev) / g.prev); });
+    chg = moves.reduce(function (a, b) { return a + b; }, 0) / moves.length;
+    var spread = Math.max.apply(null, moves) - Math.min.apply(null, moves);
+    turb = spread;
+  } else {
+    var s = f.series, n = s.length, base = s[Math.max(0, n - 4)];
+    chg = (s[n - 1] - base) / base;
+    for (var i = 1; i < n; i++) moves.push(Math.abs((s[i] - s[i - 1]) / s[i - 1]));
+    turb = moves.reduce(function (a, b) { return a + b; }, 0) / moves.length;
+  }
+  var pressure = chg > 0.08 ? 'Rising' : chg < -0.08 ? 'Falling' : 'Steady';
+  var turbulence = turb > 0.10 ? 'High' : turb > 0.04 ? 'Moderate' : 'Calm';
+  return { chg: chg, pressure: pressure, turbulence: turbulence,
+    speed: pressure === 'Rising' ? 1.45 : pressure === 'Falling' ? 0.6 : 1,
+    chaos: turbulence === 'High' ? 1.9 : turbulence === 'Moderate' ? 1.25 : 0.7 };
+}
+WEATHER.fuels.forEach(function (f) { f.w = read(f); f.on = true; });
+
+/* ===== UI ===== */
+(function () {
+  var d = new Date(WEATHER.updated + 'T12:00:00Z');
+  document.getElementById('stamp').innerHTML = 'Conditions as of<br><b>' + d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) + '</b>';
+  var cards = document.getElementById('cards'), panel = document.getElementById('panel'), openId = null;
+  function pct(x) { return (x > 0 ? '+' : '') + Math.round(x * 100) + '%'; }
+  function arrow(p) { return p === 'Rising' ? '↗' : p === 'Falling' ? '↘' : '→'; }
+  function spark(f) {
+    var vals = f.series || f.regions.map(function (g) { return g.now / g.prev; });
+    var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals), W = 160, H = 28;
+    var pts = vals.map(function (v, i) { return [i / (vals.length - 1 || 1) * W, H - 3 - (mx === mn ? 0.5 : (v - mn) / (mx - mn)) * (H - 6)]; });
+    if (f.regions) { // bars for regional moves
+      return '<svg viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true">' + f.regions.map(function (g, i) {
+        var m = (g.now - g.prev) / g.prev, h = Math.min(12, Math.abs(m) * 50), x = 8 + i * 38;
+        return '<rect x="' + x + '" y="' + (m >= 0 ? 14 - h : 14) + '" width="22" height="' + Math.max(1, h) + '" fill="' + (m >= 0 ? '#F0B27A' : '#8FC7E8') + '" opacity=".85"/>';
+      }).join('') + '<line x1="0" x2="' + W + '" y1="14" y2="14" stroke="rgba(160,190,220,.3)"/></svg>';
+    }
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true"><polyline fill="none" stroke="' + f.c + '" stroke-width="1.6" points="' + pts.map(function (p) { return p.join(','); }).join(' ') + '"/><circle cx="' + pts[pts.length - 1][0] + '" cy="' + pts[pts.length - 1][1] + '" r="2.4" fill="' + f.c + '"/></svg>';
+  }
+  function list(a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+  function detail(f) {
+    var w = f.w, html = '<button class="close" type="button" aria-label="Close">×</button><div>';
+    html += '<h2>' + f.name + '</h2><p class="bench">Benchmark · ' + f.bench + '</p>';
+    var meaning;
+    if (f.regions) {
+      var ups = f.regions.filter(function (g) { return g.now > g.prev; }).map(function (g) { return g.r; });
+      var downs = f.regions.filter(function (g) { return g.now < g.prev; }).map(function (g) { return g.r; });
+      meaning = 'Methanol prices ' + (ups.length ? 'rose in ' + list(ups) : '') + (ups.length && downs.length ? ' but eased in ' + list(downs) : downs.length ? 'eased in ' + list(downs) : '') + ' this month. A wide regional spread like this is worth watching when pricing long-term supply across markets.';
+    } else {
+      meaning = (w.pressure === 'Rising' ? f.upText : w.pressure === 'Falling' ? f.downText : 'Prices have held broadly steady over the last three months.') +
+        (w.turbulence === 'High' ? ' Prices have also swung sharply month to month, which favours contracts with clear indexation and price collars.' : '');
+    }
+    html += '<p>' + meaning + '</p><p class="caveat">' + f.caveat + '</p>';
+    html += '<a href="mailto:tomfox@9degreeseast.com?subject=' + encodeURIComponent(f.name + ' market conditions') + '">Discuss what this means for your project →</a></div><div>';
+    html += '<div class="nums"><div><span>Pressure</span><strong>' + arrow(w.pressure) + ' ' + w.pressure + '</strong></div><div><span>Turbulence</span><strong>' + w.turbulence + '</strong></div><div><span>' + (f.regions ? 'Avg monthly move' : '3-month change') + '</span><strong>' + pct(w.chg) + '</strong></div></div>';
+    html += '<table>';
+    if (f.regions) f.regions.forEach(function (g) { html += '<tr><td>' + g.r + '</td><td>' + g.price + ' (' + pct((g.now - g.prev) / g.prev) + ')</td></tr>'; });
+    else f.series.forEach(function (v, i) { html += '<tr><td>' + f.months[i] + '</td><td>' + v.toFixed(v < 20 ? 2 : 1) + ' ' + f.unit + '</td></tr>'; });
+    html += '</table><p class="caveat" style="margin-top:10px">Source: <a href="' + f.url + '" target="_blank" rel="noopener">' + f.source + '</a>' + (f.note ? ' · ' + f.note : '') + '</p></div>';
+    return html;
+  }
+  WEATHER.fuels.forEach(function (f) {
+    var b = document.createElement('button');
+    b.className = 'card'; b.type = 'button'; b.style.setProperty('--c', f.c); b.setAttribute('aria-pressed', 'false');
+    var dir = f.w.pressure === 'Rising' ? '' : f.w.pressure === 'Falling' ? ' down' : ' flat';
+    b.innerHTML = '<div class="nm"><i aria-hidden="true"></i>' + f.name + '</div>' +
+      '<div class="read"><span class="dir' + dir + '">' + arrow(f.w.pressure) + '</span> ' + f.w.pressure + '</div>' +
+      '<div class="meta">' + f.w.turbulence + ' turbulence · ' + pct(f.w.chg) + '</div>' + spark(f);
+    b.addEventListener('click', function () {
+      if (openId === f.id) { panel.hidden = true; openId = null; } else { panel.innerHTML = detail(f); panel.hidden = false; openId = f.id;
+        panel.querySelector('.close').addEventListener('click', function () { panel.hidden = true; openId = null; sync(); }); }
+      sync();
+    });
+    f.btn = b; cards.appendChild(b);
+  });
+  function sync() {
+    WEATHER.fuels.forEach(function (f) {
+      f.btn.setAttribute('aria-pressed', String(openId === f.id));
+      f.btn.classList.toggle('off', openId !== null && openId !== f.id);
+      f.focus = openId === null || openId === f.id;
+    });
+  }
+  sync();
+})();
+
+/* ===== THE WEATHER ===== */
+(function () {
+  var cv = document.getElementById('c'), ctx = cv.getContext('2d'), W, H, dpr, t = 0, mouse = { x: -9999, y: -9999, on: false };
+  var perm = new Uint8Array(512);
+  (function () { var p = []; for (var i = 0; i < 256; i++) p[i] = i; for (i = 255; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var tmp = p[i]; p[i] = p[j]; p[j] = tmp; } for (i = 0; i < 512; i++) perm[i] = p[i & 255]; })();
+  function fade(x) { return x * x * x * (x * (x * 6 - 15) + 10); }
+  function grad(h, x, y) { var a = h * 0.0245; return Math.cos(a) * x + Math.sin(a) * y; }
+  function noise(x, y) { var X = Math.floor(x) & 255, Y = Math.floor(y) & 255; x -= Math.floor(x); y -= Math.floor(y); var u = fade(x), v = fade(y), A = perm[X] + Y, B = perm[X + 1] + Y; var a = grad(perm[A], x, y), b = grad(perm[B], x - 1, y), c = grad(perm[A + 1], x, y - 1), d = grad(perm[B + 1], x - 1, y - 1); return (a + (b - a) * u) + ((c + (d - c) * u) - (a + (b - a) * u)) * v; }
+  var F = {}; WEATHER.fuels.forEach(function (f) { F[f.id] = f; });
+  var base = { methanol: 380, saf: 120, efuels: 220, rd: 200 };
+  var parts = [], rings = [], sources = [];
+  function spawn(f, p) {
+    p = p || { f: f }; var w = f.w;
+    p.x = Math.random() * W; p.y = Math.random() * H; p.life = 0; p.max = 200 + Math.random() * 400;
+    if (f.id === 'saf') { p.x = -40 - Math.random() * W * 0.3; p.y = H * (0.36 + Math.random() * 0.26); p.v = (2.2 + Math.random() * 2) * w.speed; p.max = 900; }
+    if (f.id === 'efuels') { var s = sources[Math.floor(Math.random() * sources.length)]; p.x = s.x + (Math.random() - 0.5) * 60; p.y = s.y + (Math.random() - 0.5) * 20; p.max = 120 + Math.random() * 160; }
+    if (f.id === 'rd') { p.band = Math.floor(Math.random() * 3); p.x = Math.random() * W; p.y = H * (0.42 + p.band * 0.07) + (Math.random() - 0.5) * 12; p.v = (0.7 + Math.random() * 0.9) * w.speed; p.max = 1400; }
+    p.px = p.x; p.py = p.y; return p;
+  }
+  function seed() {
+    parts = []; rings = []; sources = [];
+    for (var s = 0; s < 6; s++) sources.push({ x: W * (0.1 + Math.random() * 0.8), y: H * (0.5 + Math.random() * 0.15) });
+    WEATHER.fuels.forEach(function (f) {
+      if (!base[f.id]) return;
+      var n = Math.round(base[f.id] * (0.65 + 0.35 * f.w.speed) * Math.min(1.4, (W * H) / (1440 * 900)));
+      for (var i = 0; i < n; i++) { var p = spawn(f); p.life = Math.random() * p.max; parts.push(p); }
+    });
+  }
+  function size() { dpr = Math.min(window.devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.fillStyle = '#061527'; ctx.fillRect(0, 0, W, H); seed(); }
+  function rgba(hex, a) { var n = parseInt(hex.slice(1), 16); return 'rgba(' + (n >> 16) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')'; }
+  function step() {
+    t += 0.0035;
+    ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = 'rgba(6,21,39,0.08)'; ctx.fillRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'lighter';
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i], f = p.f, w = f.w; p.px = p.x; p.py = p.y; p.life++;
+      var ang = noise(p.x * 0.0016 + t * w.chaos, p.y * 0.0016 - t * 0.6) * Math.PI * 2 * w.chaos, vx = 0, vy = 0;
+      if (f.id === 'methanol') { vx = (Math.cos(ang) * 0.7 + 0.15) * w.speed; vy = Math.sin(ang) * 0.7 * w.speed; }
+      else if (f.id === 'saf') { vx = p.v; vy = Math.sin(ang) * 0.3 * w.chaos - 0.1; }
+      else if (f.id === 'efuels') { vx = Math.cos(ang) * 0.45 * w.chaos; vy = (-1 - Math.random() * 0.6) * w.speed; }
+      else if (f.id === 'rd') { vx = p.v; vy = Math.sin(p.x * 0.006 + p.band + t * 4) * 0.3 * w.chaos; }
+      if (mouse.on) { var dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy; if (d2 < 22000) { var k = (1 - d2 / 22000) * 2.2, dd = Math.sqrt(d2) || 1; vx += (-dy / dd) * k; vy += (dx / dd) * k; } }
+      p.x += vx; p.y += vy;
+      var a = Math.min(1, p.life / 40) * Math.min(1, (p.max - p.life) / 60) * (f.focus ? 1 : 0.18);
+      if (f.id === 'methanol') { ctx.fillStyle = rgba(f.c, (0.022 * a).toFixed(3)); ctx.beginPath(); ctx.arc(p.x, p.y, 11, 0, 7); ctx.fill(); ctx.fillStyle = rgba(f.c, (0.3 * a).toFixed(3)); ctx.fillRect(p.x, p.y, 1, 1); }
+      else if (f.id === 'saf') { ctx.strokeStyle = rgba(f.c, (0.55 * a).toFixed(3)); ctx.lineWidth = 1.1; ctx.beginPath(); ctx.moveTo(p.px - vx * 6, p.py - vy * 6); ctx.lineTo(p.x, p.y); ctx.stroke(); }
+      else if (f.id === 'efuels') { var tw = 0.5 + 0.5 * Math.sin(p.life * 0.4 + i); ctx.fillStyle = rgba(f.c, (0.85 * a * tw).toFixed(3)); ctx.fillRect(p.x, p.y, 1.4, 1.4); }
+      else if (f.id === 'rd') { ctx.strokeStyle = rgba(f.c, (0.7 * a).toFixed(3)); ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(p.px, p.py); ctx.lineTo(p.x, p.y); ctx.stroke(); }
+      if (p.life > p.max || p.x > W + 60 || p.x < -260 || p.y < -60 || p.y > H + 60) spawn(f, p);
+    }
+    var rng = F.rng, rate = 0.035 * rng.w.speed;
+    if (Math.random() < rate) { var s = sources[Math.floor(Math.random() * sources.length)]; rings.push({ x: s.x + (Math.random() - 0.5) * 120, y: s.y + 40, r: 2, a: 0.5 }); }
+    for (var r = rings.length - 1; r >= 0; r--) {
+      var g = rings[r]; g.r += 0.55 * rng.w.speed; g.y -= 0.25; g.a *= 0.992;
+      ctx.strokeStyle = rgba(rng.c, (g.a * 0.5 * (rng.focus ? 1 : 0.18)).toFixed(3)); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(g.x, g.y, g.r, 0, 7); ctx.stroke();
+      if (g.a < 0.02) rings.splice(r, 1);
+    }
+    requestAnimationFrame(step);
+  }
+  addEventListener('pointermove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; mouse.on = true; });
+  addEventListener('resize', size);
+  size(); requestAnimationFrame(step);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About | 9 Degrees East</title>
+<meta name="description" content="9 Degrees East is a commercial advisory firm for low-carbon fuels, structuring long-term, bankable supply agreements for eFuels, green methanol, SAF, renewable diesel and RNG.">
+<meta name="theme-color" content="#081A2E">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<style>
+  :root { --ink: #081A2E; --surface: #0D2440; --text: #EEF2F5; --muted: #A8B7C6; --line: #22395A; --accent: #D8B66E; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; background: var(--ink); color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--accent); color: var(--ink); }
+  a { color: inherit; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  h1, h2, h3, p { margin-top: 0; }
+  .wrap { width: min(100% - 96px, 1200px); margin-inline: auto; }
+  .skip-link { position: absolute; top: 12px; left: 16px; z-index: 5; padding: 14px 20px; background: var(--text); color: var(--ink); transform: translateY(-180%); }
+  .skip-link:focus { transform: translateY(0); }
+
+  header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-block: 25px; border-bottom: 1px solid var(--line); }
+  .logo { display: inline-flex; align-items: center; gap: 12px; color: var(--text); text-decoration: none; }
+  .logo svg { width: 49px; height: 49px; flex: none; }
+  .wordmark { display: flex; flex-direction: column; gap: 7px; font-weight: 600; font-size: 11px; letter-spacing: 0.24em; line-height: 1; }
+  .wordmark .east { display: flex; align-items: center; gap: 8px; }
+  .wordmark .rule { width: 18px; height: 1px; background: var(--accent); }
+  .nav { display: flex; align-items: center; gap: 28px; font-size: 13px; }
+  .nav a { text-decoration: none; color: var(--muted); padding-block: 12px; transition: color 180ms ease; }
+  .nav a:hover, .nav a[aria-current="page"] { color: var(--text); }
+  .nav .nav-cta { color: var(--accent); }
+  @media (max-width: 420px) { .nav { gap: 16px; font-size: 12px; } .nav a { white-space: nowrap; } .nav .nav-cta { display: none; } }
+
+  main { flex: 1; }
+  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 24px; font-size: 10px; font-weight: 600; letter-spacing: 0.19em; text-transform: uppercase; color: var(--accent); }
+  .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; flex: none; }
+  .eyebrow-gap { margin-bottom: 36px; }
+  .section-title { margin-bottom: 40px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(34px, 4vw, 52px); line-height: 1.06; letter-spacing: -0.02em; }
+
+  /* Intro */
+  .intro { display: grid; grid-template-columns: 1.35fr 1fr; gap: 64px; align-items: end; padding-block: 80px 72px; }
+  .intro-copy { animation: enter 800ms ease both; }
+  .intro h1 { margin-bottom: 14px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(52px, 7vw, 96px); line-height: 1; letter-spacing: -0.025em; }
+  .role { margin-bottom: 36px; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .bio { max-width: 620px; font-size: 17px; line-height: 1.85; color: #C9D4DF; }
+  .bio p { margin-bottom: 20px; }
+  .bio p:first-child { font-family: 'Instrument Serif', Georgia, serif; font-size: 26px; line-height: 1.4; color: var(--text); }
+  .portrait { position: relative; aspect-ratio: 4 / 5; width: 100%; max-width: 420px; justify-self: end; background: linear-gradient(160deg, #12305A, #0B1F38 70%); border: 1px solid var(--line); display: flex; align-items: flex-end; padding: 28px; overflow: hidden; animation: enter 1100ms 120ms ease both; }
+  .portrait .mark { position: absolute; top: 46%; left: 50%; width: 58%; transform: translate(-50%, -50%); }
+  .portrait .cap { position: relative; display: flex; justify-content: space-between; width: 100%; padding-top: 14px; border-top: 1px solid #2E4C74; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  .portrait .cap span:last-child { color: var(--accent); }
+
+  /* Stats */
+  .stats { background: var(--surface); }
+  .stats .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .stat { padding: 34px 28px 34px 0; }
+  .stat + .stat { padding-left: 28px; border-left: 1px solid var(--line); }
+  .stat strong { display: block; margin-bottom: 8px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: 44px; line-height: 1; color: var(--text); }
+  .stat span { font-size: 12px; line-height: 1.6; color: var(--muted); }
+
+  /* Expertise */
+  .expertise { padding-block: 96px 40px; }
+  .grid4 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .card { background: var(--ink); padding: 34px 32px 38px; }
+  .card .num { margin-bottom: 26px; font-size: 12px; color: var(--accent); }
+  .card h3 { margin-bottom: 12px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: 28px; line-height: 1.15; }
+  .card p { margin: 0; font-size: 14px; line-height: 1.75; color: var(--muted); }
+
+  /* Career */
+  .career .section-title { margin-bottom: 14px; }
+  .lead { max-width: 620px; margin-bottom: 40px; font-size: 16px; line-height: 1.75; color: var(--muted); }
+  .career { padding-block: 72px 40px; }
+  .timeline { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+  .timeline li { display: grid; grid-template-columns: 1fr 1.4fr; gap: 40px; padding: 30px 0; border-bottom: 1px solid var(--line); }
+  .timeline h3 { margin-bottom: 6px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: 26px; line-height: 1.15; }
+  .timeline .title { margin: 0; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .timeline .desc { margin: 0; font-size: 14px; line-height: 1.75; color: #C2CEDA; }
+  .timeline .early h3 { font-size: 22px; }
+
+  /* Education */
+  .edu { padding-block: 72px 96px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  .edu-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+  .edu-list li { display: flex; justify-content: space-between; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+  .edu-list strong { display: block; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: 24px; }
+  .edu-list span { font-size: 13px; color: var(--muted); }
+  .markets { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; list-style: none; }
+  .markets li { padding: 10px 18px; border: 1px solid #3A5A80; border-radius: 999px; font-size: 13px; color: var(--text); }
+  .note { margin-top: 26px; font-size: 14px; line-height: 1.75; color: var(--muted); max-width: 460px; }
+
+  /* CTA */
+  .cta { background: var(--surface); }
+  .cta .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 28px; padding-block: 72px; }
+  .cta h2 { margin: 0; max-width: 640px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(32px, 4vw, 50px); line-height: 1.08; }
+  .btns { display: flex; flex-wrap: wrap; gap: 14px; }
+  .btn { display: inline-flex; justify-content: center; align-items: center; min-height: 50px; padding: 15px 22px; border-radius: 2px; font-size: 13px; font-weight: 600; text-decoration: none; transition: background 180ms ease, border-color 180ms ease, transform 180ms ease; }
+  .btn-primary { background: var(--accent); color: var(--ink); }
+  .btn-primary:hover { background: #E8C987; transform: translateY(-2px); }
+  .btn-ghost { border: 1px solid #4A6585; color: var(--text); font-weight: 500; }
+  .btn-ghost:hover { border-color: var(--muted); transform: translateY(-2px); }
+
+  footer { border-top: 1px solid var(--line); padding-block: 26px; color: var(--muted); font-size: 12px; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 20px; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 700ms ease, transform 700ms ease; }
+  .reveal.is-in { opacity: 1; transform: none; }
+  @keyframes enter { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: none; } }
+
+  @media (max-width: 1000px) {
+    .wrap { width: calc(100% - 64px); }
+    .intro { grid-template-columns: 1fr; gap: 40px; padding-block: 56px; }
+    .portrait { justify-self: start; max-width: 360px; }
+    .stats .wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .stat:nth-child(3) { padding-left: 0; border-left: 0; }
+    .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
+    .edu { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    .wrap { width: calc(100% - 40px); }
+    header .wrap { padding-block: 19px; }
+    .logo svg { width: 40px; height: 40px; }
+    .wordmark { font-size: 9px; gap: 6px; }
+    .nav { gap: 18px; font-size: 12px; }
+    .bio { font-size: 15px; }
+    .bio p:first-child { font-size: 22px; }
+    .stat { padding: 26px 16px 26px 0; }
+    .stat + .stat { padding-left: 16px; }
+    .stat:nth-child(3) { padding-left: 0; }
+    .stat strong { font-size: 36px; }
+    .grid4 { grid-template-columns: 1fr; }
+    .timeline li { grid-template-columns: 1fr; gap: 8px; }
+    .timeline .desc { margin-top: 6px; }
+    .expertise { padding-top: 72px; }
+  }
+  @media (max-width: 390px) { .btn { width: 100%; } }
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header>
+    <div class="wrap">
+      <a class="logo" href="home.html" aria-label="9 Degrees East home">
+        <svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" aria-hidden="true">
+          <circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="2.4" stroke-dasharray="196.5 80" transform="rotate(120 50 50)"/>
+          <circle cx="46" cy="43" r="16" stroke="currentColor" stroke-width="8"/>
+          <path d="M60.5 49.8 L46.8 79" stroke="currentColor" stroke-width="8"/>
+          <circle cx="71" cy="25" r="5" stroke="#D8B66E" stroke-width="3.2"/>
+        </svg>
+        <span class="wordmark"><span>DEGREES</span><span class="east"><span class="rule"></span>EAST</span></span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="fuel-weather.html">Fuel Weather</a>
+        <a href="about.html" aria-current="page">About</a>
+        <a class="nav-cta" href="mailto:tomfox@9degreeseast.com">Get in touch</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="wrap intro" aria-labelledby="name">
+      <div class="intro-copy">
+        <p class="eyebrow">About us</p>
+        <h1 id="name">9 Degrees East</h1>
+        <p class="role">Commercial advisory for low-carbon fuels · Established 2018</p>
+        <div class="bio">
+          <p>9 Degrees East structures the long-term supply agreements that turn low-carbon fuel projects into financeable businesses.</p>
+          <p>Our experience comes from every side of the table: origination on an oil major's trading desk, commercial leadership at an eFuels developer, green methanol sourcing for a shipping company, and renewable fuels brokerage.</p>
+          <p>That range is the point. We build deals that work for producers and buyers alike, balancing price, volume, credit and sustainability terms so that projects reach final investment decision and the contracts behind them hold up over time.</p>
+        </div>
+      </div>
+      <div class="portrait" role="img" aria-label="9 Degrees East emblem">
+        <svg class="mark" viewBox="0 0 100 100" fill="none" stroke-linecap="round" aria-hidden="true">
+          <circle cx="50" cy="50" r="44" stroke="#3B5F8C" stroke-width="1.2" stroke-dasharray="196.5 80" transform="rotate(120 50 50)"/>
+          <circle cx="46" cy="43" r="16" stroke="#3B5F8C" stroke-width="5"/>
+          <path d="M60.5 49.8 L46.8 79" stroke="#3B5F8C" stroke-width="5"/>
+          <circle cx="71" cy="25" r="5" stroke="#D8B66E" stroke-width="2.2"/>
+        </svg>
+        <div class="cap"><span>London</span><span>9° East</span></div>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="At a glance">
+      <div class="wrap">
+        <div class="stat"><strong>20+</strong><span>years in energy origination, structuring and trading</span></div>
+        <div class="stat"><strong>4</strong><span>regions: Europe, the Americas, Asia and Australia</span></div>
+        <div class="stat"><strong>5+ yr</strong><span>bankable offtake structures for project finance</span></div>
+        <div class="stat"><strong>4</strong><span>perspectives: oil major, developer, shipping and brokerage</span></div>
+      </div>
+    </section>
+
+    <section class="wrap expertise" aria-labelledby="exp-title">
+      <h2 class="eyebrow eyebrow-gap" id="exp-title">Expertise</h2>
+      <div class="grid4 reveal">
+        <div class="card">
+          <p class="num">01</p>
+          <h3>Long-term deal origination</h3>
+          <p>Bankable structures of five years and more, integrating price, credit, sustainability, delivery and optionality terms suitable for project financing.</p>
+        </div>
+        <div class="card">
+          <p class="num">02</p>
+          <h3>Global reach</h3>
+          <p>Experience and networks across Europe, the Americas, Asia and Australia, with a blended maritime, oil major and project development outlook.</p>
+        </div>
+        <div class="card">
+          <p class="num">03</p>
+          <h3>Trading perspective</h3>
+          <p>Translates long-term positions into tradeable short-term books, with a clear understanding of desk P&amp;L and the drivers of risk.</p>
+        </div>
+        <div class="card">
+          <p class="num">04</p>
+          <h3>Regulatory agility</h3>
+          <p>Turns regulation into opportunity: RED, FuelEU Maritime and ReFuelEU Aviation in the EU; the IRA, RFS and LCFS in the US; and sourcing from Asia.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap career" aria-labelledby="career-title">
+      <p class="eyebrow">Leadership</p>
+      <h2 class="section-title reveal" id="career-title">Tom Fox, Founder</h2>
+      <p class="lead reveal">More than twenty years on the commercial side of energy, from power trading to the fuels of the energy transition.</p>
+      <ol class="timeline">
+        <li class="reveal">
+          <div><h3>Maersk Tankers</h3><p class="title">Senior Green Fuels Origination Lead</p></div>
+          <p class="desc">Led supply origination of long-term green methanol volumes in China and structured methanol sales into petrochemical and fuel markets, with pricing and volume terms flexible enough to support several project FIDs at once.</p>
+        </li>
+        <li class="reveal">
+          <div><h3>HIF Global</h3><p class="title">Senior Vice President, Commercial</p></div>
+          <p class="desc">Led all global commercial activity for HIF's eFuels developments in Texas, Chile and Australia, including offtake negotiations for e-methanol, e-gasoline and future phases of e-SAF, and the integration of hydrogen, CO2 and power economics into pricing.</p>
+        </li>
+        <li class="reveal">
+          <div><h3>OTX, an Xpansiv company</h3><p class="title">Head of Renewable Fuels</p></div>
+          <p class="desc">Led a brokerage desk across physical biofuels and feedstocks, primarily in Europe, and set the strategy for product choice and market approach.</p>
+        </li>
+        <li class="reveal">
+          <div><h3>Channoil Consulting</h3><p class="title">Consultant, renewable fuels</p></div>
+          <p class="desc">Market research and supply chain analysis across renewable diesel, biodiesel, LPG and ethanol, advising on the energy transition and on new market and commodity entries across Europe and Africa.</p>
+        </li>
+        <li class="reveal">
+          <div><h3>BP Supply, Trading &amp; Shipping</h3><p class="title">Global Biofuels Originator</p></div>
+          <p class="desc">Originated and structured long-term offtake for BP's US and EU trading benches in London and Chicago, covering second-generation technologies and a wide range of feedstocks, and developed pricing structures for bankable ten-year deals for new projects.</p>
+        </li>
+        <li class="reveal early">
+          <div><h3>Calpine and Reliant Energy</h3><p class="title">Commercial Manager, International</p></div>
+          <p class="desc">Began in power: analysis in Houston and Boston, then managing the UK business of the Saltend power station, trading and marketing its power and negotiating its gas supply.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="wrap edu" aria-label="Education and markets">
+      <div class="reveal">
+        <p class="eyebrow">Education</p>
+        <ul class="edu-list">
+          <li><strong>Harvard University</strong></li>
+          <li><strong>Massachusetts Institute of Technology</strong></li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <p class="eyebrow">Fuels and markets</p>
+        <ul class="markets">
+          <li>eFuels</li><li>Green methanol</li><li>SAF</li><li>Renewable diesel</li><li>Renewable natural gas</li><li>Advanced biofuels</li><li>Green hydrogen</li><li>CO2</li><li>Feedstocks</li>
+        </ul>
+        <p class="note">Based in London, working with clients across Europe, the Americas and Asia.</p>
+      </div>
+    </section>
+
+    <section class="cta" aria-labelledby="cta-title">
+      <div class="wrap">
+        <h2 id="cta-title">Have a project heading for FID? We'd be glad to hear about it.</h2>
+        <div class="btns">
+          <a class="btn btn-primary" href="mailto:tomfox@9degreeseast.com">Get in touch</a>
+          <a class="btn btn-ghost" href="https://uk.linkedin.com/in/tom-fox-energy" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2026 9 Degrees East</span>
+      <span><a href="home.html" style="text-decoration: none">Back to home</a></span>
+    </div>
+  </footer>
+
+<script>
+  (function () {
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('is-in'); }); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); } });
+    }, { threshold: 0.12 });
+    els.forEach(function (e) { io.observe(e); });
+  })();
+</script>
+</body>
+</html>
