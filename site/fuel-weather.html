@@ -14,7 +14,7 @@
   :root { --ink: #061527; --text: #EEF2F5; --muted: #A8B7C6; --line: rgba(160,190,220,0.18); --accent: #D8B66E; --up: #F0B27A; --down: #8FC7E8; }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; background: var(--ink); color: var(--text); font-family: Manrope, system-ui, sans-serif; overflow: hidden; -webkit-font-smoothing: antialiased; }
-  canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  #c { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
   .ui { position: fixed; inset: 0; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 32px 40px 26px; }
   .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
   .title { position: relative; }
@@ -65,6 +65,18 @@
   .panel td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
   .panel a { color: var(--accent); font-size: 12px; font-weight: 600; text-decoration: none; }
   .panel a:hover { text-decoration: underline; }
+
+  /* Charts (Chart.js). The number table stays as a fallback and for screen readers. */
+  .chartbox { position: relative; height: 190px; margin: 2px 0 10px; }
+  .chartbox canvas { display: block; }
+  .tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 0 0 10px; font-size: 11px; color: var(--muted); }
+  .tools label { display: inline-flex; align-items: center; gap: 8px; letter-spacing: 0.08em; text-transform: uppercase; font-size: 10px; }
+  .tools select, .tools button { font: 600 11px Manrope, system-ui, sans-serif; color: var(--text); background: rgba(6,21,39,0.7); border: 1px solid var(--line); border-radius: 2px; padding: 7px 10px; cursor: pointer; }
+  .tools select:focus-visible, .tools button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .tools button { margin-left: auto; color: var(--accent); }
+  .tools button:hover { border-color: var(--accent); }
+  .panel details summary { cursor: pointer; font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+  .has-charts .panel table { margin-bottom: 4px; }
   .close { position: absolute; right: 10px; top: 8px; width: 40px; height: 40px; border: 0; background: none; color: var(--muted); font-size: 20px; cursor: pointer; }
   .close:focus-visible { outline: 2px solid var(--accent); }
   .panel-wrap { position: relative; }
@@ -82,6 +94,7 @@
     .panel { grid-template-columns: 1fr; }
   }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
 </head>
 <body>
   <canvas id="c" aria-hidden="true"></canvas>
@@ -330,10 +343,15 @@ WEATHER.fuels.forEach(function (f) { f.w = read(f); f.on = true; });
     html += '<p>' + meaning + '</p><p class="caveat">' + f.caveat + '</p>';
     html += '<a href="mailto:tomfox@9degreeseast.com?subject=' + encodeURIComponent(f.name + ' market conditions') + '">Discuss what this means for your project →</a></div><div>';
     html += '<div class="nums"><div><span>Pressure</span><strong>' + arrow(w.pressure) + ' ' + w.pressure + '</strong></div><div><span>Turbulence</span><strong>' + w.turbulence + '</strong></div><div><span>' + (f.regions ? 'Avg monthly move' : '3-month change') + '</span><strong>' + pct(w.chg) + '</strong></div></div>';
+    var others = WEATHER.fuels.filter(function (o) { return o.series && o.id !== f.id; });
+    if (window.Chart) {
+      html += '<div class="tools">' + (f.series ? '<label for="cmp">Compare<select id="cmp"><option value="">None</option>' + others.map(function (o) { return '<option value="' + o.id + '">' + o.name + '</option>'; }).join('') + '</select></label>' : '') +
+        '<button type="button" id="dl">Download chart</button></div><div class="chartbox"><canvas id="chart" role="img" aria-label="' + f.name + ' price chart"></canvas></div><details><summary>Show the numbers</summary>';
+    }
     html += '<table>';
     if (f.regions) f.regions.forEach(function (g) { html += '<tr><td>' + g.r + '</td><td>' + g.price + ' (' + pct((g.now - g.prev) / g.prev) + ')</td></tr>'; });
     else f.series.forEach(function (v, i) { html += '<tr><td>' + f.months[i] + '</td><td>' + v.toFixed(v < 20 ? 2 : 1) + ' ' + f.unit + '</td></tr>'; });
-    html += '</table><p class="caveat" style="margin-top:10px">Source: <a href="' + f.url + '" target="_blank" rel="noopener">' + f.source + '</a>' + (f.note ? ' · ' + f.note : '') + '</p></div>';
+    html += '</table>' + (window.Chart ? '</details>' : '') + '<p class="caveat" style="margin-top:10px">Source: <a href="' + f.url + '" target="_blank" rel="noopener">' + f.source + '</a>' + (f.note ? ' · ' + f.note : '') + '</p></div>';
     return html;
   }
   WEATHER.fuels.forEach(function (f) {
@@ -345,7 +363,8 @@ WEATHER.fuels.forEach(function (f) { f.w = read(f); f.on = true; });
       '<div class="meta">' + f.w.turbulence + ' turbulence · ' + pct(f.w.chg) + '</div>' + spark(f);
     b.addEventListener('click', function () {
       if (openId === f.id) { panel.hidden = true; openId = null; } else { panel.innerHTML = detail(f); panel.hidden = false; openId = f.id;
-        panel.querySelector('.close').addEventListener('click', function () { panel.hidden = true; openId = null; sync(); }); }
+        panel.querySelector('.close').addEventListener('click', function () { panel.hidden = true; openId = null; sync(); });
+        if (window.FWCharts) FWCharts.mount(f, panel); }
       sync();
     });
     f.btn = b; cards.appendChild(b);
@@ -359,6 +378,107 @@ WEATHER.fuels.forEach(function (f) { f.w = read(f); f.on = true; });
   }
   sync();
 })();
+
+/* ===== CHARTS ===== Interactive chart in the fuel panel, a compare mode, and a LinkedIn-sized PNG download. */
+var FWCharts = (function () {
+  if (!window.Chart) return null;
+  var INK = '#061527', TEXT = '#EEF2F5', MUTED = '#A8B7C6', GRID = 'rgba(160,190,220,0.12)', ACCENT = '#D8B66E';
+  Chart.defaults.font.family = 'Manrope, system-ui, sans-serif';
+  Chart.defaults.color = MUTED;
+  var chart = null;
+
+  function dp(f) { return f.series && Math.max.apply(null, f.series) < 20 ? 2 : 1; }
+  function fmt(v, f) { return v.toFixed(dp(f)) + ' ' + f.unit; }
+
+  // Compare mode: both fuels indexed to 100 at the first month they share, because their units differ.
+  function indexed(a, b) {
+    var common = a.months.filter(function (m) { return b.months.indexOf(m) > -1; });
+    function idx(f) { var base = f.series[f.months.indexOf(common[0])]; return common.map(function (m) { return +(f.series[f.months.indexOf(m)] / base * 100).toFixed(1); }); }
+    return { labels: common, a: idx(a), b: idx(b) };
+  }
+
+  function line(label, data, color, raw) {
+    return { label: label, data: data, borderColor: color, backgroundColor: color + '22', fill: raw ? 'start' : false, tension: 0.32, borderWidth: 2,
+      pointRadius: data.map(function (_, i) { return i === data.length - 1 ? 4 : 2.5; }), pointHoverRadius: 6, pointBackgroundColor: color, pointBorderWidth: 0 };
+  }
+
+  function config(f, cmpId, big) {
+    var base = {
+      options: {
+        responsive: !big, maintainAspectRatio: false, animation: big ? false : { duration: 700, easing: 'easeOutQuart' },
+        devicePixelRatio: big ? 1 : undefined,
+        interaction: { mode: 'index', intersect: false },
+        layout: { padding: big ? { left: 60, right: 60, top: 150, bottom: 90 } : 2 },
+        plugins: {
+          legend: { display: false, labels: { color: TEXT, boxWidth: 12, boxHeight: 2, font: { size: big ? 18 : 11 } } },
+          tooltip: { backgroundColor: 'rgba(6,21,39,0.95)', borderColor: 'rgba(160,190,220,0.3)', borderWidth: 1, titleColor: TEXT, bodyColor: TEXT, padding: 10, displayColors: true, boxWidth: 8, boxHeight: 8 }
+        },
+        scales: {
+          x: { grid: { display: false }, border: { color: GRID }, ticks: { color: MUTED, font: { size: big ? 16 : 10 }, maxRotation: 0 } },
+          y: { grid: { color: GRID }, border: { display: false }, ticks: { color: MUTED, font: { size: big ? 16 : 10 }, maxTicksLimit: 5 } }
+        }
+      }
+    };
+    if (f.regions) { // Methanol: % change since the previous posting, one unit for every region
+      var ch = f.regions.map(function (g) { return +((g.now - g.prev) / g.prev * 100).toFixed(1); });
+      base.type = 'bar';
+      base.data = { labels: f.regions.map(function (g) { return g.r; }), datasets: [{ label: 'Change since previous posting', data: ch,
+        backgroundColor: ch.map(function (v) { return v >= 0 ? '#F0B27A' : '#8FC7E8'; }), borderRadius: 2, maxBarThickness: big ? 90 : 46 }] };
+      base.options.plugins.tooltip.callbacks = { label: function (c) { var g = f.regions[c.dataIndex]; return ' ' + (c.raw > 0 ? '+' : '') + c.raw + '% · now ' + g.price; } };
+      base.options.scales.y.ticks.callback = function (v) { return (v > 0 ? '+' : '') + v + '%'; };
+      base.options.scales.y.title = { display: true, text: 'Change since previous posting', color: MUTED, font: { size: big ? 15 : 10 } };
+      return base;
+    }
+    base.type = 'line';
+    var o = cmpId && WEATHER.fuels.filter(function (x) { return x.id === cmpId; })[0];
+    if (o) {
+      var d = indexed(f, o);
+      base.data = { labels: d.labels, datasets: [line(f.name, d.a, f.c), line(o.name, d.b, o.c)] };
+      base.options.plugins.legend.display = true;
+      base.options.plugins.tooltip.callbacks = { label: function (c) { return ' ' + c.dataset.label + ': ' + c.raw.toFixed(1); } };
+      base.options.scales.y.title = { display: true, text: 'Index, ' + d.labels[0] + ' = 100', color: MUTED, font: { size: big ? 15 : 10 } };
+    } else {
+      base.data = { labels: f.months, datasets: [line(f.name, f.series, f.c, true)] };
+      base.options.plugins.tooltip.callbacks = { label: function (c) { return ' ' + fmt(c.raw, f); } };
+      base.options.scales.y.title = { display: true, text: f.unit, color: MUTED, font: { size: big ? 15 : 10 } };
+    }
+    return base;
+  }
+
+  // 1200 × 675 image for LinkedIn: title, benchmark, chart, source and wordmark.
+  function download(f, cmpId) {
+    var W = 1200, H = 675, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    var cfg = config(f, cmpId, true);
+    cfg.plugins = [{ id: 'bg', beforeDraw: function (c) { var x = c.ctx; x.save(); x.fillStyle = INK; x.fillRect(0, 0, W, H); x.restore(); } }];
+    var c = new Chart(cv, cfg);
+    var x = cv.getContext('2d'), o = cmpId && WEATHER.fuels.filter(function (z) { return z.id === cmpId; })[0];
+    x.fillStyle = ACCENT; x.font = '600 15px Manrope, sans-serif'; x.fillText('FUEL WEATHER · ' + (WEATHER.updated || ''), 60, 62);
+    x.fillStyle = TEXT; x.font = '400 50px "Instrument Serif", Georgia, serif'; x.fillText(o ? f.name + ' vs ' + o.name : f.name, 60, 112);
+    x.fillStyle = MUTED; x.font = '500 17px Manrope, sans-serif';
+    x.fillText(o ? 'Indexed to 100 at ' + c.data.labels[0] : 'Benchmark: ' + f.bench, 60, 144);
+    x.font = '500 14px Manrope, sans-serif'; x.fillText('Source: ' + f.source + (o ? '; ' + o.source : ''), 60, H - 34);
+    x.fillStyle = TEXT; x.font = '600 14px Manrope, sans-serif'; x.textAlign = 'right'; x.fillText('9 DEGREES EAST  ·  9degreeseast.com', W - 60, H - 34);
+    cv.toBlob(function (blob) {
+      var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = '9DE-fuel-weather-' + f.id + (o ? '-vs-' + o.id : '') + '-' + (WEATHER.updated || '') + '.png';
+      document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+      c.destroy();
+    }, 'image/png');
+  }
+
+  return {
+    mount: function (f, panel) {
+      if (chart) { chart.destroy(); chart = null; }
+      var cv = panel.querySelector('#chart'); if (!cv) return;
+      var sel = panel.querySelector('#cmp'), btn = panel.querySelector('#dl');
+      function draw() { if (chart) chart.destroy(); chart = new Chart(cv, config(f, sel && sel.value)); }
+      draw();
+      if (sel) sel.addEventListener('change', draw);
+      btn.addEventListener('click', function () { (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () { download(f, sel && sel.value); }); });
+    }
+  };
+})();
+if (window.Chart) document.documentElement.classList.add('has-charts');
 
 /* ===== THE WEATHER ===== */
 (function () {
