@@ -92,6 +92,7 @@ const jobs = {
     for (const g of f.regions) {
       const v = now[g.r]; const ok = v && (g.r === 'North America' ? v > 0.3 && v < 15 : v > 100 && v < 3000);
       if (!ok) { log.push(`methanol ${g.r}: could not read a price, kept previous`); continue; }
+      if (g.now && Math.abs(v - g.now) / g.now > 0.4) { log.push(`methanol ${g.r}: read ${v}, more than 40% from ${g.now}, kept previous`); continue; }
       if (v !== g.now) { g.prev = g.now; g.now = v; changed++; }
       g.price = g.r === 'Europe' ? `€${v} /t` : g.r === 'North America' ? `$${v.toFixed(2)} /gal` : `$${v} /t`;
     }
