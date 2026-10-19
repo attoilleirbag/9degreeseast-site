@@ -26,7 +26,7 @@ const found = [];
 const TOPIC = /sustainable aviation fuel|\bSAF\b|renewable fuel|biofuel|biodiesel|renewable diesel|biomass-based diesel|\bHVO\b|e-?fuel|synthetic fuel|methanol|ammonia|hydrogen|low[- ]carbon fuel|clean fuel|45Z|45V|RTFO|ReFuelEU|FuelEU|RED ?III|renewable energy directive|net-zero framework|greenhouse gas|GHG|carbon intensity|燃料|航空|生物|甲醇|氢|氨|绿色/i;
 
 async function get(url, type = 'text') {
-  const r = await fetch(url, { headers: UA, redirect: 'follow' });
+  const r = await fetch(url, { headers: UA, redirect: 'follow', signal: AbortSignal.timeout(25000) });
   if (!r.ok) throw new Error(`${r.status} ${url.split('?')[0]}`);
   return type === 'json' ? r.json() : r.text();
 }
