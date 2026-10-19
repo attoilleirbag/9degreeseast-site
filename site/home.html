@@ -307,8 +307,8 @@
   </footer>
 
 <script>
-  // ===== 3D dotted globe =====
-  (function () {
+  // ===== Classic canvas globe: kept as the fallback if the 3D globe cannot load =====
+  window.oldGlobe = function () {
     var wrap = document.getElementById('globe-wrap');
     var cv = document.getElementById('globe');
     if (!cv || !cv.getContext) return;
@@ -591,6 +591,149 @@
     window.addEventListener('resize', size);
     size();
     raf = requestAnimationFrame(loop);
+  };
+
+  // ===== 3D globe (Three.js + Natural Earth land, via world-atlas). Falls back to the canvas globe if anything fails. =====
+  (function () {
+    var wrap = document.getElementById('globe-wrap'), old = document.getElementById('globe');
+    var LIBS = ['https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js', 'https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js'];
+    var LAND = 'https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/land-110m.json';
+    function load(src) { return new Promise(function (ok, no) { var s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); }); }
+    var fail = function () { if (window.oldGlobe) window.oldGlobe(); };
+    var timer = setTimeout(fail, 8000); // slow network: show the classic globe rather than nothing
+    Promise.all(LIBS.map(load)).then(function () { return fetch(LAND); }).then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (topo) { clearTimeout(timer); build(topojson.feature(topo, topo.objects.land)); })
+      .catch(function () { clearTimeout(timer); fail(); });
+
+    function build(land) {
+      var D = Math.PI / 180, GOLD = 0xD8B66E;
+      // Land mask: rasterise the land polygons onto an equirectangular canvas and read it back
+      var MW = 1440, MH = 720, mk = document.createElement('canvas'); mk.width = MW; mk.height = MH;
+      var mx = mk.getContext('2d'); mx.fillStyle = '#fff';
+      land.features.forEach(function (f) {
+        var polys = f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates;
+        polys.forEach(function (poly) { mx.beginPath(); poly.forEach(function (ring) { ring.forEach(function (c, i) { var x = (c[0] + 180) / 360 * MW, y = (90 - c[1]) / 180 * MH; i ? mx.lineTo(x, y) : mx.moveTo(x, y); }); mx.closePath(); }); mx.fill('evenodd'); });
+      });
+      var mask = mx.getImageData(0, 0, MW, MH).data;
+      function isLand(lat, lon) { var x = Math.min(MW - 1, Math.floor((lon + 180) / 360 * MW)), y = Math.min(MH - 1, Math.floor((90 - lat) / 180 * MH)); return mask[(y * MW + x) * 4] > 128; }
+      function vec(lat, lon, r) { r = r || 1; var p = lat * D, l = lon * D; return new THREE.Vector3(r * Math.cos(p) * Math.sin(l), r * Math.sin(p), r * Math.cos(p) * Math.cos(l)); }
+
+      // Scene
+      if (old) old.style.display = 'none';
+      var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      var cv = renderer.domElement; cv.style.cssText = 'position:absolute;inset:0;width:100%;height:100%'; wrap.insertBefore(cv, wrap.firstChild);
+      var scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100); camera.position.set(0, 0, 5.5);
+      var globe = new THREE.Group(); scene.add(globe);
+      var SUN = new THREE.Vector3(-0.6, 0.45, 0.9).normalize(); // light from upper left, in view space
+
+      // Ocean: dark sphere, lit
+      scene.add(new THREE.AmbientLight(0x1d3556, 0.5));
+      var sun = new THREE.DirectionalLight(0x9fbfe6, 0.55); sun.position.copy(SUN).multiplyScalar(5); scene.add(sun);
+      globe.add(new THREE.Mesh(new THREE.SphereGeometry(0.995, 72, 48), new THREE.MeshPhongMaterial({ color: 0x0a1f3a, emissive: 0x030b17, specular: 0x10233b, shininess: 6 })));
+
+      // Land dots: an even Fibonacci spread, kept where there is land; shaded by the sun with a soft terminator
+      var N = 26000, pos = [], gold = Math.PI * (3 - Math.sqrt(5));
+      for (var i = 0; i < N; i++) { var y = 1 - (i / (N - 1)) * 2, rr = Math.sqrt(1 - y * y), th = gold * i, x = Math.cos(th) * rr, z = Math.sin(th) * rr;
+        var lat = Math.asin(y) / D, lon = Math.atan2(x, z) / D; if (isLand(lat, lon)) pos.push(x * 1.002, y * 1.002, z * 1.002); }
+      var dg = new THREE.BufferGeometry(); dg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+      var dots = new THREE.Points(dg, new THREE.ShaderMaterial({
+        transparent: true, depthWrite: false,
+        uniforms: { uSun: { value: SUN }, uSize: { value: 2.2 * renderer.getPixelRatio() } },
+        vertexShader: 'uniform float uSize; varying float vLight; varying float vFacing; uniform vec3 uSun;' +
+          'void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); vec3 n = normalize(mat3(modelViewMatrix) * position);' +
+          ' vLight = smoothstep(-0.25, 0.6, dot(n, uSun)); vFacing = n.z; gl_PointSize = uSize; gl_Position = projectionMatrix * mv; }',
+        fragmentShader: 'varying float vLight; varying float vFacing;' +
+          'void main(){ vec2 c = gl_PointCoord - 0.5; if (dot(c,c) > 0.25) discard; if (vFacing < -0.05) discard;' +
+          ' vec3 night = vec3(0.20,0.33,0.50); vec3 day = vec3(0.80,0.88,0.96); gl_FragColor = vec4(mix(night, day, vLight), 0.55 + 0.45 * vLight); }'
+      }));
+      globe.add(dots);
+
+      // Atmosphere: a fresnel glow just outside the sphere
+      scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.1, 64, 48), new THREE.ShaderMaterial({
+        side: THREE.BackSide, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+        vertexShader: 'varying vec3 vN; void main(){ vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+        fragmentShader: 'varying vec3 vN; void main(){ float k = pow(max(0.0, 0.62 - vN.z), 3.0); gl_FragColor = vec4(0.30, 0.50, 0.85, 1.0) * k * 0.55; }'
+      })));
+
+      // The 9° East meridian
+      var mer = []; for (var m = -84; m <= 84; m += 1) mer.push(vec(m, 9, 1.004));
+      globe.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(mer), new THREE.LineBasicMaterial({ color: GOLD, transparent: true, opacity: 0.55 })));
+
+      // Hubs and routes, same as the classic globe
+      var HUBS = [
+        { n: 'LONDON', lat: 51.5, lon: -0.1, major: true }, { n: 'ROTTERDAM', lat: 51.9, lon: 4.5 }, { n: 'COPENHAGEN', lat: 55.7, lon: 12.6 }, { n: 'HAMBURG', lat: 53.55, lon: 10.0 },
+        { n: 'HOUSTON', lat: 29.8, lon: -95.4, major: true }, { n: 'CHICAGO', lat: 41.9, lon: -87.6 }, { n: 'NEW YORK', lat: 40.7, lon: -74.0 }, { n: 'RIO DE JANEIRO', lat: -22.9, lon: -43.2, major: true },
+        { n: 'SÃO PAULO', lat: -23.5, lon: -46.6 }, { n: 'SANTIAGO', lat: -33.4, lon: -70.6, major: true }, { n: 'PUNTA ARENAS', lat: -53.2, lon: -70.9 }, { n: 'BEIJING', lat: 39.9, lon: 116.4, major: true },
+        { n: 'SHANGHAI', lat: 31.2, lon: 121.5, major: true }, { n: 'SINGAPORE', lat: 1.35, lon: 103.8, major: true }, { n: 'TOKYO', lat: 35.7, lon: 139.7 }, { n: 'DUBAI', lat: 25.2, lon: 55.3 },
+        { n: 'SYDNEY', lat: -33.9, lon: 151.2 }, { n: 'CAPE TOWN', lat: -33.9, lon: 18.4, major: true }
+      ];
+      var ROUTES = [[0, 17, 'feature'], [17, 7], [17, 13], [0, 4], [0, 12], [1, 13], [4, 9], [7, 0], [2, 11], [5, 0], [14, 4], [13, 16], [9, 7], [12, 13], [15, 13], [6, 3], [8, 1], [10, 9], [11, 14]];
+      var dotTex = (function () { var c = document.createElement('canvas'); c.width = c.height = 64; var g = c.getContext('2d'), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+        gr.addColorStop(0, 'rgba(255,240,205,1)'); gr.addColorStop(0.25, 'rgba(240,207,133,0.9)'); gr.addColorStop(1, 'rgba(216,182,110,0)'); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
+      var ringTex = (function () { var c = document.createElement('canvas'); c.width = c.height = 64; var g = c.getContext('2d'); g.strokeStyle = 'rgba(216,182,110,1)'; g.lineWidth = 3; g.beginPath(); g.arc(32, 32, 28, 0, 7); g.stroke(); return new THREE.CanvasTexture(c); })();
+      HUBS.forEach(function (h, i) {
+        h.v = vec(h.lat, h.lon, 1.006);
+        var s = new THREE.Sprite(new THREE.SpriteMaterial({ map: dotTex, depthWrite: false, transparent: true })); s.position.copy(h.v); s.scale.setScalar(h.major ? 0.07 : 0.05); globe.add(s);
+        var ring = new THREE.Sprite(new THREE.SpriteMaterial({ map: ringTex, depthWrite: false, transparent: true, opacity: 0 })); ring.position.copy(h.v); globe.add(ring);
+        h.ring = ring; h.phase = (i * 0.37) % 1;
+      });
+      var arcs = ROUTES.map(function (r, idx) {
+        var a = HUBS[r[0]].v.clone().normalize(), b = HUBS[r[1]].v.clone().normalize(), ang = a.angleTo(b), pts = [];
+        for (var s = 0; s <= 80; s++) { var t = s / 80, p = new THREE.Vector3().copy(a).lerp(b, t).normalize(); // close enough to slerp for drawing
+          var q = a.clone().multiplyScalar(Math.sin((1 - t) * ang)).add(b.clone().multiplyScalar(Math.sin(t * ang))).divideScalar(Math.sin(ang) || 1); p = q.normalize();
+          pts.push(p.multiplyScalar(1.006 + Math.sin(Math.PI * t) * Math.min(0.26, 0.05 + ang * 0.1))); }
+        var line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: GOLD, transparent: true, opacity: r[2] ? 0.75 : 0.28 }));
+        globe.add(line);
+        var spark = new THREE.Sprite(new THREE.SpriteMaterial({ map: dotTex, depthWrite: false, transparent: true, blending: THREE.AdditiveBlending })); spark.scale.setScalar(r[2] ? 0.09 : 0.06); globe.add(spark);
+        return { pts: pts, spark: spark, off: (idx * 0.37) % 1, dur: r[2] ? 3.6 : 4.4 + (idx % 4) * 0.8 };
+      });
+
+      // Labels: HTML, positioned each frame; major hubs only, hidden on the far side
+      var labelLayer = document.createElement('div'); labelLayer.style.cssText = 'position:absolute;inset:0;pointer-events:none;overflow:hidden';
+      wrap.appendChild(labelLayer);
+      HUBS.filter(function (h) { return h.major; }).forEach(function (h) {
+        var el = document.createElement('span'); el.textContent = h.n;
+        el.style.cssText = 'position:absolute;left:0;top:0;font:600 9px Manrope,sans-serif;letter-spacing:.16em;color:#EEF2F5;white-space:nowrap;transform:translate(-9999px,0);transition:opacity .3s;text-shadow:0 0 6px #061527';
+        labelLayer.appendChild(el); h.el = el;
+      });
+
+      // View: auto-spin, drag with momentum, gentle tilt
+      var rotY = -20 * D, tilt = 0.32, spin = 0.11, vel = 0, dragging = false, lastX = 0, lastT = 0, W = 1, H = 1;
+      globe.rotation.x = tilt;
+      function size() { var r = wrap.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height); renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); }
+      size(); addEventListener('resize', size);
+      wrap.addEventListener('pointerdown', function (e) { dragging = true; lastX = e.clientX; vel = 0; wrap.setPointerCapture(e.pointerId); });
+      wrap.addEventListener('pointermove', function (e) { if (!dragging) return; var dx = e.clientX - lastX; lastX = e.clientX; rotY += dx * 0.006; vel = dx * 0.006; });
+      ['pointerup', 'pointercancel'].forEach(function (ev) { wrap.addEventListener(ev, function () { dragging = false; }); });
+
+      var tmp = new THREE.Vector3(), camDir = new THREE.Vector3();
+      function frame(ms) {
+        var now = ms / 1000, dt = Math.min(0.05, now - (lastT || now)); lastT = now;
+        if (!dragging) { rotY += vel; vel *= 0.94; rotY += spin * dt; }
+        globe.rotation.y = rotY;
+        globe.updateMatrixWorld();
+        HUBS.forEach(function (h) { var k = (now / 2.6 + h.phase) % 1; h.ring.scale.setScalar((h.major ? 0.06 : 0.045) + k * (h.major ? 0.16 : 0.1)); h.ring.material.opacity = (1 - k) * 0.7; });
+        arcs.forEach(function (a) { var k = ((now / a.dur) + a.off) % 1, f = k * (a.pts.length - 1), i0 = Math.floor(f); a.spark.position.copy(a.pts[i0]).lerp(a.pts[Math.min(a.pts.length - 1, i0 + 1)], f - i0); a.spark.material.opacity = Math.sin(Math.PI * k); });
+        camera.getWorldDirection(camDir);
+        HUBS.forEach(function (h) {
+          if (!h.el) return;
+          tmp.copy(h.v).applyMatrix4(globe.matrixWorld);
+          var facing = tmp.clone().normalize().dot(camera.position.clone().normalize());
+          var p = tmp.project(camera), x = (p.x + 1) / 2 * W, y = (1 - p.y) / 2 * H;
+          h.el.style.opacity = facing > 0.35 ? Math.min(1, (facing - 0.35) * 4) : 0;
+          h.el.style.transform = 'translate(' + (x + 8).toFixed(1) + 'px,' + (y - 5).toFixed(1) + 'px)';
+        });
+        renderer.render(scene, camera);
+      }
+      var running = false, raf = 0;
+      function loop(ms) { frame(ms); if (running) raf = requestAnimationFrame(loop); }
+      function start() { if (!running) { running = true; raf = requestAnimationFrame(loop); } }
+      function stop() { running = false; cancelAnimationFrame(raf); }
+      if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { e[0].isIntersecting ? start() : stop(); }).observe(wrap); else start();
+      document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+      frame(performance.now());
+    }
   })();
 
   // Fuel descriptions: one open at a time, click again to close
