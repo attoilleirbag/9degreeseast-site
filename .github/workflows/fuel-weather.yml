@@ -1,0 +1,33 @@
+name: Update Fuel Weather
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'   # every Monday at 06:00 UTC
+  workflow_dispatch:       # adds a "Run workflow" button for testing
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Fetch the latest market data
+        env:
+          EIA_API_KEY: ${{ secrets.EIA_API_KEY }}
+        run: node scripts/update-weather.mjs
+      - name: Save and publish if anything changed
+        run: |
+          if git diff --quiet; then
+            echo "No new data this week, nothing to publish."
+          else
+            git config user.name "fuel-weather-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add site/fuel-weather.html
+            git commit -m "Fuel Weather: weekly data update"
+            git push
+          fi
