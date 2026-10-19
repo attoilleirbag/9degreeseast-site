@@ -1,0 +1,52 @@
+name: Update Policy Tracker
+
+on:
+  schedule:
+    - cron: '30 6 * * 1'   # every Monday at 06:30 UTC, after Fuel Weather
+  workflow_dispatch:        # adds a "Run workflow" button for testing
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Look for new policy items
+        run: node scripts/update-policy.mjs
+      - name: Remember what was seen (saved straight to main, never shown on the site)
+        run: |
+          git config user.name "policy-tracker-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add scripts/policy-state.json
+          if git diff --cached --quiet; then echo "No change to memory."; else git commit -m "Policy Tracker: update memory" && git push; fi
+      - name: Read this week's list
+        id: found
+        run: |
+          {
+            echo 'list<<EOF'
+            cat policy-found.md
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+      - name: Open a pull request for review
+        uses: peter-evans/create-pull-request@v7
+        with:
+          add-paths: site/policy-tracker.html
+          branch: policy/${{ github.run_number }}
+          title: "Policy Tracker: new items to review"
+          commit-message: "Policy Tracker: draft items for review"
+          body: |
+            New items found this week. **Nothing is live until this is merged.**
+
+            ${{ steps.found.outputs.list }}
+
+            **To review:** open *Files changed*, click the ⋯ menu on `site/policy-tracker.html` and choose *Edit file*.
+            Delete any item that is off-topic, and tidy the title or add a one-line summary where needed
+            (items marked "To review" come from news pages and have no summary yet).
+            Then **Merge pull request**. To reject everything, just **Close** it; those items will not come back.
+          delete-branch: true
