@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
 <style>
-  /* Page shell: shared menu, title and intro, and placeholder slots for the sections the page will hold. */
+  /* Service page: shared menu, title and intro, then three sections. */
   :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E; --c: #A9A2F0; }
   * { box-sizing: border-box; }
   html, body { margin: 0; }
@@ -36,6 +36,26 @@
   .slot h2 { margin: 0; font-size: 28px; line-height: 1.1; }
   .slot p { margin: 0; font-size: 13px; color: var(--faint); }
   footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 22px 30px; border-top: 1px solid var(--line); font-size: 10.5px; letter-spacing: 0.06em; color: var(--faint); }
+
+  /* Service page body: three numbered sections in glass panels */
+  .svc { display: grid; gap: 10px; padding-bottom: 40px; }
+  .sec { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 34px; padding: 30px 32px; animation: enter 800ms 150ms ease both; }
+  .sec .lab { display: flex; flex-direction: column; gap: 10px; }
+  .sec .n { font-size: 11px; color: var(--c); font-variant-numeric: tabular-nums; }
+  .sec h2 { margin: 0; font-size: 32px; line-height: 1.08; }
+  .sec .body p { margin: 0 0 14px; font-size: 15px; line-height: 1.8; color: var(--soft); max-width: 720px; }
+  .sec .body p.lead { font-family: 'Instrument Serif', Georgia, serif; font-size: 23px; line-height: 1.4; color: var(--text); }
+  .sec ul { margin: 4px 0 16px; padding: 0; list-style: none; max-width: 760px; }
+  .sec li { position: relative; padding: 9px 0 9px 22px; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.7; color: var(--soft); }
+  .sec li:last-child { border-bottom: 1px solid var(--line); }
+  .sec li::before { content: ""; position: absolute; left: 2px; top: 18px; width: 6px; height: 6px; border-radius: 50%; background: var(--c); box-shadow: 0 0 6px var(--c); }
+  .sec li b { color: var(--text); font-weight: 600; }
+  .close { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 30px; padding-bottom: 100px; }
+  .close p { margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-size: 26px; line-height: 1.3; max-width: 640px; }
+  .close .btn { display: inline-flex; align-items: center; min-height: 46px; padding: 0 22px; border-radius: 2px; background: var(--accent); color: var(--ink); font-size: 13px; font-weight: 600; text-decoration: none; }
+  .close .btn:hover { background: #E8C987; }
+  .reviewed { flex-basis: 100%; margin-top: 4px !important; font: 400 11.5px Manrope, sans-serif !important; color: var(--faint); }
+  @media (max-width: 860px) { .sec { grid-template-columns: 1fr; gap: 16px; padding: 24px 22px; } .sec .body p.lead { font-size: 21px; } }
   @keyframes enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @media (max-width: 700px) { .wrap { width: calc(100% - 40px); } .head { padding-block: 56px 32px; } .slots { grid-template-columns: 1fr; } }
 </style>
@@ -49,11 +69,30 @@
       <h1 class="serif">Deal <em>structuring</em></h1>
       <p class="intro">Price, volume, credit and sustainability terms that work for both sides.</p>
     </header>
-    <section class="wrap slots" aria-label="Sections">
-        <div class="slot glass"><span class="n">01</span><h2 class="serif">What it is</h2><p>Content for this section is on its way.</p></div>
-        <div class="slot glass"><span class="n">02</span><h2 class="serif">When projects need it</h2><p>Content for this section is on its way.</p></div>
-        <div class="slot glass"><span class="n">03</span><h2 class="serif">How we help</h2><p>Content for this section is on its way.</p></div>
+    <section class="wrap svc" aria-label="About this service">
+      <div class="sec glass"><div class="lab"><span class="n">01</span><h2 class="serif">What it is</h2></div><div class="body"><p class="lead">Deal structuring turns an agreed commercial intent into terms that the producer, the buyer and their lenders can all sign.</p>
+<p>In low-carbon fuels the difficult parts are the same on almost every deal. There is no liquid forward market for green methanol or e-SAF to price against. New plants carry ramp-up risk. The seller is often a new project company while the buyer wants flexibility. And the value of the fuel depends on certification that has to hold for the life of the contract.</p>
+<ul>
+<li><b>Price.</b> Fixed with indexation, cost pass-through for hydrogen, power, CO2 or feedstock, or a fossil index plus a premium, often with a floor and a cap.</li>
+<li><b>Volume.</b> Take-or-pay or take-and-pay, ramp-up schedules, tolerance bands, make-up and carry-forward rights.</li>
+<li><b>Credit.</b> Parent guarantees, letters of credit, prepayment and step-in rights.</li>
+<li><b>Sustainability.</b> Certification scheme (ISCC EU, RSB and others), carbon intensity thresholds, mass balance or book-and-claim, and who owns which certificates.</li>
+<li><b>Risk allocation.</b> Change in law, force majeure, construction delay and termination payments.</li>
+</ul></div></div>
+      <div class="sec glass"><div class="lab"><span class="n">02</span><h2 class="serif">When projects need it</h2></div><div class="body"><ul>
+<li><b>Once a buyer reaches term sheet stage</b> and the headline price has to become a formula that survives ten years of market moves.</li>
+<li><b>When the two sides want different things,</b> for example lenders asking for minimum revenue while the buyer will only pay for compliant volumes.</li>
+<li><b>When public support has to fit around the contract.</b> The UK's revenue certainty contracts for SAF, set up under the Sustainable Aviation Fuel Act 2026, pay producers the difference to a strike price. The EU Hydrogen Bank pays a fixed premium. ETS allowances set aside for SAF cover part of the price gap. Each changes what the offtake contract needs to carry.</li>
+<li><b>When an existing agreement no longer works</b> because costs, rules or volumes have moved.</li>
+</ul></div></div>
+      <div class="sec glass"><div class="lab"><span class="n">03</span><h2 class="serif">How we help</h2></div><div class="body"><ul>
+<li><b>Model the deal from both sides:</b> the producer's debt service and the buyer's cost per tonne of CO2 avoided, so both can see where the terms land.</li>
+<li><b>Design and stress-test the price formula</b> against power, feedstock, fossil fuel and credit price scenarios.</li>
+<li><b>Write the term sheet and negotiate it</b> alongside the client's lawyers, with lenders' requirements built in from the start.</li>
+<li><b>Bring the trading view:</b> how a long-term position turns into a short-term book, learned structuring ten-year biofuel deals for BP's trading desks.</li>
+</ul></div></div>
     </section>
+    <section class="wrap close"><p>Got a term sheet that needs to work for both sides?</p><a class="btn" href="contact.html">Contact us</a><p class="reviewed">Last reviewed October 2026. Regulations change often; check the official texts before relying on any figure here.</p></section>
   </main>
   <div id="site-footer"></div>
 </body>

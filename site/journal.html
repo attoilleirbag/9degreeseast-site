@@ -43,6 +43,8 @@
   .feed { padding-bottom: 100px; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
   .chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; font: 600 12px Manrope, sans-serif; color: var(--soft); background: rgba(9,28,50,0.6); border: 1px solid var(--line); border-radius: 999px; cursor: pointer; transition: border-color .2s, color .2s; }
+  .chip img { width: 14px; height: 14px; object-fit: contain; }
+  .card .src.ic::before { display: none; } .card .src img { width: 14px; height: 14px; object-fit: contain; }
   .chip i { width: 7px; height: 7px; border-radius: 50%; background: var(--sc); box-shadow: 0 0 6px var(--sc); }
   .chip small { font-weight: 500; color: var(--faint); }
   .chip[aria-pressed="true"] { border-color: var(--sc); color: var(--text); }
@@ -99,17 +101,18 @@ var JOURNAL = /*DATA:START*/{
   function when(d) { var p = String(d).split('-'); return p.length >= 2 ? (p[2] ? (+p[2]) + ' ' : '') + MONTHS[+p[1] - 1] + ' ' + p[0] : esc(d); }
   var items = JOURNAL.items.slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
   var counts = {}; items.forEach(function (i) { counts[i.source] = (counts[i.source] || 0) + 1; });
+  var ICON = { substack: 'logos/substack.png', linkedin: 'logos/linkedin.svg' };
   var order = ['all', 'journal', 'substack', 'linkedin', 'press'];
   var chips = document.getElementById('chips'), cards = document.getElementById('cards'), active = 'all';
   chips.innerHTML = order.filter(function (k) { return k === 'all' || counts[k] || k === 'substack' || k === 'linkedin'; }).map(function (k) {
     var n = k === 'all' ? items.length : (counts[k] || 0);
-    return '<button class="chip" type="button" data-s="' + k + '" style="--sc:' + SOURCES[k][1] + '" aria-pressed="' + (k === active) + '"><i></i>' + SOURCES[k][0] + ' <small>' + n + '</small></button>';
+    return '<button class="chip" type="button" data-s="' + k + '" style="--sc:' + SOURCES[k][1] + '" aria-pressed="' + (k === active) + '">' + (ICON[k] ? '<img src="' + ICON[k] + '" alt="" width="14" height="14">' : '<i></i>') + SOURCES[k][0] + ' <small>' + n + '</small></button>';
   }).join('');
   function waiting(k) {
     var text = k === 'substack'
       ? (JOURNAL.substack.url ? 'New posts from <b>' + esc(JOURNAL.substack.name || 'our Substack') + '</b> will appear here automatically each week.' : 'Posts from the 9 Degrees East Substack will appear here automatically each week, once the newsletter is live.')
       : 'Selected LinkedIn posts by Tom Fox will appear here. <a href="https://www.linkedin.com/in/tom-fox-energy/" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">See them on LinkedIn →</a>';
-    return '<div class="card glass waiting" style="--sc:' + SOURCES[k][1] + '"><span class="src">' + SOURCES[k][0] + '</span><p>' + text + '</p></div>';
+    return '<div class="card glass waiting" style="--sc:' + SOURCES[k][1] + '"><span class="src ic"><img src="' + ICON[k] + '" alt="" width="14" height="14">' + SOURCES[k][0] + '</span><p>' + text + '</p></div>';
   }
   function render() {
     var list = items.filter(function (i) { return active === 'all' || i.source === active; });
@@ -117,7 +120,7 @@ var JOURNAL = /*DATA:START*/{
       var s = SOURCES[i.source] || SOURCES.journal, tag = i.url ? 'a' : 'article';
       var href = i.url ? ' href="' + esc(i.url) + '"' + (/^https?:/.test(i.url) ? ' target="_blank" rel="noopener noreferrer"' : '') : '';
       var outlet = i.outlet ? ' · ' + esc(i.outlet) : '';
-      return '<' + tag + ' class="card glass" style="--sc:' + s[1] + '"' + href + '><div class="meta"><span class="src">' + s[0] + '</span><span>' + when(i.date) + outlet + (i.reposted ? ' · Reposted' : '') + '</span></div>' +
+      return '<' + tag + ' class="card glass" style="--sc:' + s[1] + '"' + href + '><div class="meta">' + (ICON[i.source] ? '<span class="src ic"><img src="' + ICON[i.source] + '" alt="" width="14" height="14">' : '<span class="src">') + s[0] + '</span><span>' + when(i.date) + outlet + (i.reposted ? ' · Reposted' : '') + '</span></div>' +
         '<h2 class="serif">' + esc(i.title) + '</h2>' + (i.summary ? '<p>' + esc(i.summary) + '</p>' : '') + (i.url ? '<span class="go">Read on ' + (i.source === 'press' ? esc(i.outlet || 'the publisher') : s[0]) + ' →</span>' : '') + '</' + tag + '>';
     }).join('');
     if ((active === 'all' || active === 'substack') && !counts.substack) html += waiting('substack');

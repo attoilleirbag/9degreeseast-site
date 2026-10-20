@@ -3,3 +3,10 @@
   publish = "site"
   # Skip the deploy when a commit doesn't change anything in site/ (saves build credits)
   ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- site/ netlify.toml"
+
+# The old home page address now goes to the front page
+[[redirects]]
+  from = "/home.html"
+  to = "/"
+  status = 301
+  force = true

@@ -37,6 +37,28 @@
   .slot p { margin: 0; font-size: 13px; color: var(--faint); }
   footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 22px 30px; border-top: 1px solid var(--line); font-size: 10.5px; letter-spacing: 0.06em; color: var(--faint); }
   @keyframes enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  /* Trade press: headlines picked automatically each week */
+  .press { padding-bottom: 60px; }
+  .press .top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 14px 24px; margin-bottom: 16px; }
+  .press h2 { margin: 0; font-size: 34px; line-height: 1.05; }
+  .press .when { margin: 6px 0 0; font-size: 12px; color: var(--faint); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips button { min-height: 36px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; background: none; color: var(--muted); font: 500 12px Manrope, sans-serif; cursor: pointer; }
+  .chips button[aria-pressed="true"] { border-color: var(--accent); color: var(--text); }
+  .chips button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .news { margin: 0; padding: 0; list-style: none; }
+  .news li { border-top: 1px solid var(--line); }
+  .news li:last-child { border-bottom: 1px solid var(--line); }
+  .news a { display: grid; grid-template-columns: 150px 1fr auto; gap: 18px; align-items: baseline; padding: 15px 4px; color: var(--text); text-decoration: none; }
+  .news a:hover .t { color: var(--accent); }
+  .news .f { display: flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .news .f::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--fc); box-shadow: 0 0 6px var(--fc); flex: none; }
+  .news .t { font-size: 15px; line-height: 1.5; transition: color 180ms ease; }
+  .news .s { font-size: 11.5px; color: var(--faint); white-space: nowrap; }
+  .news .empty { padding: 18px 4px; font-size: 14px; color: var(--muted); }
+  .press .note { margin: 14px 0 0; font-size: 11.5px; line-height: 1.7; color: var(--faint); max-width: 760px; }
+  .press .note a { color: var(--muted); }
+  @media (max-width: 700px) { .news a { grid-template-columns: 1fr; gap: 6px; } .news .s { white-space: normal; } .press h2 { font-size: 28px; } }
   @media (max-width: 700px) { .wrap { width: calc(100% - 40px); } .head { padding-block: 56px 32px; } .slots { grid-template-columns: 1fr; } }
 </style>
 <script src="nav.js" defer></script>
@@ -49,6 +71,14 @@
       <h1 class="serif">Market <em>conditions</em></h1>
       <p class="intro">Our read on supply, demand and pricing across low-carbon fuel markets.</p>
     </header>
+    <section class="wrap press" aria-labelledby="press-title">
+      <div class="top">
+        <div><h2 class="serif" id="press-title">From the trade press</h2><p class="when" id="press-when"></p></div>
+        <div class="chips" role="group" aria-label="Filter by fuel" id="press-chips"></div>
+      </div>
+      <ul class="news" id="press-list"></ul>
+      <p class="note">Headlines from <a href="https://www.manifoldtimes.com" target="_blank" rel="noopener">Manifold Times</a>, <a href="https://www.offshore-energy.biz" target="_blank" rel="noopener">Offshore Energy</a>, <a href="https://www.biofuelsdigest.com" target="_blank" rel="noopener">Biofuels Digest</a> and the <a href="https://www.eia.gov/todayinenergy/" target="_blank" rel="noopener">U.S. EIA</a>, picked automatically by keyword every Monday. Each links to the publisher’s own article. We don’t edit or endorse them; see the <a href="legal-notice.html#data">legal notice</a>.</p>
+    </section>
     <section class="wrap slots" aria-label="Sections">
         <div class="slot glass"><span class="n">01</span><h2 class="serif">This quarter at a glance</h2><p>Content for this section is on its way.</p></div>
         <div class="slot glass"><span class="n">02</span><h2 class="serif">eFuels</h2><p>Content for this section is on its way.</p></div>
@@ -59,5 +89,74 @@
     </section>
   </main>
   <div id="site-footer"></div>
+<script>
+  // Trade press headlines. The weekly update rewrites this block (scripts/update-news.mjs).
+  var NEWS = /*NEWS:START*/{
+ "updated": "2026-10-20",
+ "items": [
+  {
+   "fuel": "methanol",
+   "title": "PetroChina International acquires methanol dual-fuel bunker vessel for Singapore fleet",
+   "url": "https://www.manifoldtimes.com/news/petrochina-international-acquires-methanol-dual-fuel-bunker-vessel-for-singapore-fleet/",
+   "outlet": "Manifold Times",
+   "date": "2026-10-20"
+  },
+  {
+   "fuel": "rng",
+   "title": "ENGINE on Fuel Switch Snapshot: LBM nips at LSMGO’s heels in Rotterdam",
+   "url": "https://www.manifoldtimes.com/news/engine-on-fuel-switch-snapshot-lbm-nips-at-lsmgos-heels-in-rotterdam/",
+   "outlet": "Manifold Times",
+   "date": "2026-10-20"
+  },
+  {
+   "fuel": "methanol",
+   "title": "SinoBunker completes Guangzhou Port’s first methanol bunkering op for RoRo vessel",
+   "url": "https://www.manifoldtimes.com/news/sinobunker-completes-guangzhou-ports-first-methanol-bunkering-op-for-roro-vessel/",
+   "outlet": "Manifold Times",
+   "date": "2026-10-19"
+  },
+  {
+   "fuel": "methanol",
+   "title": "AMS Barging christens methanol-ready tanker “Felicitas” in Rotterdam",
+   "url": "https://www.manifoldtimes.com/news/ams-barging-christens-methanol-ready-tanker-felicitas-in-rotterdam/",
+   "outlet": "Manifold Times",
+   "date": "2026-10-19"
+  },
+  {
+   "fuel": "methanol",
+   "title": "CMA CGM names methanol-powered vessel “LORENZACCIO”",
+   "url": "https://www.manifoldtimes.com/news/cma-cgm-names-methanol-powered-vessel-lorenzaccio/",
+   "outlet": "Manifold Times",
+   "date": "2026-10-19"
+  },
+  {
+   "fuel": "methanol",
+   "title": "Methanol-ready energy subsea construction vessel arrives in Norway for completion",
+   "url": "https://offshore-energy.biz/2026/10/16/methanol-ready-energy-subsea-construction-vessel-arrives-in-norway-for-completion",
+   "outlet": "Offshore Energy",
+   "date": "2026-10-16"
+  }
+ ]
+}/*NEWS:END*/;
+  (function () {
+    var FUEL = { efuels: ['eFuels', '#E9F3FF'], methanol: ['Green methanol', '#5EC8D8'], saf: ['SAF', '#F0C877'], rd: ['Renewable diesel', '#E39A55'], rng: ['RNG', '#A9A2F0'] };
+    var M = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    function day(s) { var d = new Date(s + 'T12:00:00Z'); return isNaN(d) ? '' : d.getUTCDate() + ' ' + M[d.getUTCMonth()] + ' ' + d.getUTCFullYear(); }
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    var list = document.getElementById('press-list'), chips = document.getElementById('press-chips'), on = 'all';
+    document.getElementById('press-when').textContent = 'Updated ' + day(NEWS.updated);
+    var keys = ['all'].concat(Object.keys(FUEL).filter(function (k) { return NEWS.items.some(function (i) { return i.fuel === k; }); }));
+    chips.innerHTML = keys.map(function (k) { return '<button type="button" data-k="' + k + '" aria-pressed="' + (k === on) + '">' + (k === 'all' ? 'All' : FUEL[k][0]) + '</button>'; }).join('');
+    function draw() {
+      var rows = NEWS.items.filter(function (i) { return on === 'all' || i.fuel === on; });
+      list.innerHTML = rows.length ? rows.map(function (i) {
+        var f = FUEL[i.fuel] || ['', '#A8B7C6'];
+        return '<li><a href="' + esc(i.url) + '" target="_blank" rel="noopener"><span class="f" style="--fc:' + f[1] + '">' + f[0] + '</span><span class="t">' + esc(i.title) + '</span><span class="s">' + esc(i.outlet) + ' · ' + day(i.date) + '</span></a></li>';
+      }).join('') : '<li class="empty">No headlines this week. The next check is on Monday.</li>';
+    }
+    chips.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; on = b.dataset.k; [].forEach.call(chips.children, function (c) { c.setAttribute('aria-pressed', c === b); }); draw(); });
+    draw();
+  })();
+</script>
 </body>
 </html>

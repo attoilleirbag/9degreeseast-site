@@ -110,6 +110,12 @@
   /* Founder */
   .fgrid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 10px; }
   .bio { padding: 28px 30px; }
+  .portrait { float: left; width: 156px; aspect-ratio: 1; margin: 2px 26px 12px 0; position: relative; overflow: hidden; border-radius: 50%; border: 1px solid rgba(216,182,110,0.55); box-shadow: 0 0 0 6px rgba(216,182,110,0.08); background: radial-gradient(120% 90% at 30% 20%, rgba(31,74,122,0.55), rgba(9,28,50,0.9)); }
+  .portrait img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(0.9) contrast(1.02); }
+  .portrait .ph { display: none; position: absolute; inset: 0; align-items: center; justify-content: center; font-size: 44px; color: var(--accent); opacity: 0.8; }
+  .portrait.empty img { display: none; } .portrait.empty .ph { display: flex; }
+  .bio .links { clear: both; }
+  @media (max-width: 560px) { .portrait { float: none; width: 132px; margin: 0 0 20px; } }
   .bio p { margin: 0 0 14px; font-size: 14px; line-height: 1.8; color: var(--soft); }
   .bio p.big { font-size: 25px; line-height: 1.35; color: var(--text); margin-bottom: 18px; }
   .bio .links { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 18px; }
@@ -217,6 +223,7 @@
       </div>
       <div class="fgrid">
         <div class="glass bio">
+          <figure class="portrait"><img src="tom-fox.jpg" alt="Tom Fox, founder of 9 Degrees East" width="640" height="640" loading="lazy" onerror="this.parentNode.classList.add('empty')"><span class="ph serif" aria-hidden="true">TF</span></figure>
           <p class="serif big">Tom has been an analyst, power marketer, oil major originator, consultant, broker, developer and buyer.</p>
           <p>He spent nearly twelve years at BP originating and structuring long-term biofuels offtake for its US and EU trading benches, then led commercial activity for HIF Global’s eFuels projects in Texas, Chile and Australia, and green methanol origination in China for Maersk Tankers. He founded 9 Degrees East in 2018 and now leads it full time.</p>
           <p>He builds deal structures that lenders will accept and that both producer and buyer can live with for ten years.</p>

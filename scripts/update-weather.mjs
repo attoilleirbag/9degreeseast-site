@@ -110,5 +110,24 @@ if (ok) W.updated = new Date().toISOString().slice(0, 10);
 
 const out = html.replace(m[0], '/*DATA:START*/' + JSON.stringify(W, null, 2) + '/*DATA:END*/');
 if (out !== html) writeFileSync(PAGE, out);
+
+// The home page strip: the same readings, worked out the same way as on Fuel Weather
+const HOME = new URL('../site/index.html', import.meta.url);
+const reading = (f) => {
+  let chg;
+  if (f.regions) { const mv = f.regions.map((g) => (g.now - g.prev) / g.prev); chg = mv.reduce((a, b) => a + b, 0) / mv.length; }
+  else { const s = f.series, n = s.length, base = s[Math.max(0, n - 4)]; chg = (s[n - 1] - base) / base; }
+  return { id: f.id, name: f.name, c: f.c, pressure: chg > 0.08 ? 'Rising' : chg < -0.08 ? 'Falling' : 'Steady', chg: Math.round(chg * 1000) / 1000 };
+};
+const ORDER = ['efuels', 'methanol', 'saf', 'rd', 'rng'];
+const strip = { updated: W.updated, items: ORDER.map((id) => fuel(id)).filter(Boolean).map(reading) };
+const home = readFileSync(HOME, 'utf8');
+const hm = home.match(/\/\*WX:START\*\/([\s\S]*?)\/\*WX:END\*\//);
+let homeChanged = false;
+if (hm) {
+  const hout = home.replace(hm[0], '/*WX:START*/' + JSON.stringify(strip) + '/*WX:END*/');
+  if (hout !== home) { writeFileSync(HOME, hout); homeChanged = true; }
+} else log.push('home strip: markers not found in index.html, skipped');
+
 console.log(log.join('\n'));
-console.log(out !== html ? 'Page updated.' : 'No changes.');
+console.log(out !== html || homeChanged ? 'Page updated.' : 'No changes.');

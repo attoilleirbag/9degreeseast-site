@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
 <style>
-  /* Page shell: shared menu, title and intro, and placeholder slots for the sections the page will hold. */
+  /* Service page: shared menu, title and intro, then three sections. */
   :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E; --c: #A9A2F0; }
   * { box-sizing: border-box; }
   html, body { margin: 0; }
@@ -36,6 +36,26 @@
   .slot h2 { margin: 0; font-size: 28px; line-height: 1.1; }
   .slot p { margin: 0; font-size: 13px; color: var(--faint); }
   footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 22px 30px; border-top: 1px solid var(--line); font-size: 10.5px; letter-spacing: 0.06em; color: var(--faint); }
+
+  /* Service page body: three numbered sections in glass panels */
+  .svc { display: grid; gap: 10px; padding-bottom: 40px; }
+  .sec { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 34px; padding: 30px 32px; animation: enter 800ms 150ms ease both; }
+  .sec .lab { display: flex; flex-direction: column; gap: 10px; }
+  .sec .n { font-size: 11px; color: var(--c); font-variant-numeric: tabular-nums; }
+  .sec h2 { margin: 0; font-size: 32px; line-height: 1.08; }
+  .sec .body p { margin: 0 0 14px; font-size: 15px; line-height: 1.8; color: var(--soft); max-width: 720px; }
+  .sec .body p.lead { font-family: 'Instrument Serif', Georgia, serif; font-size: 23px; line-height: 1.4; color: var(--text); }
+  .sec ul { margin: 4px 0 16px; padding: 0; list-style: none; max-width: 760px; }
+  .sec li { position: relative; padding: 9px 0 9px 22px; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.7; color: var(--soft); }
+  .sec li:last-child { border-bottom: 1px solid var(--line); }
+  .sec li::before { content: ""; position: absolute; left: 2px; top: 18px; width: 6px; height: 6px; border-radius: 50%; background: var(--c); box-shadow: 0 0 6px var(--c); }
+  .sec li b { color: var(--text); font-weight: 600; }
+  .close { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 30px; padding-bottom: 100px; }
+  .close p { margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-size: 26px; line-height: 1.3; max-width: 640px; }
+  .close .btn { display: inline-flex; align-items: center; min-height: 46px; padding: 0 22px; border-radius: 2px; background: var(--accent); color: var(--ink); font-size: 13px; font-weight: 600; text-decoration: none; }
+  .close .btn:hover { background: #E8C987; }
+  .reviewed { flex-basis: 100%; margin-top: 4px !important; font: 400 11.5px Manrope, sans-serif !important; color: var(--faint); }
+  @media (max-width: 860px) { .sec { grid-template-columns: 1fr; gap: 16px; padding: 24px 22px; } .sec .body p.lead { font-size: 21px; } }
   @keyframes enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @media (max-width: 700px) { .wrap { width: calc(100% - 40px); } .head { padding-block: 56px 32px; } .slots { grid-template-columns: 1fr; } }
 </style>
@@ -49,11 +69,27 @@
       <h1 class="serif">Supply <em>agreements</em></h1>
       <p class="intro">Long-term, bankable contracts that hold up over the life of the project.</p>
     </header>
-    <section class="wrap slots" aria-label="Sections">
-        <div class="slot glass"><span class="n">01</span><h2 class="serif">What it is</h2><p>Content for this section is on its way.</p></div>
-        <div class="slot glass"><span class="n">02</span><h2 class="serif">When projects need it</h2><p>Content for this section is on its way.</p></div>
-        <div class="slot glass"><span class="n">03</span><h2 class="serif">How we help</h2><p>Content for this section is on its way.</p></div>
+    <section class="wrap svc" aria-label="About this service">
+      <div class="sec glass"><div class="lab"><span class="n">01</span><h2 class="serif">What it is</h2></div><div class="body"><p class="lead">The supply agreement is the long-form contract that carries the agreed deal for ten years or more.</p>
+<p>It covers delivery and logistics, fuel specification, measurement, title and risk, invoicing, certificates and disputes. For lenders it is also security: they review it in due diligence and usually sign a direct agreement with the buyer.</p>
+<ul>
+<li><b>Specification.</b> ASTM D7566 for SAF blended into jet fuel, the IMPCA reference for methanol, EN 15940 for renewable diesel, and grid or vehicle standards for biomethane.</li>
+<li><b>Certificates.</b> How proofs of sustainability, mandate tickets and credits are issued, transferred and replaced if one fails.</li>
+<li><b>Operations.</b> Annual and monthly nominations, quality disputes, shortfalls and what happens when a cargo is off-spec.</li>
+</ul></div></div>
+      <div class="sec glass"><div class="lab"><span class="n">02</span><h2 class="serif">When projects need it</h2></div><div class="body"><ul>
+<li><b>After the term sheet is signed,</b> in the run-up to financial close, when lenders and their advisers start reading every clause.</li>
+<li><b>On the feedstock side too.</b> Waste oils, biogenic CO2 and renewable power contracts are the other half of bankability, and a mismatch between feedstock and offtake terms is one of the most common reasons financing stalls.</li>
+<li><b>During operations,</b> at price reviews, annual nominations and when a rule change triggers a reopener.</li>
+</ul></div></div>
+      <div class="sec glass"><div class="lab"><span class="n">03</span><h2 class="serif">How we help</h2></div><div class="body"><ul>
+<li><b>Turn the term sheet into contract positions</b> and work through drafts with the client's lawyers.</li>
+<li><b>Keep feedstock and offtake contracts back to back</b> on tenor, pricing, force majeure and termination.</li>
+<li><b>Read the contract as a lender would:</b> assignment, direct agreements, cure periods and termination compensation.</li>
+<li><b>Manage the contract after signing,</b> including price reopeners and renegotiation when the rules change.</li>
+</ul></div></div>
     </section>
+    <section class="wrap close"><p>Taking a supply agreement to financial close?</p><a class="btn" href="contact.html">Contact us</a><p class="reviewed">Last reviewed October 2026. Regulations change often; check the official texts before relying on any figure here.</p></section>
   </main>
   <div id="site-footer"></div>
 </body>
