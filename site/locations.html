@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Locations | 9 Degrees East</title>
+<meta name="description" content="Based in London, with experience across Europe, the Americas, Asia and Australia: where 9 Degrees East and its founder have worked.">
+<meta name="theme-color" content="#061527">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<style>
+  /* A sticky 3D globe on the left turns to each region as its panel scrolls past on the right. */
+  :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --glass-strong: rgba(9,28,50,0.86); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E;
+          --methanol: #5EC8D8; --saf: #F0C877; --efuels: #E9F3FF; --rd: #E39A55; --rng: #A9A2F0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { min-height: 100vh; display: flex; flex-direction: column; color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+         background: radial-gradient(1000px 700px at 25% 40%, rgba(31,74,122,0.28), transparent 65%), var(--ink); background-attachment: fixed; }
+  ::selection { background: var(--accent); color: var(--ink); }
+  a { color: inherit; } a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .wrap { width: min(100% - 80px, 1180px); margin-inline: auto; }
+  .serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+  .glass { background: var(--glass); border: 1px solid var(--line); border-radius: 3px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); flex: none; display: inline-block; }
+  main { flex: 1; }
+  .head { padding-block: 80px 30px; }
+  .k { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .k::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+  h1 { margin: 0 0 18px; font-size: clamp(52px, 7vw, 96px); line-height: 0.96; letter-spacing: -0.025em; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .intro { margin: 0; max-width: 640px; font-family: 'Instrument Serif', Georgia, serif; font-size: clamp(20px, 2vw, 26px); line-height: 1.4; color: var(--soft); }
+  .base { display: inline-flex; align-items: center; gap: 10px; margin-top: 26px; padding: 10px 14px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .base b { color: var(--text); font-weight: 600; }
+
+  .stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; padding-bottom: 60px; }
+  .globe-col { position: sticky; top: 90px; height: calc(100vh - 110px); max-height: 640px; display: flex; flex-direction: column; justify-content: center; }
+  .globe { position: relative; width: 100%; aspect-ratio: 1; max-height: 100%; cursor: grab; touch-action: pan-y; }
+  .globe:active { cursor: grabbing; }
+  .globe canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .globe .labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .globe .labels span { position: absolute; left: 0; top: 0; font: 600 9.5px Manrope, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #EEF2F5; white-space: nowrap; text-shadow: 0 0 6px #061527, 0 0 2px #061527; transition: opacity .35s; }
+  .globe-cap { display: flex; justify-content: space-between; gap: 10px; margin-top: 8px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--faint); }
+  .globe-cap b { color: var(--accent); font-weight: 600; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .tab { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; font: 600 11px Manrope, sans-serif; color: var(--soft); background: rgba(9,28,50,0.6); border: 1px solid var(--line); border-radius: 999px; cursor: pointer; transition: border-color .2s, color .2s; }
+  .tab[aria-current="true"] { border-color: var(--c); color: var(--text); }
+
+  .regions { display: flex; flex-direction: column; gap: 22vh; padding-block: 8vh 45vh; }
+  .region { padding: 26px 26px 18px; transition: border-color .4s, opacity .4s; opacity: 0.55; }
+  .region.on { border-color: var(--c); opacity: 1; }
+  .region .rk { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; font-size: 10px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--c); }
+  .region h2 { margin: 0 0 10px; font-size: 40px; line-height: 1.02; }
+  .region > p { margin: 0 0 16px; font-size: 14px; line-height: 1.75; color: var(--soft); }
+  .places { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+  .places li { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--line); cursor: default; }
+  .places li:last-child { border-bottom: 0; }
+  .places .pl { font-family: 'Instrument Serif', Georgia, serif; font-size: 21px; line-height: 1.1; }
+  .places .pl small { display: block; margin-top: 4px; font-family: Manrope, sans-serif; font-size: 10px; letter-spacing: .1em; color: var(--faint); font-variant-numeric: tabular-nums; }
+  .places .wd { font-size: 13px; line-height: 1.65; color: var(--soft); }
+  .places .wd b { color: var(--text); font-weight: 600; }
+  .places li:hover .pl { color: var(--accent); }
+  .reg-note { margin: 14px 0 0; font-size: 11.5px; color: var(--faint); }
+
+  .cta { margin-bottom: 90px; padding: 30px 32px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; background: var(--glass-strong); }
+  .cta h2 { margin: 0; font-size: clamp(28px, 3.4vw, 44px); max-width: 620px; }
+  .cta h2 em { font-style: italic; color: var(--accent); }
+  .btn { display: inline-flex; align-items: center; min-height: 46px; padding: 13px 20px; border-radius: 2px; font-size: 13px; font-weight: 600; text-decoration: none; background: var(--accent); color: var(--ink); transition: background .18s, transform .18s; }
+  .btn:hover { background: #E8C987; transform: translateY(-2px); }
+  footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 22px 30px; border-top: 1px solid var(--line); font-size: 10.5px; letter-spacing: 0.06em; color: var(--faint); }
+
+  /* No globe (old browser, blocked libraries): the regions simply stack */
+  .no-globe .stage { grid-template-columns: 1fr; }
+  .no-globe .globe-col { display: none; }
+  .no-globe .regions { gap: 12px; padding-block: 0; }
+  .no-globe .region { opacity: 1; }
+
+  @media (max-width: 900px) {
+    .wrap { width: calc(100% - 40px); }
+    .stage { grid-template-columns: 1fr; gap: 0; }
+    .globe-col { top: 76px; height: auto; z-index: 2; background: linear-gradient(var(--ink) 80%, rgba(6,21,39,0)); padding-bottom: 10px; }
+    .globe { width: min(62vw, 300px); margin: 0 auto; }
+    .tabs { justify-content: center; margin-bottom: 6px; }
+    .globe-cap { display: none; }
+    .regions { gap: 14vh; padding-block: 4vh 20vh; }
+    .places li { grid-template-columns: 1fr; gap: 4px; }
+    .region h2 { font-size: 32px; }
+  }
+</style>
+<script src="nav.js" defer></script>
+<script src="land.js"></script>
+</head>
+<body>
+  <div id="site-nav"></div>
+  <main>
+    <header class="wrap head">
+      <p class="k">About · Locations</p>
+      <h1 class="serif">Where we <em>work</em></h1>
+      <p class="intro">Based in London, with deals and working experience across Europe, the Americas, Asia and Australia.</p>
+      <span class="base glass"><i class="dot" style="--c: var(--accent)"></i>Headquarters <b>London, United Kingdom</b></span>
+    </header>
+
+    <div class="wrap stage">
+      <div class="globe-col" aria-hidden="true">
+        <div class="tabs" id="tabs"></div>
+        <div class="globe" id="globe"><div class="labels" id="labels"></div></div>
+        <div class="globe-cap"><span id="cap">Drag to turn the globe</span><b>9° East</b></div>
+      </div>
+
+      <div class="regions" id="regions">
+        <section class="region glass" style="--c: var(--saf)" data-lat="50" data-lon="2" data-name="Europe">
+          <p class="rk"><i class="dot"></i>Europe</p>
+          <h2 class="serif">Europe</h2>
+          <p>Home market and headquarters. Two decades of origination, trading and brokerage across Europe’s biofuel and low-carbon fuel markets, under the rules that now drive demand: RED, FuelEU Maritime and ReFuelEU Aviation.</p>
+          <ul class="places">
+            <li data-p="london"><span class="pl">London<small>Base since 2003</small></span><span class="wd">Headquarters of 9 Degrees East since 2018. Before that, <b>nearly twelve years at BP</b> building the European and then global biofuels origination book, and <b>head of renewable fuels at OTX</b>, a physical biofuels and feedstocks brokerage desk.</span></li>
+            <li data-p="saltend"><span class="pl">Saltend, UK<small>2003–2006</small></span><span class="wd">Ran the UK business of <b>Calpine’s 1,200 MW Saltend power station</b>: its trading strategy, gas purchase contract and project finance, and the deal team for its sale in 2006.</span></li>
+            <li data-p="copenhagen"><span class="pl">Copenhagen<small>2024–2026</small></span><span class="wd">With <b>Maersk Tankers</b>, headquartered in Copenhagen, leading green methanol supply origination for shipping.</span></li>
+          </ul>
+        </section>
+
+        <section class="region glass" style="--c: var(--rd)" data-lat="20" data-lon="-82" data-name="The Americas">
+          <p class="rk"><i class="dot"></i>The Americas</p>
+          <h2 class="serif">The Americas</h2>
+          <p>Where the career began, in power, and where large-scale eFuels offtake was later negotiated. Working knowledge of the US incentives that shape project economics: the IRA, the RFS and California’s LCFS.</p>
+          <ul class="places">
+            <li data-p="houston"><span class="pl">Houston, Texas<small>1998–2000 · 2022–2024</small></span><span class="wd">Began as an analyst at <b>Reliant Energy</b>. Later, as SVP Commercial at <b>HIF Global</b>, negotiated offtake for <b>1.4 million tonnes of e-methanol</b> from its US project.</span></li>
+            <li data-p="chicago"><span class="pl">Chicago<small>2013–2018</small></span><span class="wd">Covered <b>BP’s US biofuels trading bench</b>, sourcing long-term offtake from second-generation producers across the US.</span></li>
+            <li data-p="boston"><span class="pl">Boston<small>2000–2003</small></span><span class="wd">Analyst at <b>Calpine</b>, one of the largest US independent power producers.</span></li>
+            <li data-p="toronto"><span class="pl">Toronto<small>2003–2006</small></span><span class="wd">Commercial Manager, International, for <b>Calpine</b>, alongside its UK business.</span></li>
+            <li data-p="chile"><span class="pl">Punta Arenas, Chile<small>2022–2024</small></span><span class="wd">For <b>HIF Global</b>, negotiated offtake for <b>20 million gallons of e-gasoline</b>. HIF’s Haru Oni plant here produced its first e-gasoline in that time, with Porsche as partner.</span></li>
+          </ul>
+        </section>
+
+        <section class="region glass" style="--c: var(--methanol)" data-lat="18" data-lon="128" data-name="Asia and Australia">
+          <p class="rk"><i class="dot"></i>Asia and Australia</p>
+          <h2 class="serif">Asia <em style="font-style:italic;color:var(--accent)">and</em> Australia</h2>
+          <p>A major source of green methanol and eFuels supply, and a growing share of demand. Experience sourcing volumes from Asia and pricing into Asian regulation.</p>
+          <ul class="places">
+            <li data-p="china"><span class="pl">China<small>2024–2026</small></span><span class="wd">For <b>Maersk Tankers</b>, led origination of <b>800,000 tonnes of long-term green methanol</b> and structured sales into petrochemical and fuel markets, with terms flexible enough to support several project FIDs at once.</span></li>
+            <li data-p="japan"><span class="pl">Japan<small>2022–2024</small></span><span class="wd">For <b>HIF Global</b>, worked Japanese regulation and pricing into eFuels offtake, alongside the EU and US.</span></li>
+            <li data-p="australia"><span class="pl">Australia<small>2022–2024</small></span><span class="wd">Led commercial activity for <b>HIF Global’s</b> Australian eFuels development.</span></li>
+          </ul>
+        </section>
+
+        <section class="region glass" style="--c: var(--rng)" data-lat="20" data-lon="28" data-name="Africa and beyond">
+          <p class="rk"><i class="dot"></i>Africa and beyond</p>
+          <h2 class="serif">Africa <em style="font-style:italic;color:var(--accent)">and beyond</em></h2>
+          <p>Market entry and financing work beyond the main hubs.</p>
+          <ul class="places">
+            <li data-p="africa"><span class="pl">Africa<small>2019–2021</small></span><span class="wd">With <b>Channoil Consulting</b>, advised on energy transition strategy and new market and commodity entries across Europe and Africa.</span></li>
+            <li data-p="angola"><span class="pl">Angola<small>2010</small></span><span class="wd">At <b>BP</b>, worked on crude oil financings of its upstream assets in Angola, following the Gulf of Mexico incident.</span></li>
+            <li data-p="azerbaijan"><span class="pl">Azerbaijan<small>2010</small></span><span class="wd">The same <b>BP</b> financing programme, for its upstream assets in Azerbaijan.</span></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <section class="wrap" aria-labelledby="cta-title">
+      <div class="cta glass">
+        <h2 class="serif" id="cta-title">Working on a project in one of these markets? <em>Let’s talk.</em></h2>
+        <a class="btn" href="contact.html">Contact us</a>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+
+<script>
+(function () {
+  var PLACES = {
+    london: [51.51, -0.13, 'London'], saltend: [53.74, -0.33, 'Saltend'], copenhagen: [55.68, 12.57, 'Copenhagen'],
+    houston: [29.76, -95.37, 'Houston'], chicago: [41.88, -87.63, 'Chicago'], boston: [42.36, -71.06, 'Boston'], toronto: [43.65, -79.38, 'Toronto'], chile: [-53.16, -70.91, 'Punta Arenas'],
+    china: [31.23, 121.47, 'China'], japan: [35.68, 139.69, 'Japan'], australia: [-41.1, 146.8, 'Australia'],
+    africa: [4, 20, 'Africa'], angola: [-8.84, 13.23, 'Angola'], azerbaijan: [40.41, 49.87, 'Azerbaijan']
+  };
+  var regions = [].slice.call(document.querySelectorAll('.region'));
+  var tabs = document.getElementById('tabs');
+  regions.forEach(function (r, i) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'tab'; b.style.setProperty('--c', getComputedStyle(r).getPropertyValue('--c'));
+    b.innerHTML = '<i class="dot"></i>' + r.dataset.name; b.addEventListener('click', function () { r.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+    tabs.appendChild(b); r._tab = b;
+  });
+  var api = null, pending = null;
+  function activate(r) {
+    regions.forEach(function (x) { x.classList.toggle('on', x === r); x._tab.setAttribute('aria-current', String(x === r)); });
+    var keys = [].map.call(r.querySelectorAll('[data-p]'), function (li) { return li.dataset.p; });
+    var col = getComputedStyle(r).getPropertyValue('--c').trim();
+    document.getElementById('cap').innerHTML = r.dataset.name + ' · <span style="color:#A8B7C6">' + keys.length + ' places</span>';
+    if (api) api.focus(+r.dataset.lat, +r.dataset.lon, keys, col); else pending = [+r.dataset.lat, +r.dataset.lon, keys, col];
+  }
+  // The region shown on the globe is always the panel closest to the middle of the screen (or the last one at the very bottom)
+  var current = null, ticking = false;
+  function pick() {
+    ticking = false;
+    var mid = innerHeight / 2, best = regions[0], bestD = Infinity;
+    regions.forEach(function (r) { var b = r.getBoundingClientRect(), c = b.top + b.height / 2, d = Math.abs(c - mid); if (d < bestD) { bestD = d; best = r; } });
+    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) { var last = regions[regions.length - 1]; if (last.getBoundingClientRect().top < innerHeight) best = last; }
+    if (best !== current) { current = best; activate(best); }
+  }
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(pick); } }
+  addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll);
+  pick();
+  // Hovering a place lights it on the globe
+  document.querySelectorAll('.places [data-p]').forEach(function (li) {
+    li.addEventListener('mouseenter', function () { if (api) api.hot(li.dataset.p); });
+    li.addEventListener('mouseleave', function () { if (api) api.hot(null); });
+  });
+
+  /* ===== Globe: Three.js + Natural Earth land (same build as the homepage globe) ===== */
+  var wrap = document.getElementById('globe'), labels = document.getElementById('labels');
+  var LIBS = ['https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js'];
+  function load(src) { return new Promise(function (ok, no) { var s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); }); }
+  function noGlobe() { document.body.classList.add('no-globe'); }
+  var timer = setTimeout(noGlobe, 9000);
+  Promise.all(LIBS.map(load))
+      .then(function () { if (!window.NINE_LAND) throw 0; clearTimeout(timer); document.body.classList.remove('no-globe'); build(); })
+    .catch(function () { clearTimeout(timer); noGlobe(); });
+
+  function build() {
+    var D = Math.PI / 180, GOLD = 0xD8B66E;
+    var isLand = NINE_LAND.isLand; // built-in Natural Earth land map (land.js)
+    function vec(lat, lon, r) { r = r || 1; var p = lat * D, l = lon * D; return new THREE.Vector3(r * Math.cos(p) * Math.sin(l), r * Math.sin(p), r * Math.cos(p) * Math.cos(l)); }
+
+    var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    var cv = renderer.domElement; wrap.insertBefore(cv, labels);
+    var scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100); camera.position.set(0, 0, 4.4);
+    var globe = new THREE.Group(); scene.add(globe);
+    var SUN = new THREE.Vector3(-0.6, 0.45, 0.9).normalize();
+    scene.add(new THREE.AmbientLight(0x1d3556, 0.5));
+    var sun = new THREE.DirectionalLight(0x9fbfe6, 0.55); sun.position.copy(SUN).multiplyScalar(5); scene.add(sun);
+    globe.add(new THREE.Mesh(new THREE.SphereGeometry(0.995, 72, 48), new THREE.MeshPhongMaterial({ color: 0x0a1f3a, emissive: 0x030b17, specular: 0x10233b, shininess: 6 })));
+    var N = 30000, pos = [], ga = Math.PI * (3 - Math.sqrt(5));
+    for (var i = 0; i < N; i++) { var y = 1 - (i / (N - 1)) * 2, rr = Math.sqrt(1 - y * y), th = ga * i, x = Math.cos(th) * rr, z = Math.sin(th) * rr;
+      if (isLand(Math.asin(y) / D, Math.atan2(x, z) / D)) pos.push(x * 1.002, y * 1.002, z * 1.002); }
+    var dg = new THREE.BufferGeometry(); dg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    globe.add(new THREE.Points(dg, new THREE.ShaderMaterial({ transparent: true, depthWrite: false,
+      uniforms: { uSun: { value: SUN }, uSize: { value: 2.2 * renderer.getPixelRatio() } },
+      vertexShader: 'uniform float uSize; varying float vLight; varying float vFacing; uniform vec3 uSun; void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); vec3 n = normalize(mat3(modelViewMatrix) * position); vLight = smoothstep(-0.25, 0.6, dot(n, uSun)); vFacing = n.z; gl_PointSize = uSize; gl_Position = projectionMatrix * mv; }',
+      fragmentShader: 'varying float vLight; varying float vFacing; void main(){ vec2 c = gl_PointCoord - 0.5; if (dot(c,c) > 0.25) discard; if (vFacing < -0.05) discard; vec3 night = vec3(0.20,0.33,0.50); vec3 day = vec3(0.80,0.88,0.96); gl_FragColor = vec4(mix(night, day, vLight), 0.55 + 0.45 * vLight); }' })));
+    scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.1, 64, 48), new THREE.ShaderMaterial({ side: THREE.BackSide, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+      vertexShader: 'varying vec3 vN; void main(){ vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+      fragmentShader: 'varying vec3 vN; void main(){ float k = pow(max(0.0, 0.62 - vN.z), 3.0); gl_FragColor = vec4(0.30, 0.50, 0.85, 1.0) * k * 0.55; }' })));
+    var mer = []; for (var m = -84; m <= 84; m += 1) mer.push(vec(m, 9, 1.004));
+    globe.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(mer), new THREE.LineBasicMaterial({ color: GOLD, transparent: true, opacity: 0.5 })));
+
+    var dotTex = (function () { var c = document.createElement('canvas'); c.width = c.height = 64; var g = c.getContext('2d'), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+      gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(0.3, 'rgba(255,255,255,0.85)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
+    var ringTex = (function () { var c = document.createElement('canvas'); c.width = c.height = 64; var g = c.getContext('2d'); g.strokeStyle = '#fff'; g.lineWidth = 3; g.beginPath(); g.arc(32, 32, 28, 0, 7); g.stroke(); return new THREE.CanvasTexture(c); })();
+    var london = vec(51.51, -0.13, 1.006);
+    var P = {};
+    Object.keys(PLACES).forEach(function (k, n) {
+      var p = PLACES[k], v = vec(p[0], p[1], 1.006);
+      var dot = new THREE.Sprite(new THREE.SpriteMaterial({ map: dotTex, color: GOLD, depthWrite: false, transparent: true, opacity: 0.35 })); dot.position.copy(v); dot.scale.setScalar(0.05); globe.add(dot);
+      var ring = new THREE.Sprite(new THREE.SpriteMaterial({ map: ringTex, color: GOLD, depthWrite: false, transparent: true, opacity: 0 })); ring.position.copy(v); globe.add(ring);
+      var arc = null;
+      if (k !== 'london' && k !== 'saltend') { // a route from headquarters to each place
+        var a = london.clone().normalize(), b = v.clone().normalize(), ang = a.angleTo(b), pts = [];
+        for (var s = 0; s <= 64; s++) { var t = s / 64, q = a.clone().multiplyScalar(Math.sin((1 - t) * ang)).add(b.clone().multiplyScalar(Math.sin(t * ang))).divideScalar(Math.sin(ang) || 1);
+          pts.push(q.normalize().multiplyScalar(1.006 + Math.sin(Math.PI * t) * Math.min(0.3, 0.04 + ang * 0.11))); }
+        arc = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: GOLD, transparent: true, opacity: 0 })); globe.add(arc);
+        arc.geometry.setDrawRange(0, 0); arc.n = pts.length;
+      }
+      var el = document.createElement('span'); el.textContent = p[2]; el.style.opacity = 0; labels.appendChild(el);
+      P[k] = { v: v, dot: dot, ring: ring, arc: arc, el: el, on: 0, onT: 0, phase: n * 0.37, draw: 0 };
+    });
+
+    var rotY = 0, rotX = 0.3, tY = 0, tX = 0.3, vel = 0, dragging = false, lastX = 0, lastT = 0, W = 1, H = 1, hotKey = null, active = [], color = new THREE.Color(GOLD);
+    function size() { var r = wrap.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height); renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); }
+    size(); addEventListener('resize', size);
+    wrap.addEventListener('pointerdown', function (e) { dragging = true; lastX = e.clientX; vel = 0; wrap.setPointerCapture(e.pointerId); });
+    wrap.addEventListener('pointermove', function (e) { if (!dragging) return; var dx = e.clientX - lastX; lastX = e.clientX; tY += dx * 0.006; rotY += dx * 0.006; });
+    ['pointerup', 'pointercancel'].forEach(function (ev) { wrap.addEventListener(ev, function () { dragging = false; }); });
+
+    api = {
+      focus: function (lat, lon, keys, col) {
+        // turn so that (lat, lon) faces the viewer, taking the short way round
+        var want = -lon * D, d = want - tY; d = Math.atan2(Math.sin(d), Math.cos(d)); tY += d; tX = Math.max(-0.6, Math.min(0.7, lat * D * 0.85));
+        active = keys; color.set(col || '#D8B66E');
+        Object.keys(P).forEach(function (k) { var on = keys.indexOf(k) > -1; P[k].onT = on ? 1 : 0; if (on && P[k].arc && P[k].draw < 1) P[k].draw = 0; });
+      },
+      hot: function (k) { hotKey = k; }
+    };
+    if (pending) api.focus.apply(null, pending);
+
+    var tmp = new THREE.Vector3(), camN = new THREE.Vector3(0, 0, 1);
+    function frame(ms) {
+      var now = ms / 1000, dt = Math.min(0.05, now - (lastT || now)); lastT = now;
+      if (!dragging) { rotY += (tY - rotY) * Math.min(1, dt * 3.2); }
+      rotX += (tX - rotX) * Math.min(1, dt * 3.2);
+      globe.rotation.set(rotX, rotY, 0); globe.updateMatrixWorld();
+      Object.keys(P).forEach(function (k) {
+        var p = P[k], hot = hotKey === k;
+        p.on += (p.onT - p.on) * Math.min(1, dt * 4);
+        p.dot.material.color.copy(p.onT ? color : new THREE.Color(GOLD)); p.dot.material.opacity = 0.25 + p.on * 0.75;
+        p.dot.scale.setScalar(0.045 + p.on * 0.025 + (hot ? 0.03 : 0));
+        var kph = (now / 2.4 + p.phase) % 1; p.ring.material.color.copy(color); p.ring.scale.setScalar(0.05 + kph * 0.17); p.ring.material.opacity = p.on * (1 - kph) * 0.75;
+        if (p.arc) { if (p.onT) p.draw = Math.min(1, p.draw + dt * 0.9); p.arc.geometry.setDrawRange(0, Math.round(p.arc.n * p.draw)); p.arc.material.color.copy(color); p.arc.material.opacity = p.on * (hot ? 0.95 : 0.6); }
+        tmp.copy(p.v).applyMatrix4(globe.matrixWorld); var facing = tmp.clone().normalize().dot(camN);
+        var q = tmp.project(camera), x = (q.x + 1) / 2 * W, y = (1 - q.y) / 2 * H;
+        p.el.style.opacity = (facing > 0.25 ? Math.min(1, (facing - 0.25) * 5) : 0) * Math.max(p.on, hot ? 1 : 0);
+        p.el.style.transform = 'translate(' + (x + 9).toFixed(1) + 'px,' + (y - 6).toFixed(1) + 'px)';
+        p.el.style.color = hot ? '#D8B66E' : '#EEF2F5';
+      });
+      renderer.render(scene, camera);
+    }
+    var running = false, raf = 0;
+    function loop(ms) { frame(ms); if (running) raf = requestAnimationFrame(loop); }
+    function start() { if (!running) { running = true; raf = requestAnimationFrame(loop); } }
+    function stop() { running = false; cancelAnimationFrame(raf); }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { e[0].isIntersecting ? start() : stop(); }).observe(wrap); else start();
+    document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+    frame(performance.now());
+  }
+})();
+</script>
+</body>
+</html>

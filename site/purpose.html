@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Purpose, mission &amp; values | 9 Degrees East</title>
+<meta name="theme-color" content="#061527">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<style>
+  /* Page shell: shared menu, title and intro, and placeholder slots for the sections the page will hold. */
+  :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E; --c: #F0C877; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { min-height: 100vh; display: flex; flex-direction: column; color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+         background: radial-gradient(900px 600px at 85% 0%, rgba(31,74,122,0.28), transparent 65%), var(--ink); background-attachment: fixed; }
+  ::selection { background: var(--accent); color: var(--ink); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .wrap { width: min(100% - 80px, 1180px); margin-inline: auto; }
+  .serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+  .glass { background: var(--glass); border: 1px solid var(--line); border-radius: 3px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  main { flex: 1; }
+  .head { padding-block: 90px 50px; animation: enter 800ms ease both; }
+  .k { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--c); }
+  .k::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
+  h1 { margin: 0 0 18px; font-size: clamp(48px, 7vw, 96px); line-height: 0.98; letter-spacing: -0.025em; text-wrap: balance; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .intro { margin: 0; max-width: 620px; font-family: 'Instrument Serif', Georgia, serif; font-size: clamp(20px, 2vw, 26px); line-height: 1.4; color: var(--soft); }
+  .slots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding-bottom: 100px; }
+  .slot { padding: 22px 24px; min-height: 150px; display: flex; flex-direction: column; gap: 8px; animation: enter 800ms 150ms ease both; }
+  .slot .n { font-size: 11px; color: var(--c); font-variant-numeric: tabular-nums; }
+  .slot h2 { margin: 0; font-size: 28px; line-height: 1.1; }
+  .slot p { margin: 0; font-size: 13px; color: var(--faint); }
+  footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 22px 30px; border-top: 1px solid var(--line); font-size: 10.5px; letter-spacing: 0.06em; color: var(--faint); }
+  @keyframes enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @media (max-width: 700px) { .wrap { width: calc(100% - 40px); } .head { padding-block: 56px 32px; } .slots { grid-template-columns: 1fr; } }
+</style>
+<script src="nav.js" defer></script>
+</head>
+<body>
+  <div id="site-nav"></div>
+  <main>
+    <header class="wrap head">
+      <p class="k">About</p>
+      <h1 class="serif">Purpose, mission <em>&amp; values</em></h1>
+      <p class="intro">Why we do this work, and the principles behind how we do it.</p>
+    </header>
+    <section class="wrap slots" aria-label="Sections">
+        <div class="slot glass"><span class="n">01</span><h2 class="serif">Our purpose</h2><p>Content for this section is on its way.</p></div>
+        <div class="slot glass"><span class="n">02</span><h2 class="serif">Our mission</h2><p>Content for this section is on its way.</p></div>
+        <div class="slot glass"><span class="n">03</span><h2 class="serif">Our values</h2><p>Content for this section is on its way.</p></div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+</body>
+</html>

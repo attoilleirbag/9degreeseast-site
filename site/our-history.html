@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Our history | 9 Degrees East</title>
+<meta name="description" content="28 years in energy, from his first analyst role in Houston in 1998 to green methanol in China: the story of 9 Degrees East and its founder, Tom Fox.">
+<meta name="theme-color" content="#061527">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<style>
+  /* Same family as Fuel Weather (glass panels, fuel colours), with its own background: drifting contour lines. */
+  :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --glass-strong: rgba(9,28,50,0.86); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --line: rgba(160,190,220,0.18); --accent: #D8B66E;
+          --methanol: #5EC8D8; --saf: #F0C877; --efuels: #E9F3FF; --rd: #E39A55; --rng: #A9A2F0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--ink); color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--accent); color: var(--ink); }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  h1, h2, h3, p { margin-top: 0; }
+  #c { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+  .page { position: relative; z-index: 1; overflow-x: clip; }
+  .wrap { width: min(100% - 80px, 1180px); margin-inline: auto; }
+
+  /* Top bar, as on Fuel Weather */
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; padding-top: 32px; }
+  .home { display: inline-flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; }
+  .home svg { width: 34px; height: 34px; }
+  .home span { font-size: 10px; font-weight: 600; letter-spacing: 0.24em; }
+  .sitenav { display: flex; gap: 22px; font-size: 13px; }
+  .sitenav a { color: var(--muted); text-decoration: none; padding: 10px 0; }
+  .sitenav a:hover, .sitenav a[aria-current="page"] { color: var(--text); }
+  .sitenav .navcta { color: var(--accent); }
+
+  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+  .serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+  em { font-style: italic; color: var(--accent); }
+  .glass { background: var(--glass); border: 1px solid var(--line); border-radius: 3px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); flex: none; }
+
+  /* Hero */
+  .hero { min-height: 88vh; display: grid; grid-template-columns: 1.4fr 1fr; align-items: end; gap: 40px; padding-block: 60px 56px; }
+  .hero .title { position: relative; }
+  .hero .title::before { content: ""; position: absolute; z-index: -1; left: -60px; top: -60px; width: min(820px, 130vw); height: 120%; background: radial-gradient(ellipse at 25% 45%, rgba(6,21,39,0.9) 0%, rgba(6,21,39,0.5) 45%, rgba(6,21,39,0) 75%); }
+  h1 { margin: 0; font-size: clamp(54px, 8vw, 116px); line-height: 0.95; letter-spacing: -0.025em; text-wrap: balance; }
+  .lede { margin: 22px 0 0; max-width: 560px; font-size: clamp(20px, 2vw, 26px); line-height: 1.4; color: var(--text); }
+  .sub { margin: 14px 0 0; max-width: 520px; font-size: 14px; line-height: 1.8; color: var(--muted); }
+  .stamp { justify-self: end; text-align: right; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); line-height: 1.9; padding: 10px 14px; }
+  .stamp b { color: var(--text); font-weight: 600; }
+  .scrollhint { display: inline-flex; align-items: center; gap: 10px; margin-top: 36px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .scrollhint i { display: block; width: 1px; height: 34px; background: linear-gradient(var(--accent), transparent); animation: drip 2.2s ease-in-out infinite; transform-origin: top; }
+  @keyframes drip { 0%, 100% { transform: scaleY(0.3); opacity: 0.4; } 50% { transform: scaleY(1); opacity: 1; } }
+
+  /* Stats: the fuel-card row, reused */
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; padding-bottom: 120px; }
+  .stat { padding: 16px 16px 14px; transition: border-color 250ms ease, transform 250ms ease; }
+  .stat:hover { border-color: rgba(160,190,220,0.45); transform: translateY(-2px); }
+  .stat .nm { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; }
+  .stat strong { display: block; margin-top: 12px; font-size: 46px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .stat span.d { display: block; margin-top: 8px; font-size: 12px; line-height: 1.55; color: var(--muted); }
+
+  /* Expertise */
+  .block { padding-bottom: 140px; }
+  .head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; margin-bottom: 28px; }
+  h2 { margin: 0; font-size: clamp(36px, 4.4vw, 60px); line-height: 1.02; letter-spacing: -0.02em; text-wrap: balance; }
+  .head p { margin: 0; font-size: 14px; line-height: 1.8; color: var(--muted); max-width: 460px; }
+  .exp { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .exp .glass { padding: 24px 24px 22px; transition: border-color 250ms ease, transform 250ms ease; }
+  .exp .glass:hover { border-color: var(--c); transform: translateY(-2px); }
+  .exp h3 { display: flex; align-items: center; gap: 12px; margin: 0 0 10px; font-size: 27px; line-height: 1.15; }
+  .exp p { margin: 0; font-size: 13.5px; line-height: 1.75; color: var(--soft); }
+
+  /* Career: pinned. The field gathers around each place; a glass panel tells the role; role cards mark progress. */
+  .career { position: relative; }
+  .career .stage { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-block: 40px; }
+  .career .stage > .wrap { display: flex; flex-direction: column; gap: 18px; }
+  .career .grid { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+  .panel { position: relative; padding: 24px 26px 22px; background: var(--glass-strong); min-height: 340px; }
+  .role { position: absolute; inset: 24px 26px 22px; display: flex; flex-direction: column; }
+  .role .where { margin: 0 0 12px; font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--c); }
+  .role h3 { margin: 0 0 6px; font-size: 34px; line-height: 1.05; }
+  .role .t { margin: 0 0 14px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .role p.d { margin: 0; font-size: 14px; line-height: 1.75; color: var(--soft); }
+  .locator { justify-self: center; text-align: center; pointer-events: none; }
+  .locator .city { font-size: clamp(40px, 5vw, 72px); line-height: 1; letter-spacing: -0.02em; text-shadow: 0 0 30px rgba(6,21,39,0.9); }
+  .locator .coord { margin-top: 10px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .rolecards { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; }
+  .rc { text-align: left; font: inherit; color: var(--text); padding: 12px 12px 10px; cursor: pointer; transition: border-color 250ms ease, opacity 250ms ease, transform 250ms ease; }
+  .rc:hover { transform: translateY(-2px); }
+  .rc .nm { display: flex; align-items: center; gap: 7px; font-size: 10.5px; font-weight: 600; line-height: 1.25; }
+  .rc .yr { display: block; margin-top: 6px; font-size: 10px; letter-spacing: 0.08em; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .rc[aria-current="step"] { border-color: var(--c); box-shadow: 0 0 0 1px var(--c) inset; }
+  .rc.dim { opacity: 0.5; }
+  .bar { height: 2px; background: var(--line); }
+  .bar b { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); }
+
+  /* Static fallback: no GSAP means the roles simply stack */
+  .career:not(.live) .panel { min-height: 0; }
+  .career:not(.live) .role { position: static; padding: 0 0 22px; margin-bottom: 22px; border-bottom: 1px solid var(--line); }
+  .career:not(.live) .role:last-child { border: 0; margin: 0; padding: 0; }
+  .career:not(.live) .locator, .career:not(.live) .bar, .career:not(.live) .rolecards { display: none; }
+  .career:not(.live) .grid { grid-template-columns: 1fr; }
+
+  /* Education and markets */
+  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .duo .glass { padding: 24px 26px; }
+  .edu { margin: 0; padding: 0; list-style: none; }
+  .edu li { padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 26px; }
+  .edu li:last-child { border: 0; }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
+  .pills li { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: 12.5px; background: rgba(6,21,39,0.5); }
+  .pills .dot { width: 6px; height: 6px; }
+  .note { margin: 0; font-size: 13px; line-height: 1.75; color: var(--muted); }
+
+  /* CTA */
+  .cta { padding: 34px 32px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 24px; background: var(--glass-strong); }
+  .cta h2 { max-width: 640px; font-size: clamp(30px, 3.6vw, 48px); }
+  .btns { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { display: inline-flex; align-items: center; min-height: 46px; padding: 13px 20px; border-radius: 2px; font-size: 13px; font-weight: 600; text-decoration: none; transition: transform 180ms ease, background 180ms ease, border-color 180ms ease; }
+  .btn-primary { background: var(--accent); color: var(--ink); }
+  .btn-primary:hover { background: #E8C987; transform: translateY(-2px); }
+  .btn-ghost { border: 1px solid var(--line); color: var(--text); }
+  .btn-ghost:hover { border-color: var(--muted); transform: translateY(-2px); }
+  footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 26px 30px; font-size: 10.5px; letter-spacing: 0.06em; color: #6F87A3; }
+  footer a { color: #8FA6BF; text-decoration: none; }
+
+  @media (max-width: 980px) {
+    .wrap { width: calc(100% - 40px); }
+    .top { padding-top: 22px; flex-direction: column; gap: 6px; }
+    .hero { grid-template-columns: 1fr; min-height: 80vh; }
+    .stamp { justify-self: start; text-align: left; }
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-bottom: 90px; }
+    .head, .exp, .duo { grid-template-columns: 1fr; }
+    .head { gap: 12px; }
+    .block { padding-bottom: 100px; }
+    .career .grid { grid-template-columns: 1fr; gap: 14px; }
+    .career.live .locator { order: -1; }
+    .career.live .panel { min-height: 330px; }
+    .career .head p { display: none; }
+    .rolecards { grid-template-columns: repeat(10, minmax(96px, 1fr)); overflow-x: auto; padding-bottom: 4px; }
+    }
+  @media (max-width: 420px) {
+    .sitenav { gap: 16px; font-size: 12px; } .sitenav .navcta { display: none; }
+    .role h3 { font-size: 28px; }
+    .career.live .panel { min-height: 380px; }
+    .stat strong { font-size: 38px; }
+  }
+</style>
+<script src="nav.js" defer></script>
+</head>
+<body>
+<canvas id="c" aria-hidden="true"></canvas>
+<div class="page">
+  <div id="site-nav"></div>
+
+  <main>
+    <section class="wrap hero" data-scene="hero">
+      <div class="title">
+        <p class="eyebrow">About · Our history</p>
+        <h1 class="serif">Our <em>history</em></h1>
+        <p class="lede serif">From a power analyst’s desk in Houston in 1998 to green methanol in China: 28 years in energy, the last 20 of them originating and structuring long-term supply agreements, and how 9 Degrees East came to be.</p>
+        <p class="sub">9 Degrees East grew out of one career as an analyst, power marketer, oil major originator, consultant, broker, developer and buyer. Scroll to follow it.</p>
+        <p class="scrollhint"><i></i>Scroll</p>
+      </div>
+      <div class="stamp glass">Incorporated<br><b>September 2018</b><br>London · <b>9° East</b><br>Founder <b>Tom Fox</b></div>
+    </section>
+
+
+
+    <section class="career" id="career" aria-labelledby="career-title" data-scene="career">
+      <div class="stage">
+        <div class="wrap">
+          <div class="head" style="margin:0">
+            <div><p class="eyebrow">Tom Fox, founder</p><h2 class="serif" id="career-title">The <em>route</em></h2></div>
+            <p>Ten chapters, from a power analyst’s desk in Houston to the founding of 9 Degrees East. Select a chapter or keep scrolling.</p>
+          </div>
+          <div class="grid">
+            <div class="panel glass" id="roles">
+              <article class="role" style="--c: var(--efuels)" data-lat="42.37" data-lon="-71.11" data-city="Cambridge, MA" data-short="Harvard · MIT" data-span="1994–98"><p class="where">1994–98 · Cambridge, Massachusetts</p><h3 class="serif">Harvard and MIT</h3><p class="t">Economics, BA cum laude</p><p class="d">Studied at MIT, then Harvard, graduating in economics cum laude in 1998.</p></article>
+              <article class="role" style="--c: var(--efuels)" data-lat="29.76" data-lon="-95.37" data-city="Houston · Boston" data-short="Reliant · Calpine" data-span="1998–2003"><p class="where">1998–2003 · Houston · Boston</p><h3 class="serif">Reliant Energy and Calpine</h3><p class="t">Analyst</p><p class="d">Began in power: as an analyst at Reliant Energy in Houston, then at Calpine in Boston.</p></article>
+              <article class="role" style="--c: var(--rd)" data-lat="53.74" data-lon="-0.33" data-city="Saltend, UK" data-short="Calpine" data-span="2003–06"><p class="where">2003–06 · London · Toronto · Saltend, UK</p><h3 class="serif">Calpine</h3><p class="t">Commercial Manager, International</p><p class="d">Ran the UK business of the 1,200 MW Saltend power station: its trading strategy and power sales, its gas purchase contract, raising project finance against the operating plant, and the deal team for its sale in 2006.</p></article>
+              <article class="role" style="--c: var(--rd)" data-lat="51.51" data-lon="-0.13" data-city="London" data-short="BP Europe" data-span="2006–13"><p class="where">2006–13 · London</p><h3 class="serif">BP Integrated Supply and Trading</h3><p class="t">Commercial Analyst, then Biofuels Originator, Europe</p><p class="d">Joined BP to help set up a new origination and finance group, then built its European biofuels book: long-term ethanol and biodiesel offtake with plants in development and in operation, structured with credit, securitisation and trade finance. In 2010, after the Gulf of Mexico incident, worked on crude oil financings of BP’s upstream assets in Angola and Azerbaijan.</p></article>
+              <article class="role" style="--c: var(--rd)" data-lat="41.88" data-lon="-87.63" data-city="Chicago" data-short="BP Global" data-span="2013–18"><p class="where">2013–18 · London · Chicago</p><h3 class="serif">BP Integrated Supply and Trading</h3><p class="t">Global Biofuels Originator</p><p class="d">Led origination and structuring for BP’s US and EU trading benches, across ethanol, biodiesel, advanced biofuels and methanol: second-generation technologies from lignocellulosic ethanol to HVO and gasification, feedstocks from corn and sugarcane to municipal waste, and pricing structures for bankable ten-year deals with new projects.</p></article>
+              <article class="role" style="--c: var(--accent)" data-lat="51.51" data-lon="-0.13" data-city="London" data-short="9 Degrees East" data-span="2018–21"><p class="where">2018–21 · London · Europe · Africa</p><h3 class="serif">9 Degrees East is founded</h3><p class="t">Independent consultant in renewable energy</p><p class="d">Incorporated 9 Degrees East Limited in September 2018 and began consulting that October, advising on deal negotiations, offtake pricing, risk management, project finance and commercial agreements, for clients in renewable diesel, RNG, LPG, ethanol and biodiesel feedstocks. Alongside, consulted with Channoil on renewable fuel markets across Europe and Africa, and wrote for Biofuels International on RED II, renewable diesel and the price effects of COVID-19.</p></article>
+              <article class="role" style="--c: var(--saf)" data-lat="51.51" data-lon="-0.13" data-city="Europe" data-short="OTX · Xpansiv" data-span="2021–22"><p class="where">2021–22 · London · Europe</p><h3 class="serif">OTX, an Xpansiv company</h3><p class="t">Head of Renewable Fuels</p><p class="d">Led a three-person brokerage desk in physical biofuels and feedstocks across Europe, set its product and market strategy, and acted as Xpansiv’s internal renewable fuels lead alongside its carbon offset business.</p></article>
+              <article class="role" style="--c: var(--efuels)" data-lat="29.76" data-lon="-95.37" data-city="Houston" data-short="HIF Global" data-span="2022–24"><p class="where">2022–24 · Texas · Chile · Australia</p><h3 class="serif">HIF Global</h3><p class="t">Senior Vice President, Commercial</p><p class="d">Led all global commercial activity for HIF’s eFuels developments, negotiating offtake for 1.4 million tonnes of e-methanol in the US, 20 million gallons of e-gasoline in Chile, where the Haru Oni plant in Punta Arenas produced its first e-gasoline, and future phases of e-SAF, while turning EU, US and Japanese regulation and the economics of hydrogen, CO2 and power into pricing.</p></article>
+              <article class="role" style="--c: var(--methanol)" data-lat="31.23" data-lon="121.47" data-city="China" data-short="Maersk Tankers" data-span="2024–26"><p class="where">2024–26 · London · Copenhagen · China</p><h3 class="serif">Maersk Tankers</h3><p class="t">Senior Green Fuels Origination Lead</p><p class="d">Led supply origination of 800,000 tonnes of long-term green methanol volumes in China and structured sales into petrochemical and fuel markets, with pricing and volume terms flexible enough to carry several project FIDs at once.</p></article>
+              <article class="role" style="--c: var(--accent)" data-lat="51.51" data-lon="9" data-city="9° East" data-coord="The name · a meridian through Europe" data-short="9 Degrees East" data-span="Today"><p class="where">Today · London</p><h3 class="serif">9 Degrees East, full time</h3><p class="t">Founder</p><p class="d">Tom now runs 9 Degrees East full time, structuring the agreements that take low-carbon fuel projects to final investment decision.</p></article>
+            </div>
+            <div class="locator" aria-hidden="true"><div class="city serif" id="city">Cambridge, MA</div><div class="coord" id="coord">42.37° N · 71.11° W</div></div>
+          </div>
+          <div class="bar"><b id="bar"></b></div>
+          <div class="rolecards" id="rolecards"></div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="wrap" aria-labelledby="cta-title" data-scene="cta" style="padding-top:120px">
+      <div class="cta glass">
+        <h2 class="serif" id="cta-title">Working on a project? <em>Let’s talk.</em></h2>
+        <div class="btns"><a class="btn btn-primary" href="contact.html">Contact us</a><a class="btn btn-ghost" href="locations.html">Where we work</a></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+// Before launch, set this to true so visitors who ask for less motion get a still page.
+var RESPECT_REDUCED_MOTION = false;
+var REDUCED = RESPECT_REDUCED_MOTION && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ===== THE CONTOURS ===== Drifting isolines, like isobars on a weather chart. Scenes change their colours and drift;
+   in the career section the lines tighten into rings around each place. Fuel Weather keeps the particle field. */
+var FIELD = (function () {
+  var cv = document.getElementById('c'), ctx = cv.getContext('2d'), W, H, dpr, t = 0, last = 0;
+  var perm = new Uint8Array(512);
+  (function () { var p = []; for (var i = 0; i < 256; i++) p[i] = i; for (i = 255; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var k = p[i]; p[i] = p[j]; p[j] = k; } for (i = 0; i < 512; i++) perm[i] = p[i & 255]; })();
+  function fade(x) { return x * x * x * (x * (x * 6 - 15) + 10); }
+  function grad(h, x, y) { var a = h * 0.0245; return Math.cos(a) * x + Math.sin(a) * y; }
+  function noise(x, y) { var X = Math.floor(x) & 255, Y = Math.floor(y) & 255; x -= Math.floor(x); y -= Math.floor(y); var u = fade(x), v = fade(y), A = perm[X] + Y, B = perm[X + 1] + Y;
+    var a = grad(perm[A], x, y), b = grad(perm[B], x - 1, y), c = grad(perm[A + 1], x, y - 1), d = grad(perm[B + 1], x - 1, y - 1); return (a + (b - a) * u) + ((c + (d - c) * u) - (a + (b - a) * u)) * v; }
+
+  // Live state; GSAP tweens these numbers. Same names as before so the story code is unchanged.
+  var S = { palette: ['#D8B66E', '#E9F3FF', '#5EC8D8'], wind: 0.6, speed: 1, pull: 0, ax: 0.7, ay: 0.4, swirl: 0 };
+  var CELL = 16, cols, rows, grid;
+  var LEVELS = []; for (var lv = -0.6; lv <= 0.96; lv += 0.08) LEVELS.push(+lv.toFixed(2));
+  function rgba(hex, a) { var n = parseInt(hex.slice(1), 16); return 'rgba(' + (n >> 16) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')'; }
+  function size() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    CELL = W < 600 ? 13 : 16; cols = Math.ceil(W / CELL) + 1; rows = Math.ceil(H / CELL) + 1; grid = new Float32Array(cols * rows);
+  }
+  function sample() {
+    var dx = Math.cos(S.wind) * t * 0.9, dy = Math.sin(S.wind) * t * 0.9, ax = S.ax * W, ay = S.ay * H, R = Math.min(W, H) * 0.42;
+    for (var j = 0; j < rows; j++) for (var i = 0; i < cols; i++) {
+      var x = i * CELL, y = j * CELL;
+      var v = noise(x * 0.0019 + dx, y * 0.0019 + dy) * 0.9 + noise(x * 0.0051 - dy, y * 0.0051 + dx) * 0.22;
+      if (S.pull > 0) { var d = Math.hypot(x - ax, y - ay) / R; if (d < 1) v = v * (1 - S.pull * (1 - d)) + S.pull * (1 - d) * (1 - d) * 1.05; }
+      grid[j * cols + i] = v;
+    }
+  }
+  // Marching squares: one stroke path per level
+  function iso(level) {
+    ctx.beginPath();
+    for (var j = 0; j < rows - 1; j++) for (var i = 0; i < cols - 1; i++) {
+      var a = grid[j * cols + i], b = grid[j * cols + i + 1], c = grid[(j + 1) * cols + i + 1], d = grid[(j + 1) * cols + i];
+      var k = (a > level ? 8 : 0) | (b > level ? 4 : 0) | (c > level ? 2 : 0) | (d > level ? 1 : 0);
+      if (k === 0 || k === 15) continue;
+      var x = i * CELL, y = j * CELL;
+      var T = [x + CELL * (level - a) / (b - a), y], Rr = [x + CELL, y + CELL * (level - b) / (c - b)],
+          B = [x + CELL * (level - d) / (c - d), y + CELL], L = [x, y + CELL * (level - a) / (d - a)];
+      var segs = { 1: [L, B], 2: [B, Rr], 3: [L, Rr], 4: [T, Rr], 5: [T, L, B, Rr], 6: [T, B], 7: [T, L], 8: [T, L], 9: [T, B], 10: [T, Rr, L, B], 11: [T, Rr], 12: [L, Rr], 13: [B, Rr], 14: [L, B] }[k];
+      for (var s = 0; s < segs.length; s += 2) { ctx.moveTo(segs[s][0], segs[s][1]); ctx.lineTo(segs[s + 1][0], segs[s + 1][1]); }
+    }
+    ctx.stroke();
+  }
+  function draw() {
+    ctx.fillStyle = '#061527'; ctx.fillRect(0, 0, W, H);
+    sample();
+    for (var n = 0; n < LEVELS.length; n++) {
+      var major = n % 4 === 0;
+      ctx.strokeStyle = rgba(S.palette[n % S.palette.length], major ? 0.5 : 0.22);
+      ctx.lineWidth = major ? 1.2 : 0.8;
+      iso(LEVELS[n]);
+    }
+  }
+  function loop(now) {
+    if (now - last > 33) { t += 0.0016 * S.speed; draw(); last = now; } // about 30 frames a second is plenty for slow drift
+    requestAnimationFrame(loop);
+  }
+  addEventListener('resize', function () { size(); draw(); });
+  size(); draw();
+  if (!REDUCED) requestAnimationFrame(loop);
+  return { S: S, palette: function (list) { S.palette = list; } };
+})();
+
+/* ===== THE STORY ===== */
+(function () {
+  var roles = [].slice.call(document.querySelectorAll('.role'));
+  var cards = document.getElementById('rolecards');
+  roles.forEach(function (r, i) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'rc glass'; b.style.setProperty('--c', getComputedStyle(r).getPropertyValue('--c'));
+    b.innerHTML = '<span class="nm"><i class="dot"></i>' + r.dataset.short + '</span><span class="yr">' + r.dataset.span + '</span>';
+    cards.appendChild(b);
+  });
+  var rcs = [].slice.call(cards.children);
+  var css = getComputedStyle(document.documentElement), C = function (n) { return css.getPropertyValue('--' + n).trim(); };
+
+  if (!window.gsap || !window.ScrollTrigger || REDUCED) return; // static, fully readable page
+  gsap.registerPlugin(ScrollTrigger);
+  var S = FIELD.S;
+
+  // Opening: headline and panels rise in
+  gsap.from('.hero .title > *', { y: 30, autoAlpha: 0, duration: 1.1, ease: 'power3.out', stagger: 0.1 });
+  gsap.from('.hero .stamp', { y: 20, autoAlpha: 0, duration: 1, delay: 0.5, ease: 'power3.out' });
+
+  // Stats count up; panels drift in
+  document.querySelectorAll('[data-count]').forEach(function (s) {
+    var end = +s.dataset.count, rest = s.textContent.replace(/^\d+/, ''), o = { v: 0 };
+    gsap.to(o, { v: end, duration: 1.6, ease: 'power2.out', scrollTrigger: { trigger: s, start: 'top 92%', once: true }, onUpdate: function () { s.textContent = Math.round(o.v) + rest; } });
+  });
+  gsap.utils.toArray('.cta').forEach(function (el, i) {
+    gsap.from(el, { y: 40, autoAlpha: 0, duration: 0.9, ease: 'power3.out', delay: (i % 4) * 0.08, scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
+  });
+
+  // Scenes recolour the field and change its wind as you move down the page
+  function scene(sel, palette, wind, speed) {
+    ScrollTrigger.create({ trigger: sel, start: 'top 60%', end: 'bottom 40%',
+      onToggle: function (self) { if (self.isActive) { FIELD.palette(palette); gsap.to(S, { wind: wind, speed: speed, pull: 0, duration: 1.6, ease: 'sine.inOut' }); } } });
+  }
+  scene('[data-scene="hero"]', [C('accent'), C('efuels'), C('methanol')], 0.6, 1);
+  scene('[data-scene="cta"]', [C('accent'), C('efuels')], 0.4, 0.7);
+
+  // Career: pin, crossfade roles, and gather the field around each place
+  var career = document.getElementById('career'); career.classList.add('live');
+  var cityEl = document.getElementById('city'), coordEl = document.getElementById('coord'), bar = document.getElementById('bar');
+  var locator = document.querySelector('.locator');
+  gsap.set(roles, { autoAlpha: 0, y: 24 });
+  var current = -1;
+  function dms(lat, lon) { return Math.abs(lat).toFixed(2) + '° ' + (lat >= 0 ? 'N' : 'S') + ' · ' + Math.abs(lon).toFixed(2) + '° ' + (lon >= 0 ? 'E' : 'W'); }
+  function anchor() { var r = locator.getBoundingClientRect(); return { x: (r.left + r.width / 2) / innerWidth, y: (r.top + r.height / 2) / innerHeight }; }
+  function gather() { var a = anchor(); gsap.to(S, { ax: a.x, ay: a.y, pull: 0.9, speed: 1.3, duration: 1.2, ease: 'power2.out' }); }
+  function go(i) {
+    if (i === current) return;
+    var prev = current; current = i;
+    if (prev > -1) gsap.to(roles[prev], { autoAlpha: 0, y: i > prev ? -24 : 24, duration: 0.35, ease: 'power2.in', overwrite: true });
+    gsap.fromTo(roles[i], { autoAlpha: 0, y: i > prev ? 24 : -24 }, { autoAlpha: 1, y: 0, duration: 0.5, delay: prev > -1 ? 0.2 : 0, ease: 'power2.out', overwrite: true });
+    var r = roles[i], col = getComputedStyle(r).getPropertyValue('--c').trim();
+    cityEl.textContent = r.dataset.city; coordEl.textContent = r.dataset.coord || dms(+r.dataset.lat, +r.dataset.lon);
+    gsap.fromTo([cityEl, coordEl], { autoAlpha: 0, scale: 0.94 }, { autoAlpha: 1, scale: 1, duration: 0.6, ease: 'power3.out', stagger: 0.06 });
+    FIELD.palette([col, col, C('efuels'), col]);
+    S.swirl = i % 2 ? 1 : -1;
+    gather();
+    rcs.forEach(function (b, j) { if (j === i) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); b.classList.toggle('dim', j !== i); });
+  }
+  go(0);
+  var st = ScrollTrigger.create({
+    trigger: '#career .stage', start: 'top top', end: function () { return '+=' + innerHeight * roles.length * 0.75; },
+    pin: true, anticipatePin: 1, invalidateOnRefresh: true,
+    snap: { snapTo: 1 / (roles.length - 1), duration: { min: 0.2, max: 0.5 }, delay: 0.1, ease: 'power1.inOut' },
+    onUpdate: function (self) { bar.style.transform = 'scaleX(' + self.progress + ')'; go(Math.min(roles.length - 1, Math.round(self.progress * (roles.length - 1)))); },
+    onToggle: function (self) { if (self.isActive) gather(); else gsap.to(S, { pull: 0, speed: 1, duration: 1.2 }); }
+  });
+  rcs.forEach(function (b, i) { b.addEventListener('click', function () { window.scrollTo({ top: st.start + (st.end - st.start) * (i / (roles.length - 1)), behavior: 'smooth' }); }); });
+  addEventListener('resize', function () { var a = anchor(); S.ax = a.x; S.ay = a.y; });
+})();
+</script>
+</body>
+</html>

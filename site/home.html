@@ -83,9 +83,10 @@
   .fuel-btn:hover { border-color: rgba(160,190,220,0.45); transform: translateY(-2px); }
   .fuel-btn .nm { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; }
   .fuel-btn .what { font-family: 'Instrument Serif', Georgia, serif; font-size: 19px; line-height: 1.15; color: var(--soft); }
-  .fuel-btn .more { margin-top: auto; display: flex; align-items: center; gap: 8px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
-  .fuel-btn .plus { position: relative; width: 9px; height: 9px; flex: none; }
-  .fuel-btn .plus::before, .fuel-btn .plus::after { content: ""; position: absolute; left: 0; top: 4px; width: 9px; height: 1.2px; background: var(--c); transition: transform 240ms ease; }
+  .fuel-btn .more { margin-top: auto; align-self: flex-end; display: flex; padding: 4px; }
+  .fuel-btn .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .fuel-btn .plus { position: relative; width: 11px; height: 11px; flex: none; }
+  .fuel-btn .plus::before, .fuel-btn .plus::after { content: ""; position: absolute; left: 0; top: 5px; width: 11px; height: 1.4px; background: var(--c); transition: transform 240ms ease; }
   .fuel-btn .plus::after { transform: rotate(90deg); }
   .fuel-btn[aria-expanded="true"] { border-color: var(--c); box-shadow: 0 0 0 1px var(--c) inset; }
   .fuel-btn[aria-expanded="true"] .plus::after { transform: rotate(0deg); }
@@ -161,22 +162,13 @@
   }
   @media (max-width: 420px) { .sitenav { gap: 16px; font-size: 12px; } .sitenav .navcta { display: none; } .btn { flex: 1; } }
 </style>
+<script src="nav.js" defer></script>
+<script src="land.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <div class="wrap top">
-    <a class="home" href="home.html" aria-label="9 Degrees East home">
-      <svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" aria-hidden="true"><circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="2.6" stroke-dasharray="196.5 80" transform="rotate(120 50 50)"/><circle cx="46" cy="43" r="16" stroke="currentColor" stroke-width="8"/><path d="M60.5 49.8 L46.8 79" stroke="currentColor" stroke-width="8"/><circle cx="71" cy="25" r="5" stroke="#D8B66E" stroke-width="3.4"/></svg>
-      <span>9 DEGREES EAST</span>
-    </a>
-    <nav class="sitenav" aria-label="Main">
-      <a href="fuel-weather.html">Fuel Weather</a>
-      <a href="policy-tracker.html">Policy</a>
-      <a href="about.html">About</a>
-      <a class="navcta" href="mailto:tomfox@9degreeseast.com">Get in touch</a>
-    </nav>
-  </div>
+  <div id="site-nav"></div>
 
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
@@ -210,11 +202,11 @@
     <section class="wrap fuels" aria-labelledby="fuels-label">
         <div class="fuel-head"><h2 id="fuels-label">Across low-carbon fuels</h2><a href="fuel-weather.html">See today's Fuel Weather →</a></div>
         <ul class="fuel-list">
-            <li><button class="fuel-btn" type="button" style="--c: var(--efuels)" aria-expanded="false" aria-controls="fuel-efuels"><span class="nm"><i class="dot"></i>eFuels</span><span class="what">Green hydrogen and captured CO2</span><span class="more"><span class="plus" aria-hidden="true"></span>What we do</span></button></li>
-            <li><button class="fuel-btn" type="button" style="--c: var(--methanol)" aria-expanded="false" aria-controls="fuel-methanol"><span class="nm"><i class="dot"></i>Green methanol</span><span class="what">The new fuel for shipping</span><span class="more"><span class="plus" aria-hidden="true"></span>What we do</span></button></li>
-            <li><button class="fuel-btn" type="button" style="--c: var(--saf)" aria-expanded="false" aria-controls="fuel-saf"><span class="nm"><i class="dot"></i>SAF</span><span class="what">Sustainable aviation fuel</span><span class="more"><span class="plus" aria-hidden="true"></span>What we do</span></button></li>
-            <li><button class="fuel-btn" type="button" style="--c: var(--rd)" aria-expanded="false" aria-controls="fuel-rd"><span class="nm"><i class="dot"></i>Renewable diesel</span><span class="what">A drop-in for fossil diesel</span><span class="more"><span class="plus" aria-hidden="true"></span>What we do</span></button></li>
-            <li><button class="fuel-btn" type="button" style="--c: var(--rng)" aria-expanded="false" aria-controls="fuel-rng"><span class="nm"><i class="dot"></i>Renewable natural gas</span><span class="what">Biomethane for grids and transport</span><span class="more"><span class="plus" aria-hidden="true"></span>What we do</span></button></li>
+            <li><button class="fuel-btn" type="button" style="--c: var(--efuels)" aria-expanded="false" aria-controls="fuel-efuels"><span class="nm"><i class="dot"></i>eFuels</span><span class="what">Green hydrogen and captured CO2</span><span class="more"><span class="plus" aria-hidden="true"></span><span class="sr">What we do</span></span></button></li>
+            <li><button class="fuel-btn" type="button" style="--c: var(--methanol)" aria-expanded="false" aria-controls="fuel-methanol"><span class="nm"><i class="dot"></i>Green methanol</span><span class="what">The new fuel for shipping</span><span class="more"><span class="plus" aria-hidden="true"></span><span class="sr">What we do</span></span></button></li>
+            <li><button class="fuel-btn" type="button" style="--c: var(--saf)" aria-expanded="false" aria-controls="fuel-saf"><span class="nm"><i class="dot"></i>SAF</span><span class="what">Sustainable aviation fuel</span><span class="more"><span class="plus" aria-hidden="true"></span><span class="sr">What we do</span></span></button></li>
+            <li><button class="fuel-btn" type="button" style="--c: var(--rd)" aria-expanded="false" aria-controls="fuel-rd"><span class="nm"><i class="dot"></i>Renewable diesel</span><span class="what">A drop-in for fossil diesel</span><span class="more"><span class="plus" aria-hidden="true"></span><span class="sr">What we do</span></span></button></li>
+            <li><button class="fuel-btn" type="button" style="--c: var(--rng)" aria-expanded="false" aria-controls="fuel-rng"><span class="nm"><i class="dot"></i>Renewable natural gas</span><span class="what">Biomethane for grids and transport</span><span class="more"><span class="plus" aria-hidden="true"></span><span class="sr">What we do</span></span></button></li>
         </ul>
 
         <div class="fuel-panel" id="fuel-panel">
@@ -268,7 +260,7 @@
       <div class="grid">
         <a class="tile glass" href="fuel-weather.html" style="--c: var(--methanol)"><span class="k"><i class="dot"></i>Market conditions</span><h3 class="serif">Fuel Weather</h3><p>Price pressure and turbulence across the five fuels, from public market data. Updated every Monday.</p><span class="go">Open Fuel Weather <span>→</span></span></a>
         <a class="tile glass" href="policy-tracker.html" style="--c: var(--rng)"><span class="k"><i class="dot"></i>Regulation</span><h3 class="serif">Policy Tracker</h3><p>New rules and announcements from the US, EU, UK, China and global shipping, checked every week.</p><span class="go">Open the tracker <span>→</span></span></a>
-        <a class="tile glass" href="about.html" style="--c: var(--saf)"><span class="k"><i class="dot"></i>About us</span><h3 class="serif">9 Degrees East</h3><p>Twenty years on every side of the table, from oil major trading desks to eFuels and shipping.</p><span class="go">Meet the founder <span>→</span></span></a>
+        <a class="tile glass" href="about.html" style="--c: var(--saf)"><span class="k"><i class="dot"></i>About us</span><h3 class="serif">9 Degrees East</h3><p>28 years in energy, 20 of them structuring long-term supply deals, from oil major trading desks to eFuels and shipping.</p><span class="go">Meet the founder <span>→</span></span></a>
       </div>
     </section>
 
@@ -302,7 +294,7 @@
     </section>
   </main>
 
-  <footer class="wrap"><span>© 2026 9 Degrees East</span><span>Commercial advisory for low-carbon fuels · London</span></footer>
+  <div id="site-footer"></div>
 
 <script>
   // ===== Classic canvas globe: kept as the fallback if the 3D globe cannot load =====
@@ -594,26 +586,17 @@
   // ===== 3D globe (Three.js + Natural Earth land, via world-atlas). Falls back to the canvas globe if anything fails. =====
   (function () {
     var wrap = document.getElementById('globe-wrap'), old = document.getElementById('globe');
-    var LIBS = ['https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js', 'https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js'];
-    var LAND = 'https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/land-110m.json';
+    var LIBS = ['https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js'];
     function load(src) { return new Promise(function (ok, no) { var s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); }); }
     var fail = function () { if (window.oldGlobe) window.oldGlobe(); };
     var timer = setTimeout(fail, 8000); // slow network: show the classic globe rather than nothing
-    Promise.all(LIBS.map(load)).then(function () { return fetch(LAND); }).then(function (r) { if (!r.ok) throw 0; return r.json(); })
-      .then(function (topo) { clearTimeout(timer); build(topojson.feature(topo, topo.objects.land)); })
+    Promise.all(LIBS.map(load))
+      .then(function () { if (!window.NINE_LAND) throw 0; clearTimeout(timer); build(); })
       .catch(function () { clearTimeout(timer); fail(); });
 
-    function build(land) {
+    function build() {
       var D = Math.PI / 180, GOLD = 0xD8B66E;
-      // Land mask: rasterise the land polygons onto an equirectangular canvas and read it back
-      var MW = 1440, MH = 720, mk = document.createElement('canvas'); mk.width = MW; mk.height = MH;
-      var mx = mk.getContext('2d'); mx.fillStyle = '#fff';
-      land.features.forEach(function (f) {
-        var polys = f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates;
-        polys.forEach(function (poly) { mx.beginPath(); poly.forEach(function (ring) { ring.forEach(function (c, i) { var x = (c[0] + 180) / 360 * MW, y = (90 - c[1]) / 180 * MH; i ? mx.lineTo(x, y) : mx.moveTo(x, y); }); mx.closePath(); }); mx.fill('evenodd'); });
-      });
-      var mask = mx.getImageData(0, 0, MW, MH).data;
-      function isLand(lat, lon) { var x = Math.min(MW - 1, Math.floor((lon + 180) / 360 * MW)), y = Math.min(MH - 1, Math.floor((90 - lat) / 180 * MH)); return mask[(y * MW + x) * 4] > 128; }
+      var isLand = NINE_LAND.isLand; // built-in Natural Earth land map (land.js)
       function vec(lat, lon, r) { r = r || 1; var p = lat * D, l = lon * D; return new THREE.Vector3(r * Math.cos(p) * Math.sin(l), r * Math.sin(p), r * Math.cos(p) * Math.cos(l)); }
 
       // Scene

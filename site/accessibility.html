@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accessibility | 9 Degrees East</title>
+<meta name="description" content="How 9 Degrees East makes its website accessible, and how to report a problem.">
+<meta name="theme-color" content="#061527">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<style>
+  /* Notices: a calm reading page. Contents list on the left, numbered sections on the right. */
+  :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  html { scroll-behavior: smooth; }
+  body { min-height: 100vh; display: flex; flex-direction: column; color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+         background: radial-gradient(900px 600px at 85% 0%, rgba(31,74,122,0.24), transparent 65%), var(--ink); background-attachment: fixed; }
+  ::selection { background: var(--accent); color: var(--ink); }
+  a { color: var(--accent); } a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .wrap { width: min(100% - 80px, 1080px); margin-inline: auto; }
+  main { flex: 1; }
+  .head { padding-block: 80px 40px; }
+  .k { display: flex; align-items: center; gap: 12px; margin: 0 0 16px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .k::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+  h1 { margin: 0 0 16px; font: 400 clamp(46px, 6vw, 80px)/1 'Instrument Serif', Georgia, serif; letter-spacing: -0.02em; }
+  .intro { margin: 0; max-width: 640px; font: 400 clamp(19px, 1.8vw, 23px)/1.45 'Instrument Serif', Georgia, serif; color: var(--soft); }
+  .updated { margin: 18px 0 0; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
+  .body { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 56px; padding-bottom: 80px; }
+  .toc { position: sticky; top: 100px; align-self: start; margin: 0; padding: 0; list-style: none; border-left: 1px solid var(--line); }
+  .toc a { display: block; padding: 6px 0 6px 16px; font-size: 13px; color: var(--muted); text-decoration: none; }
+  .toc a:hover { color: var(--text); }
+  article section { padding: 0 0 30px; margin-bottom: 30px; border-bottom: 1px solid var(--line); scroll-margin-top: 100px; }
+  article section:last-child { border-bottom: 0; }
+  article h2 { margin: 0 0 14px; font: 400 30px/1.15 'Instrument Serif', Georgia, serif; }
+  article h2 span { font: 500 12px Manrope, sans-serif; color: var(--accent); margin-right: 12px; vertical-align: 6px; font-variant-numeric: tabular-nums; }
+  article h3 { margin: 22px 0 8px; font-size: 14px; font-weight: 600; color: var(--text); }
+  article p, article li { font-size: 14.5px; line-height: 1.8; color: var(--soft); max-width: 680px; }
+  article p { margin: 0 0 12px; }
+  article ul { margin: 0 0 12px; padding-left: 20px; }
+  article b { color: var(--text); font-weight: 600; }
+  .facts { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); max-width: 680px; }
+  .facts li { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+  .facts li[hidden] { display: none; }
+  .facts li > span:first-child { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); padding-top: 3px; }
+  .facts li > span:last-child { color: var(--text); }
+  .tbl { width: 100%; max-width: 720px; border-collapse: collapse; font-size: 13.5px; margin: 6px 0 14px; }
+  .tbl th { text-align: left; font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); }
+  .tbl td { padding: 11px 12px 11px 0; border-bottom: 1px solid var(--line); color: var(--soft); vertical-align: top; line-height: 1.6; }
+  .tbl td:first-child { color: var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; white-space: nowrap; }
+  .scroll { overflow-x: auto; }
+  .btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; margin-top: 6px; border: 0; border-radius: 2px; background: var(--accent); color: var(--ink); font: 600 13px Manrope, sans-serif; text-decoration: none; cursor: pointer; }
+  @media (max-width: 860px) { .wrap { width: calc(100% - 40px); } .body { grid-template-columns: minmax(0, 1fr); gap: 24px; } .toc { position: static; display: none; } .facts li { grid-template-columns: 1fr; gap: 2px; } .head { padding-block: 56px 28px; } }
+</style>
+<script src="nav.js" defer></script>
+</head>
+<body>
+  <div id="site-nav"></div>
+  <main>
+    <header class="wrap head">
+      <p class="k">Notices</p>
+      <h1>Accessibility</h1>
+      <p class="updated">Last updated 20 October 2026</p>
+    </header>
+    <div class="wrap body">
+      <ol class="toc" aria-label="On this page"><li><a href="#aim">Our aim</a></li><li><a href="#features">What we do</a></li><li><a href="#limits">Known limitations</a></li><li><a href="#feedback">Tell us about a problem</a></li><li><a href="#prepared">About this statement</a></li></ol>
+      <article>
+        <section id="aim"><h2><span>01</span>Our aim</h2><p>We aim to meet the <b>Web Content Accessibility Guidelines (WCAG) 2.2 at level AA</b>, the widely recognised standard for accessible websites.</p></section>
+        <section id="features"><h2><span>02</span>What we do</h2><ul><li>Every page can be used with a keyboard, with a visible focus outline.</li><li>Pages use proper headings, labels and landmarks for screen readers.</li><li>Text and controls are designed for strong colour contrast on our dark background.</li><li>The site respects your device’s <b>reduce motion</b> setting: if it is on, animations are replaced by still versions.</li><li>Pages work at any zoom level and on phones, without sideways scrolling.</li><li>Information shown in animations, globes and charts is also available as text. Fuel Weather charts include a table of the numbers.</li><li>The contact form explains any problem next to the field it concerns.</li></ul></section>
+        <section id="limits"><h2><span>03</span>Known limitations</h2><ul><li>The <b>3D globes</b> on the homepage and Locations page are decorative and cannot be explored with a screen reader. Everything they show is listed in the text beside them.</li><li>The animated <b>Fuel Weather</b> background is decorative; the fuel cards and their charts carry the information.</li><li>Policy Tracker headlines from non-English sources are <b>machine-translated</b> and may read awkwardly.</li><li>Links to other sites, such as official regulators or LinkedIn, are outside our control.</li></ul><p>We are working to improve these.</p></section>
+        <section id="feedback"><h2><span>04</span>Tell us about a problem</h2><p>If something on this site is hard to use, or you need information in another format, please email <a href="mailto:tomfox@9degreeseast.com">tomfox@9degreeseast.com</a> and tell us the page and the problem. We will reply as soon as we can.</p></section>
+        <section id="prepared"><h2><span>05</span>About this statement</h2><p>This statement was prepared on 20 October 2026 from our own review of the site. We will review it whenever the site changes significantly.</p></section>
+      </article>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+</body>
+</html>

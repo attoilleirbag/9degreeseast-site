@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The 9DE Journal | 9 Degrees East</title>
+<meta name="theme-color" content="#061527">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<style>
+  /* Page shell: shared menu, title and intro, and placeholder slots for the sections the page will hold. */
+  :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E; --c: #5EC8D8; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { min-height: 100vh; display: flex; flex-direction: column; color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+         background: radial-gradient(900px 600px at 85% 0%, rgba(31,74,122,0.28), transparent 65%), var(--ink); background-attachment: fixed; }
+  ::selection { background: var(--accent); color: var(--ink); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .wrap { width: min(100% - 80px, 1180px); margin-inline: auto; }
+  .serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+  .glass { background: var(--glass); border: 1px solid var(--line); border-radius: 3px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  main { flex: 1; }
+  .head { padding-block: 90px 50px; animation: enter 800ms ease both; }
+  .k { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--c); }
+  .k::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
+  h1 { margin: 0 0 18px; font-size: clamp(48px, 7vw, 96px); line-height: 0.98; letter-spacing: -0.025em; text-wrap: balance; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .intro { margin: 0; max-width: 620px; font-family: 'Instrument Serif', Georgia, serif; font-size: clamp(20px, 2vw, 26px); line-height: 1.4; color: var(--soft); }
+  .slots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding-bottom: 100px; }
+  .slot { padding: 22px 24px; min-height: 150px; display: flex; flex-direction: column; gap: 8px; animation: enter 800ms 150ms ease both; }
+  .slot .n { font-size: 11px; color: var(--c); font-variant-numeric: tabular-nums; }
+  .slot h2 { margin: 0; font-size: 28px; line-height: 1.1; }
+  .slot p { margin: 0; font-size: 13px; color: var(--faint); }
+  footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 22px 30px; border-top: 1px solid var(--line); font-size: 10.5px; letter-spacing: 0.06em; color: var(--faint); }
+  @keyframes enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @media (max-width: 700px) { .wrap { width: calc(100% - 40px); } .head { padding-block: 56px 32px; } .slots { grid-template-columns: 1fr; } }
+
+  /* Journal feed: one list, filtered by source. Substack items are added automatically each week by scripts/update-journal.mjs. */
+  .feed { padding-bottom: 100px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; font: 600 12px Manrope, sans-serif; color: var(--soft); background: rgba(9,28,50,0.6); border: 1px solid var(--line); border-radius: 999px; cursor: pointer; transition: border-color .2s, color .2s; }
+  .chip i { width: 7px; height: 7px; border-radius: 50%; background: var(--sc); box-shadow: 0 0 6px var(--sc); }
+  .chip small { font-weight: 500; color: var(--faint); }
+  .chip[aria-pressed="true"] { border-color: var(--sc); color: var(--text); }
+  .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .card { display: flex; flex-direction: column; gap: 10px; padding: 22px 24px; color: inherit; text-decoration: none; transition: border-color .25s, transform .25s; }
+  a.card:hover { border-color: var(--sc); transform: translateY(-2px); }
+  .card .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 11px; color: var(--faint); }
+  .card .src { display: inline-flex; align-items: center; gap: 7px; font-size: 10px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--sc); }
+  .card .src::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--sc); box-shadow: 0 0 6px var(--sc); }
+  .card h2 { margin: 0; font-size: 27px; line-height: 1.12; }
+  .card p { margin: 0; font-size: 13.5px; line-height: 1.7; color: var(--soft); }
+  .card .go { margin-top: auto; padding-top: 6px; font-size: 12px; font-weight: 600; color: var(--accent); }
+  .card.waiting { border-style: dashed; }
+  .card.waiting p { color: var(--faint); }
+  .credit { margin: 18px 0 0; font-size: 12px; color: var(--faint); }
+  .credit a { color: var(--accent); }
+  @media (max-width: 700px) { .cards { grid-template-columns: 1fr; } }
+</style>
+<script src="nav.js" defer></script>
+</head>
+<body>
+  <div id="site-nav"></div>
+  <main>
+    <header class="wrap head">
+      <p class="k">Insights</p>
+      <h1 class="serif">The 9DE <em>Journal</em></h1>
+      <p class="intro">Articles and commentary from 9 Degrees East, including posts from Substack and LinkedIn.</p>
+    </header>
+    <section class="wrap feed" aria-label="Articles">
+      <div class="chips" id="chips" role="group" aria-label="Filter by source"></div>
+      <div class="cards" id="cards"></div>
+      <p class="credit">Articles by or reposted by Tom Fox. <a href="https://www.linkedin.com/in/tom-fox-energy/" target="_blank" rel="noopener noreferrer">Follow on LinkedIn →</a></p>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+<script>
+/* ===== DATA ===== The Journal's list. Substack posts are added automatically each week (scripts/update-journal.mjs);
+   LinkedIn and press items are added by hand. source: journal | substack | linkedin | press. date: YYYY-MM-DD or YYYY-MM or YYYY. */
+var JOURNAL = /*DATA:START*/{
+  "updated": "2026-10-20",
+  "substack": { "url": "https://tomfoxlondon.substack.com", "name": "" },
+  "items": [
+    { "source": "press", "outlet": "Biofuels International", "date": "2020-04", "title": "From RED to RED II", "summary": "The next stage of European biofuels legislation, and why moving from RED to RED II is full of complicated, fascinating opportunities.", "url": "" },
+    { "source": "press", "outlet": "Biofuels International", "date": "2020", "title": "The COVID-19 price effect", "summary": "How the pandemic moved biofuel and fossil fuel prices differently, and how it accelerated structural trends already under way.", "url": "" },
+    { "source": "press", "outlet": "Biofuels International", "date": "2021", "title": "Renewable diesel for the US market", "summary": "The buzz around HVO and renewable diesel: a lot of traditional capacity in the queue, and some new approaches worth considering.", "url": "" },
+    { "source": "press", "outlet": "ACI Oleofuels Online Series", "date": "2022-04", "title": "Talk: renewable diesel feedstocks", "summary": "Hosted a table on renewable diesel, the feedstock supply challenge, and the emerging technologies that could bring more renewable diesel and SAF online.", "url": "" }
+  ]
+}/*DATA:END*/;
+
+(function () {
+  var SOURCES = { all: ['All', '#D8B66E'], journal: ['The 9DE Journal', '#D8B66E'], substack: ['Substack', '#FF8A4C'], linkedin: ['LinkedIn', '#5EC8D8'], press: ['Press and talks', '#A9A2F0'] };
+  var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function when(d) { var p = String(d).split('-'); return p.length >= 2 ? (p[2] ? (+p[2]) + ' ' : '') + MONTHS[+p[1] - 1] + ' ' + p[0] : esc(d); }
+  var items = JOURNAL.items.slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+  var counts = {}; items.forEach(function (i) { counts[i.source] = (counts[i.source] || 0) + 1; });
+  var order = ['all', 'journal', 'substack', 'linkedin', 'press'];
+  var chips = document.getElementById('chips'), cards = document.getElementById('cards'), active = 'all';
+  chips.innerHTML = order.filter(function (k) { return k === 'all' || counts[k] || k === 'substack' || k === 'linkedin'; }).map(function (k) {
+    var n = k === 'all' ? items.length : (counts[k] || 0);
+    return '<button class="chip" type="button" data-s="' + k + '" style="--sc:' + SOURCES[k][1] + '" aria-pressed="' + (k === active) + '"><i></i>' + SOURCES[k][0] + ' <small>' + n + '</small></button>';
+  }).join('');
+  function waiting(k) {
+    var text = k === 'substack'
+      ? (JOURNAL.substack.url ? 'New posts from <b>' + esc(JOURNAL.substack.name || 'our Substack') + '</b> will appear here automatically each week.' : 'Posts from the 9 Degrees East Substack will appear here automatically each week, once the newsletter is live.')
+      : 'Selected LinkedIn posts by Tom Fox will appear here. <a href="https://www.linkedin.com/in/tom-fox-energy/" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">See them on LinkedIn →</a>';
+    return '<div class="card glass waiting" style="--sc:' + SOURCES[k][1] + '"><span class="src">' + SOURCES[k][0] + '</span><p>' + text + '</p></div>';
+  }
+  function render() {
+    var list = items.filter(function (i) { return active === 'all' || i.source === active; });
+    var html = list.map(function (i) {
+      var s = SOURCES[i.source] || SOURCES.journal, tag = i.url ? 'a' : 'article';
+      var href = i.url ? ' href="' + esc(i.url) + '"' + (/^https?:/.test(i.url) ? ' target="_blank" rel="noopener noreferrer"' : '') : '';
+      var outlet = i.outlet ? ' · ' + esc(i.outlet) : '';
+      return '<' + tag + ' class="card glass" style="--sc:' + s[1] + '"' + href + '><div class="meta"><span class="src">' + s[0] + '</span><span>' + when(i.date) + outlet + (i.reposted ? ' · Reposted' : '') + '</span></div>' +
+        '<h2 class="serif">' + esc(i.title) + '</h2>' + (i.summary ? '<p>' + esc(i.summary) + '</p>' : '') + (i.url ? '<span class="go">Read on ' + (i.source === 'press' ? esc(i.outlet || 'the publisher') : s[0]) + ' →</span>' : '') + '</' + tag + '>';
+    }).join('');
+    if ((active === 'all' || active === 'substack') && !counts.substack) html += waiting('substack');
+    if ((active === 'all' || active === 'linkedin') && !counts.linkedin) html += waiting('linkedin');
+    cards.innerHTML = html;
+  }
+  chips.addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; active = b.dataset.s; chips.querySelectorAll('.chip').forEach(function (c) { c.setAttribute('aria-pressed', String(c === b)); }); render(); });
+  render();
+})();
+</script>
+
+</body>
+</html>

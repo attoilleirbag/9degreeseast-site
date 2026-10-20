@@ -33,7 +33,7 @@
 
   .lockup { display: flex; align-items: center; gap: clamp(18px, 2.6vw, 30px); }
   .mark { width: clamp(84px, 11vw, 132px); height: auto; overflow: visible; color: var(--text); }
-  .d { fill: none; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .d { fill: none; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; } /* hidden until drawn: round caps would otherwise show as dots */
   .ring { fill: none; stroke: var(--accent); transform-origin: 71px 25px; transform-box: view-box; opacity: 0; }
   .ping, .ping2 { fill: none; stroke: var(--accent); transform-origin: 71px 25px; transform-box: view-box; opacity: 0; }
   .comet { fill: #FFE9B8; opacity: 0; filter: drop-shadow(0 0 3px #F0CF85); }
@@ -42,7 +42,7 @@
   .play .ring { animation: pop 620ms 3380ms cubic-bezier(.2,1.8,.4,1) forwards; }
   .play .ping { animation: ping 1600ms 3420ms ease-out forwards; }
   .play .ping2 { animation: ping 1900ms 3640ms ease-out forwards; }
-  @keyframes dash { to { stroke-dashoffset: 0; } }
+  @keyframes dash { from { opacity: 1; } to { stroke-dashoffset: 0; opacity: 1; } }
   @keyframes pop { from { opacity: 0; transform: scale(0.2); } to { opacity: 1; transform: scale(1); } }
   @keyframes ping { 0% { opacity: 0.9; transform: scale(1); } 100% { opacity: 0; transform: scale(5); } }
 
@@ -73,7 +73,7 @@
 
   /* Second visit in the same session, or no motion: show the finished frame at once */
   .still .mer::before, .still .word .rule { transform: none; }
-  .still .d { stroke-dashoffset: 0; }
+  .still .d { stroke-dashoffset: 0; opacity: 1; }
   .still .ring, .still .tag, .still .word span.w { opacity: 1; transform: none; }
   .still .enter { opacity: 1; transform: none; }
 
@@ -87,7 +87,7 @@
   @keyframes dim { to { opacity: 0; } }
   .leaving .core { transition: opacity 300ms ease; opacity: 0; }
 
-  .corner { position: fixed; bottom: 22px; left: 0; right: 0; display: flex; justify-content: space-between; padding-inline: max(22px, env(safe-area-inset-left, 0px)) max(22px, env(safe-area-inset-right, 0px)); font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--faint); opacity: 0; }
+  .corner { position: fixed; bottom: 22px; left: 0; right: 0; display: flex; justify-content: flex-end; padding-inline: max(22px, env(safe-area-inset-left, 0px)) max(22px, env(safe-area-inset-right, 0px)); font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--faint); opacity: 0; }
   .play .corner { animation: show 1200ms 4400ms ease forwards; }
   .still .corner { opacity: 1; }
 
@@ -124,7 +124,7 @@
     <a class="enter" id="enter" href="home.html"><span class="ln" aria-hidden="true"></span>Enter<span class="ar" aria-hidden="true">→</span></a>
   </div>
   <div class="mer bot" aria-hidden="true"></div>
-  <div class="corner" aria-hidden="true"><span>London</span><span>Est. 2018</span></div>
+  <div class="corner" aria-hidden="true"><span>Est. 2018</span></div>
   <div class="wipe" aria-hidden="true"></div>
 </main>
 <script>
@@ -142,7 +142,7 @@
     var total = path.getTotalLength(), arc = 2 * Math.PI * 44 * (256 / 360), DUR = 2100, START = 1300;
     function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
     setTimeout(function () {
-      var t0 = performance.now(); c.style.transition = 'opacity 300ms'; c.style.opacity = 1;
+      var t0 = performance.now(); c.style.transition = 'opacity 300ms'; c.style.opacity = 1; orbit.style.opacity = 1;
       requestAnimationFrame(function frame(now) {
         var t = Math.min(1, (now - t0) / DUR), d = ease(t) * total, pt = path.getPointAtLength(d);
         c.setAttribute('cx', pt.x); c.setAttribute('cy', pt.y);

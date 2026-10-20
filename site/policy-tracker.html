@@ -31,7 +31,7 @@
   .sitenav a:hover, .sitenav a[aria-current="page"] { color: var(--text); }
   .sitenav .cta { color: var(--accent); }
 
-  header.intro { margin: 64px 0 40px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: end; }
+  header.intro { margin: 56px 0 40px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: end; }
   .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
   .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
   h1 { margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(44px, 6vw, 80px); line-height: 0.98; letter-spacing: -0.02em; }
@@ -87,21 +87,11 @@
   }
   @media (max-width: 420px) { .sitenav .cta { display: none; } .card { padding: 16px 16px 14px; } }
 </style>
+<script src="nav.js" defer></script>
 </head>
 <body>
+<div id="site-nav"></div>
 <div class="wrap">
-  <div class="top">
-    <a class="home" href="home.html" aria-label="9 Degrees East home">
-      <svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" aria-hidden="true"><circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="2.6" stroke-dasharray="196.5 80" transform="rotate(120 50 50)"/><circle cx="46" cy="43" r="16" stroke="currentColor" stroke-width="8"/><path d="M60.5 49.8 L46.8 79" stroke="currentColor" stroke-width="8"/><circle cx="71" cy="25" r="5" stroke="#D8B66E" stroke-width="3.4"/></svg>
-      <span>9 DEGREES EAST</span>
-    </a>
-    <nav class="sitenav" aria-label="Main">
-      <a href="fuel-weather.html">Fuel Weather</a>
-      <a href="policy-tracker.html" aria-current="page">Policy</a>
-      <a href="about.html">About</a>
-      <a class="cta" href="mailto:tomfox@9degreeseast.com">Get in touch</a>
-    </nav>
-  </div>
 
   <header class="intro">
     <div>
@@ -121,6 +111,7 @@
     <span>Sources: Federal Register, GOV.UK, European Commission, IMO, NDRC and NEA</span>
   </div>
 </div>
+<div id="site-footer"></div>
 
 <script>
 /* ===== DATA ===== Written by scripts/update-policy.mjs each week and published automatically. */
@@ -251,7 +242,7 @@ regions.innerHTML = REGIONS.map(function (r) {
 
 function show(r) {
   active = r;
-  try { localStorage.setItem('9de-policy-region', r); } catch (e) {}
+  if (window.NINE_CONSENT && NINE_CONSENT.prefs()) { try { localStorage.setItem('9de-policy-region', r); } catch (e) {} }
   regions.querySelectorAll('.reg').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.r === r ? 'true' : 'false'); });
   var shown = 0;
   list.querySelectorAll('.item').forEach(function (li) { var on = r === 'All' || li.dataset.r === r; li.hidden = !on; if (on) shown++; });

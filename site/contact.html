@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact | 9 Degrees East</title>
+<meta name="description" content="Contact 9 Degrees East about offtake strategy, deal structuring and supply agreements for low-carbon fuels.">
+<meta name="theme-color" content="#061527">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<style>
+  /* Contact: the direct routes on the left, the form in a glass panel on the right. Messages go through Netlify Forms to Tom's inbox. */
+  :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --glass-strong: rgba(9,28,50,0.86); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E;
+          --methanol: #5EC8D8; --saf: #F0C877; --efuels: #E9F3FF; --rd: #E39A55; --rng: #A9A2F0; --bad: #F08A7A; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { min-height: 100vh; display: flex; flex-direction: column; color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+         background: radial-gradient(900px 600px at 85% 10%, rgba(31,74,122,0.28), transparent 65%), radial-gradient(700px 500px at 0% 100%, rgba(216,182,110,0.06), transparent 60%), var(--ink); background-attachment: fixed; }
+  ::selection { background: var(--accent); color: var(--ink); }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .wrap { width: min(100% - 80px, 1180px); margin-inline: auto; }
+  .serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+  .glass { background: var(--glass); border: 1px solid var(--line); border-radius: 3px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  main { flex: 1; }
+  .grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 56px; align-items: start; padding-block: 80px 110px; }
+
+  .k { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .k::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+  h1 { margin: 0 0 18px; font-size: clamp(52px, 7vw, 96px); line-height: 0.96; letter-spacing: -0.025em; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .intro { margin: 0 0 40px; max-width: 460px; font-family: 'Instrument Serif', Georgia, serif; font-size: clamp(20px, 2vw, 25px); line-height: 1.4; color: var(--soft); }
+  .routes { display: flex; flex-direction: column; gap: 10px; max-width: 460px; }
+  .route { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 16px 18px; }
+  .route .l { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .route .lab { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); }
+  .route .val { font-size: 16px; color: var(--text); text-decoration: none; overflow-wrap: anywhere; user-select: all; }
+  .route a.val:hover { color: var(--accent); }
+  .mini { flex: none; font: 600 11px Manrope, sans-serif; color: var(--accent); background: none; border: 1px solid var(--line); border-radius: 2px; padding: 8px 12px; cursor: pointer; text-decoration: none; transition: border-color 180ms ease; }
+  .mini:hover { border-color: var(--accent); }
+
+  /* Form */
+  form { padding: 28px 28px 26px; background: var(--glass-strong); }
+  form h2 { margin: 0 0 4px; font-size: 32px; line-height: 1.1; }
+  form .lead { margin: 0 0 24px; font-size: 13px; color: var(--muted); }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .f { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+  .f > label, fieldset legend { font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .f > label span { color: var(--faint); font-weight: 500; letter-spacing: 0.08em; text-transform: none; }
+  input[type=text], input[type=email], select, textarea { width: 100%; font: 400 15px Manrope, sans-serif; color: var(--text); background: rgba(6,21,39,0.6); border: 1px solid var(--line); border-radius: 2px; padding: 12px 14px; transition: border-color 180ms ease, box-shadow 180ms ease; }
+  input::placeholder, textarea::placeholder { color: #50677F; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(216,182,110,0.15); }
+  select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%); background-position: calc(100% - 18px) 52%, calc(100% - 13px) 52%; background-size: 5px 5px; background-repeat: no-repeat; }
+  select option { background: #0b2240; }
+  textarea { min-height: 140px; resize: vertical; line-height: 1.6; }
+  fieldset { border: 0; padding: 0; margin: 0 0 16px; }
+  fieldset legend { margin-bottom: 9px; padding: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip input { position: absolute; opacity: 0; pointer-events: none; }
+  .chip span { display: inline-flex; align-items: center; gap: 8px; padding: 8px 13px; border: 1px solid var(--line); border-radius: 999px; font-size: 12.5px; color: var(--soft); cursor: pointer; background: rgba(6,21,39,0.5); transition: border-color 180ms ease, color 180ms ease, background 180ms ease; user-select: none; }
+  .chip span::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--c); box-shadow: 0 0 6px var(--c); opacity: 0.55; transition: opacity 180ms ease; }
+  .chip input:checked + span { border-color: var(--c); color: var(--text); background: rgba(9,28,50,0.9); }
+  .chip input:checked + span::before { opacity: 1; }
+  .chip input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .hp { position: absolute; left: -9999px; }
+  .err { min-height: 16px; font-size: 12px; color: var(--bad); }
+  .invalid { border-color: var(--bad) !important; }
+  .send { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 6px; }
+  .send small { font-size: 11.5px; color: var(--faint); max-width: 300px; line-height: 1.6; }
+  button[type=submit] { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 24px; border: 0; border-radius: 2px; background: var(--accent); color: var(--ink); font: 600 13px Manrope, sans-serif; cursor: pointer; transition: background 180ms ease, transform 180ms ease; }
+  button[type=submit]:hover { background: #E8C987; transform: translateY(-2px); }
+  button[type=submit][disabled] { opacity: 0.6; cursor: progress; transform: none; }
+  .done { display: none; padding: 34px 28px; text-align: left; }
+  .done h2 { margin: 0 0 10px; font-size: 34px; }
+  .done p { margin: 0; font-size: 14px; line-height: 1.75; color: var(--soft); }
+  .sent form { display: none; } .sent .done { display: block; animation: enter 500ms ease both; }
+
+  footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 22px 30px; border-top: 1px solid var(--line); font-size: 10.5px; letter-spacing: 0.06em; color: var(--faint); }
+  .head, .routes, .panel { animation: enter 800ms ease both; } .routes { animation-delay: 120ms; } .panel { animation-delay: 200ms; }
+  @keyframes enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; gap: 36px; padding-block: 50px 80px; } }
+  @media (max-width: 560px) { .wrap { width: calc(100% - 32px); } .row { grid-template-columns: 1fr; gap: 0; } form { padding: 22px 18px; } }
+</style>
+<script src="nav.js" defer></script>
+</head>
+<body>
+  <div id="site-nav"></div>
+  <main class="wrap grid">
+    <div>
+      <div class="head">
+        <p class="k">Contact</p>
+        <h1 class="serif">Get in <em>touch</em></h1>
+        <p class="intro">Have a project heading for final investment decision? We'd be glad to hear about it.</p>
+      </div>
+      <div class="routes">
+        <div class="route glass"><div class="l"><span class="lab">Email</span><a class="val" id="mail" href="mailto:tomfox@9degreeseast.com">tomfox@9degreeseast.com</a></div><button class="mini" type="button" id="copy">Copy</button></div>
+        <div class="route glass"><div class="l"><span class="lab">LinkedIn</span><a class="val" href="https://uk.linkedin.com/in/tom-fox-energy" target="_blank" rel="noopener noreferrer">Tom Fox</a></div><a class="mini" href="https://uk.linkedin.com/in/tom-fox-energy" target="_blank" rel="noopener noreferrer">Open</a></div>
+        <div class="route glass"><div class="l"><span class="lab">Based in</span><span class="val">London, United Kingdom</span></div></div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel">
+      <!-- Netlify Forms: Netlify finds this form when the site is published and emails each message to the address set in its Forms settings. -->
+      <form class="glass" name="contact" method="POST" data-netlify="true" netlify-honeypot="website" action="contact.html?sent=1" novalidate>
+        <input type="hidden" name="form-name" value="contact">
+        <p class="hp"><label>Leave this empty <input name="website" tabindex="-1" autocomplete="off"></label></p>
+        <h2 class="serif">Send a message</h2>
+        <p class="lead">Tell us a little about your project and we'll come back to you by email.</p>
+        <div class="row">
+          <div class="f"><label for="name">Name</label><input type="text" id="name" name="name" autocomplete="name" required><span class="err" data-for="name"></span></div>
+          <div class="f"><label for="email">Email</label><input type="email" id="email" name="email" autocomplete="email" required><span class="err" data-for="email"></span></div>
+        </div>
+        <div class="row">
+          <div class="f"><label for="org">Organisation <span>(optional)</span></label><input type="text" id="org" name="organisation" autocomplete="organization"></div>
+          <div class="f"><label for="stage">Project stage <span>(optional)</span></label>
+            <select id="stage" name="stage"><option value="">Choose one</option><option>Early development</option><option>Heading for FID</option><option>Operating, or post-FID</option><option>Buyer or offtaker</option><option>Investor or lender</option><option>Something else</option></select></div>
+        </div>
+        <fieldset>
+          <legend>Fuels involved <span style="color:var(--faint);font-weight:500;letter-spacing:.08em;text-transform:none">(optional, choose any)</span></legend>
+          <div class="chips">
+            <label class="chip" style="--c: var(--efuels)"><input type="checkbox" name="fuels" value="eFuels"><span>eFuels</span></label>
+            <label class="chip" style="--c: var(--methanol)"><input type="checkbox" name="fuels" value="Green methanol"><span>Green methanol</span></label>
+            <label class="chip" style="--c: var(--saf)"><input type="checkbox" name="fuels" value="SAF"><span>SAF</span></label>
+            <label class="chip" style="--c: var(--rd)"><input type="checkbox" name="fuels" value="Renewable diesel"><span>Renewable diesel</span></label>
+            <label class="chip" style="--c: var(--rng)"><input type="checkbox" name="fuels" value="Renewable natural gas"><span>Renewable natural gas</span></label>
+            <label class="chip" style="--c: var(--muted)"><input type="checkbox" name="fuels" value="Other"><span>Other</span></label>
+          </div>
+        </fieldset>
+        <div class="f"><label for="message">Message</label><textarea id="message" name="message" required placeholder="What are you working on, and where could we help?"></textarea><span class="err" data-for="message"></span></div>
+        <div class="send">
+          <small>We only use your details to reply to you.</small>
+          <button type="submit" id="submit">Send message <span aria-hidden="true">→</span></button>
+        </div>
+        <p class="err" id="formerr" role="alert" style="margin:12px 0 0"></p>
+      </form>
+      <div class="done glass" role="status" aria-live="polite">
+        <p class="k">Message sent</p>
+        <h2 class="serif">Thank you, <span id="who">we've got it</span>.</h2>
+        <p>Your message is on its way to 9 Degrees East. We'll reply to <b id="where">your email</b>.</p>
+      </div>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+
+<script>
+(function () {
+  var form = document.querySelector('form[name="contact"]'), panel = document.getElementById('panel'), btn = document.getElementById('submit'), ferr = document.getElementById('formerr');
+  var MAIL = 'tomfox@9degreeseast.com';
+
+  // Copy the email address
+  document.getElementById('copy').addEventListener('click', function () {
+    var b = this;
+    function ok() { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1800); }
+    if (navigator.clipboard) navigator.clipboard.writeText(MAIL).then(ok, function () { select(); });
+    else select();
+    function select() { var r = document.createRange(); r.selectNodeContents(document.getElementById('mail')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Selected'; }
+  });
+
+  // Arriving back after a no-JavaScript submission
+  if (/[?&]sent=1/.test(location.search)) panel.classList.add('sent');
+
+  function check() {
+    var bad = false;
+    [['name', function (v) { return v.trim() ? '' : 'Please add your name.'; }],
+     ['email', function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'Please add an email address we can reply to.'; }],
+     ['message', function (v) { return v.trim().length >= 10 ? '' : 'Please add a short message.'; }]].forEach(function (r) {
+      var el = form.elements[r[0]], msg = r[1](el.value);
+      el.classList.toggle('invalid', !!msg); form.querySelector('[data-for="' + r[0] + '"]').textContent = msg;
+      if (msg && !bad) { bad = true; el.focus(); }
+    });
+    return !bad;
+  }
+  ['name', 'email', 'message'].forEach(function (n) { form.elements[n].addEventListener('input', function () { if (this.classList.contains('invalid')) check(); }); });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault(); ferr.textContent = '';
+    if (!check()) return;
+    btn.disabled = true; btn.firstChild.textContent = 'Sending… ';
+    var body = new URLSearchParams(new FormData(form)).toString();
+    fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); })
+      .then(function () {
+        document.getElementById('who').textContent = form.elements.name.value.trim().split(' ')[0] || 'we’ve got it';
+        document.getElementById('where').textContent = form.elements.email.value.trim();
+        panel.classList.add('sent'); panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      })
+      .catch(function () {
+        ferr.innerHTML = 'The message couldn’t be sent just now. Please email <a href="mailto:' + MAIL + '" style="color:inherit">' + MAIL + '</a> directly.';
+      })
+      .finally(function () { btn.disabled = false; btn.firstChild.textContent = 'Send message '; });
+  });
+})();
+</script>
+</body>
+</html>

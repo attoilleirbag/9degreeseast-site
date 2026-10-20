@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About | 9 Degrees East</title>
+<title>Who we are | 9 Degrees East</title>
 <meta name="description" content="9 Degrees East is a commercial advisory firm for low-carbon fuels, structuring long-term, bankable supply agreements for eFuels, green methanol, SAF, renewable diesel and RNG.">
 <meta name="theme-color" content="#061527">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -106,6 +106,25 @@
   .career:not(.live) .locator, .career:not(.live) .bar, .career:not(.live) .rolecards { display: none; }
   .career:not(.live) .grid { grid-template-columns: 1fr; }
 
+
+  /* Founder */
+  .fgrid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 10px; }
+  .bio { padding: 28px 30px; }
+  .bio p { margin: 0 0 14px; font-size: 14px; line-height: 1.8; color: var(--soft); }
+  .bio p.big { font-size: 25px; line-height: 1.35; color: var(--text); margin-bottom: 18px; }
+  .bio .links { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 18px; }
+  .bio .links a { font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; }
+  .bio .links a span { display: inline-block; transition: transform 250ms ease; } .bio .links a:hover span { transform: translateX(4px); }
+  .deals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .deal { padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 10px; transition: border-color 250ms ease, transform 250ms ease; }
+  .deal:hover { border-color: var(--c); transform: translateY(-2px); }
+  .deal .nm { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; }
+  .deal strong { font-size: 40px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .deal .d { font-size: 12px; line-height: 1.55; color: var(--muted); }
+  .edu li small { display: block; margin-top: 4px; font-family: Manrope, sans-serif; font-size: 12px; color: var(--muted); }
+  @media (max-width: 980px) { .fgrid { grid-template-columns: 1fr; } }
+  @media (max-width: 420px) { .deals { grid-template-columns: 1fr; } .bio { padding: 22px 20px; } .bio p.big { font-size: 22px; } }
+
   /* Education and markets */
   .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .duo .glass { padding: 24px 26px; }
@@ -152,37 +171,27 @@
     .stat strong { font-size: 38px; }
   }
 </style>
+<script src="nav.js" defer></script>
 </head>
 <body>
 <canvas id="c" aria-hidden="true"></canvas>
 <div class="page">
-  <div class="wrap top">
-    <a class="home" href="home.html" aria-label="9 Degrees East home">
-      <svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" aria-hidden="true"><circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="2.6" stroke-dasharray="196.5 80" transform="rotate(120 50 50)"/><circle cx="46" cy="43" r="16" stroke="currentColor" stroke-width="8"/><path d="M60.5 49.8 L46.8 79" stroke="currentColor" stroke-width="8"/><circle cx="71" cy="25" r="5" stroke="#D8B66E" stroke-width="3.4"/></svg>
-      <span>9 DEGREES EAST</span>
-    </a>
-    <nav class="sitenav" aria-label="Main">
-      <a href="fuel-weather.html">Fuel Weather</a>
-      <a href="policy-tracker.html">Policy</a>
-      <a href="about.html" aria-current="page">About</a>
-      <a class="navcta" href="mailto:tomfox@9degreeseast.com">Get in touch</a>
-    </nav>
-  </div>
+  <div id="site-nav"></div>
 
   <main>
     <section class="wrap hero" data-scene="hero">
       <div class="title">
-        <p class="eyebrow">About us</p>
+        <p class="eyebrow">About · Who we are</p>
         <h1 class="serif">9 Degrees <em>East</em></h1>
         <p class="lede serif">We structure the long-term supply agreements that turn low-carbon fuel projects into financeable businesses.</p>
-        <p class="sub">Our experience comes from every side of the table: origination on an oil major's trading desk, commercial leadership at an eFuels developer, green methanol sourcing for a shipping company, and renewable fuels brokerage. We build deals that work for producers and buyers alike, balancing price, volume, credit and sustainability terms so that projects reach final investment decision and the contracts behind them hold up over time.</p>
+        <p class="sub">We've done this work at an oil major's trading desk, an eFuels developer, a shipping company and a renewable fuels brokerage. The deals we build have to work for the producer and the buyer, on price, volume, credit and sustainability terms, so the project reaches final investment decision and the contract still holds years later.</p>
         <p class="scrollhint"><i></i>Scroll</p>
       </div>
       <div class="stamp glass">Commercial advisory<br>for <b>low-carbon fuels</b><br>Established <b>2018</b><br>London · <b>9° East</b></div>
     </section>
 
     <section class="wrap stats" aria-label="At a glance" data-scene="stats">
-      <div class="stat glass" style="--c: var(--saf)"><div class="nm"><i class="dot"></i>Experience</div><strong class="serif" data-count="20">20+</strong><span class="d">years in energy origination, structuring and trading</span></div>
+      <div class="stat glass" style="--c: var(--saf)"><div class="nm"><i class="dot"></i>Experience</div><strong class="serif" data-count="20">20</strong><span class="d">years originating and structuring long-term supply deals, since 2006. 28 years in energy overall.</span></div>
       <div class="stat glass" style="--c: var(--methanol)"><div class="nm"><i class="dot"></i>Reach</div><strong class="serif" data-count="4">4</strong><span class="d">regions: Europe, the Americas, Asia and Australia</span></div>
       <div class="stat glass" style="--c: var(--rd)"><div class="nm"><i class="dot"></i>Tenor</div><strong class="serif" data-count="5">5+ yr</strong><span class="d">bankable offtake structures for project finance</span></div>
       <div class="stat glass" style="--c: var(--rng)"><div class="nm"><i class="dot"></i>Perspective</div><strong class="serif" data-count="4">4</strong><span class="d">sides of the table: oil major, developer, shipping and brokerage</span></div>
@@ -191,44 +200,40 @@
     <section class="wrap block" aria-labelledby="exp-title" data-scene="expertise">
       <div class="head">
         <div><p class="eyebrow">Expertise</p><h2 class="serif" id="exp-title">Where we <em>add value</em></h2></div>
-        <p>Four strengths, built over two decades on trading desks, at project developers and in shipping.</p>
+        <p>Built over two decades in trading, project development and shipping.</p>
       </div>
       <div class="exp">
         <div class="glass" style="--c: var(--saf)"><h3 class="serif"><i class="dot"></i>Long-term deal origination</h3><p>Bankable structures of five years and more, integrating price, credit, sustainability, delivery and optionality terms suitable for project financing.</p></div>
-        <div class="glass" style="--c: var(--methanol)"><h3 class="serif"><i class="dot"></i>Global reach</h3><p>Experience and networks across Europe, the Americas, Asia and Australia, with a blended maritime, oil major and project development outlook.</p></div>
-        <div class="glass" style="--c: var(--rd)"><h3 class="serif"><i class="dot"></i>Trading perspective</h3><p>Translates long-term positions into tradeable short-term books, with a clear understanding of desk P&amp;L and the drivers of risk.</p></div>
-        <div class="glass" style="--c: var(--rng)"><h3 class="serif"><i class="dot"></i>Regulatory agility</h3><p>Turns regulation into opportunity: RED, FuelEU Maritime and ReFuelEU Aviation in the EU; the IRA, RFS and LCFS in the US; and sourcing from Asia.</p></div>
+        <div class="glass" style="--c: var(--methanol)"><h3 class="serif"><i class="dot"></i>Global reach</h3><p>Deals and contacts across Europe, the Americas, Asia and Australia, from shipping, oil major and developer roles.</p></div>
+        <div class="glass" style="--c: var(--rd)"><h3 class="serif"><i class="dot"></i>Trading perspective</h3><p>Knows how a long-term position becomes a short-term trading book, and what that does to desk P&amp;L and risk.</p></div>
+        <div class="glass" style="--c: var(--rng)"><h3 class="serif"><i class="dot"></i>Regulation</h3><p>Pricing that reflects the rules: RED, FuelEU Maritime and ReFuelEU Aviation in the EU, the IRA, RFS and LCFS in the US, and sourcing from Asia.</p></div>
       </div>
     </section>
 
-    <section class="career" id="career" aria-labelledby="career-title" data-scene="career">
-      <div class="stage">
-        <div class="wrap">
-          <div class="head" style="margin:0">
-            <div><p class="eyebrow">Leadership</p><h2 class="serif" id="career-title">Tom Fox, <em>Founder</em></h2></div>
-            <p>More than twenty years on the commercial side of energy, from power trading to the fuels of the energy transition.</p>
-          </div>
-          <div class="grid">
-            <div class="panel glass" id="roles">
-              <article class="role" style="--c: var(--efuels)" data-lat="29.76" data-lon="-95.37" data-city="Houston"><p class="where">Houston · Boston · Saltend, UK</p><h3 class="serif">Calpine and Reliant Energy</h3><p class="t">Commercial Manager, International</p><p class="d">Began in power: analysis in Houston and Boston, then managing the UK business of the Saltend power station, trading and marketing its power and negotiating its gas supply.</p></article>
-              <article class="role" style="--c: var(--rd)" data-lat="51.51" data-lon="-0.13" data-city="London"><p class="where">London · Chicago</p><h3 class="serif">BP Supply, Trading &amp; Shipping</h3><p class="t">Global Biofuels Originator</p><p class="d">Originated and structured long-term offtake for BP's US and EU trading benches in London and Chicago, covering second-generation technologies and a wide range of feedstocks, and developed pricing structures for bankable ten-year deals for new projects.</p></article>
-              <article class="role" style="--c: var(--rng)" data-lat="51.51" data-lon="-0.13" data-city="Europe · Africa"><p class="where">Europe · Africa</p><h3 class="serif">Channoil Consulting</h3><p class="t">Consultant, renewable fuels</p><p class="d">Market research and supply chain analysis across renewable diesel, biodiesel, LPG and ethanol, advising on the energy transition and on new market and commodity entries across Europe and Africa.</p></article>
-              <article class="role" style="--c: var(--saf)" data-lat="51.51" data-lon="-0.13" data-city="Europe"><p class="where">Europe</p><h3 class="serif">OTX, an Xpansiv company</h3><p class="t">Head of Renewable Fuels</p><p class="d">Led a brokerage desk across physical biofuels and feedstocks, primarily in Europe, and set the strategy for product choice and market approach.</p></article>
-              <article class="role" style="--c: var(--efuels)" data-lat="-53.16" data-lon="-70.91" data-city="Texas · Chile · Australia"><p class="where">Texas · Chile · Australia</p><h3 class="serif">HIF Global</h3><p class="t">Senior Vice President, Commercial</p><p class="d">Led all global commercial activity for HIF's eFuels developments in Texas, Chile and Australia, including offtake negotiations for e-methanol, e-gasoline and future phases of e-SAF, and the integration of hydrogen, CO2 and power economics into pricing.</p></article>
-              <article class="role" style="--c: var(--methanol)" data-lat="31.23" data-lon="121.47" data-city="China"><p class="where">China</p><h3 class="serif">Maersk Tankers</h3><p class="t">Senior Green Fuels Origination Lead</p><p class="d">Led supply origination of long-term green methanol volumes in China and structured methanol sales into petrochemical and fuel markets, with pricing and volume terms flexible enough to support several project FIDs at once.</p></article>
-              <article class="role" style="--c: var(--accent)" data-lat="51.51" data-lon="9" data-city="9° East"><p class="where">Today · London</p><h3 class="serif">9 Degrees East</h3><p class="t">Founder</p><p class="d">Every side of the table, in one advisory: producer, trader, broker and buyer. Today that experience goes into structuring the agreements that take low-carbon fuel projects to final investment decision.</p></article>
-            </div>
-            <div class="locator" aria-hidden="true"><div class="city serif" id="city">Houston</div><div class="coord" id="coord">29.76° N · 95.37° W</div></div>
-          </div>
-          <div class="bar"><b id="bar"></b></div>
-          <div class="rolecards" id="rolecards"></div>
+    <section class="wrap block founder" aria-labelledby="founder-title" data-scene="founder">
+      <div class="head">
+        <div><p class="eyebrow">Leadership</p><h2 class="serif" id="founder-title">Tom Fox, <em>Founder</em></h2></div>
+        <p>A low-carbon fuels originator with 20 years structuring complex, multi-year supply agreements, since joining BP’s origination team in 2006, and 28 years in energy since his first role in Houston in 1998.</p>
+      </div>
+      <div class="fgrid">
+        <div class="glass bio">
+          <p class="serif big">Tom has been an analyst, power marketer, oil major originator, consultant, broker, developer and buyer.</p>
+          <p>He spent nearly twelve years at BP originating and structuring long-term biofuels offtake for its US and EU trading benches, then led commercial activity for HIF Global’s eFuels projects in Texas, Chile and Australia, and green methanol origination in China for Maersk Tankers. He founded 9 Degrees East in 2018 and now leads it full time.</p>
+          <p>He builds deal structures that lenders will accept and that both producer and buyer can live with for ten years.</p>
+          <div class="links"><a href="our-history.html">Read the full story <span>→</span></a><a href="locations.html">Where he has worked <span>→</span></a></div>
+        </div>
+        <div class="deals">
+          <div class="deal glass" style="--c: var(--methanol)"><span class="nm"><i class="dot"></i>Green methanol · China</span><strong class="serif">800,000 t</strong><span class="d">long-term volumes originated for Maersk Tankers</span></div>
+          <div class="deal glass" style="--c: var(--efuels)"><span class="nm"><i class="dot"></i>e-Methanol · USA</span><strong class="serif">1.4m t</strong><span class="d">offtake negotiated for HIF Global in Texas</span></div>
+          <div class="deal glass" style="--c: var(--saf)"><span class="nm"><i class="dot"></i>e-Gasoline · Chile</span><strong class="serif">20m gal</strong><span class="d">offtake negotiated for HIF Global</span></div>
+          <div class="deal glass" style="--c: var(--rd)"><span class="nm"><i class="dot"></i>Biofuels · BP</span><strong class="serif">10 yr</strong><span class="d">bankable deal structures for new projects</span></div>
         </div>
       </div>
     </section>
 
     <section class="wrap block" aria-label="Education and markets" data-scene="markets" style="padding-top: 120px">
       <div class="duo">
-        <div class="glass"><p class="eyebrow">Education</p><ul class="edu serif"><li>Harvard University</li><li>Massachusetts Institute of Technology</li></ul></div>
+        <div class="glass"><p class="eyebrow">Education</p><ul class="edu serif"><li>Harvard University <small>BA Economics, cum laude</small></li><li>Massachusetts Institute of Technology</li></ul></div>
         <div class="glass"><p class="eyebrow">Fuels and markets</p>
           <ul class="pills">
             <li style="--c: var(--efuels)"><i class="dot"></i>eFuels</li><li style="--c: var(--methanol)"><i class="dot"></i>Green methanol</li><li style="--c: var(--saf)"><i class="dot"></i>SAF</li><li style="--c: var(--rd)"><i class="dot"></i>Renewable diesel</li><li style="--c: var(--rng)"><i class="dot"></i>Renewable natural gas</li><li style="--c: var(--muted)"><i class="dot"></i>Advanced biofuels</li><li style="--c: var(--muted)"><i class="dot"></i>Green hydrogen</li><li style="--c: var(--muted)"><i class="dot"></i>CO2</li><li style="--c: var(--muted)"><i class="dot"></i>Feedstocks</li>
@@ -241,12 +246,12 @@
     <section class="wrap" aria-labelledby="cta-title" data-scene="cta">
       <div class="cta glass">
         <h2 class="serif" id="cta-title">Have a project heading for <em>FID</em>? We'd be glad to hear about it.</h2>
-        <div class="btns"><a class="btn btn-primary" href="mailto:tomfox@9degreeseast.com">Get in touch</a><a class="btn btn-ghost" href="https://uk.linkedin.com/in/tom-fox-energy" target="_blank" rel="noopener noreferrer">LinkedIn</a></div>
+        <div class="btns"><a class="btn btn-primary" href="contact.html">Contact us</a><a class="btn btn-ghost" href="https://uk.linkedin.com/in/tom-fox-energy" target="_blank" rel="noopener noreferrer">LinkedIn</a></div>
       </div>
     </section>
   </main>
 
-  <footer class="wrap"><span>© 2026 9 Degrees East</span><a href="home.html">Back to home</a></footer>
+  <div id="site-footer"></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -324,7 +329,7 @@ var FIELD = (function () {
 /* ===== THE STORY ===== */
 (function () {
   var roles = [].slice.call(document.querySelectorAll('.role'));
-  var cards = document.getElementById('rolecards');
+  var cards = document.getElementById('rolecards') || document.createElement('div');
   var NAMES = ['Calpine · Reliant', 'BP', 'Channoil', 'OTX', 'HIF Global', 'Maersk Tankers', '9 Degrees East'];
   var SPANS = ['Power', 'Biofuels', 'Consulting', 'Brokerage', 'eFuels', 'Methanol', 'Today'];
   roles.forEach(function (r, i) {
@@ -348,7 +353,7 @@ var FIELD = (function () {
     var end = +s.dataset.count, rest = s.textContent.replace(/^\d+/, ''), o = { v: 0 };
     gsap.to(o, { v: end, duration: 1.6, ease: 'power2.out', scrollTrigger: { trigger: s, start: 'top 92%', once: true }, onUpdate: function () { s.textContent = Math.round(o.v) + rest; } });
   });
-  gsap.utils.toArray('.stats .stat, .exp .glass, .duo .glass, .cta').forEach(function (el, i) {
+  gsap.utils.toArray('.stats .stat, .exp .glass, .bio, .deal, .duo .glass, .cta').forEach(function (el, i) {
     gsap.from(el, { y: 40, autoAlpha: 0, duration: 0.9, ease: 'power3.out', delay: (i % 4) * 0.08, scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
   });
 
@@ -364,7 +369,7 @@ var FIELD = (function () {
   scene('[data-scene="cta"]', [C('accent'), C('efuels')], 0.4, 0.7);
 
   // Career: pin, crossfade roles, and gather the field around each place
-  var career = document.getElementById('career'); career.classList.add('live');
+  var career = document.getElementById('career'); if (!career) { scene('[data-scene="founder"]', [C('methanol'), C('efuels'), C('saf'), C('rd')], 2.8, 1); return; } career.classList.add('live');
   var cityEl = document.getElementById('city'), coordEl = document.getElementById('coord'), bar = document.getElementById('bar');
   var locator = document.querySelector('.locator');
   gsap.set(roles, { autoAlpha: 0, y: 24 });
