@@ -1,4 +1,4 @@
-name: Update Journal
+name: Update Journal and trade press
 
 on:
   schedule:
@@ -18,14 +18,16 @@ jobs:
           node-version: '20'
       - name: Look for new Substack posts
         run: node scripts/update-journal.mjs
+      - name: Collect trade press headlines
+        run: node scripts/update-news.mjs
       - name: Publish new posts
         run: |
           git config user.name "journal-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add site/journal.html
+          git add site/journal.html site/market-conditions.html
           if git diff --cached --quiet; then
             echo "Nothing new this week."
           else
-            git commit -m "Journal: new Substack posts"
+            git commit -m "Weekly update: Journal and trade press"
             git push
           fi
