@@ -199,7 +199,11 @@
   .sf-col ul { margin: 0; padding: 0; list-style: none; }\
   .sf-col a { display: inline-block; padding: 5px 0; font-size: 13px; color: #C9D6E3; text-decoration: none; }\
   .sf-col a:hover { color: #EEF2F5; }\
-  .sf-legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-top: 18px; border-top: 1px solid rgba(160,190,220,0.12); font-size: 11.5px; }\
+  .sf-legal { display: flex; flex-direction: column; align-items: flex-start; gap: 0; padding-top: 18px; border-top: 1px solid rgba(160,190,220,0.12); font-size: 11.5px; }\
+  .sf-copy { margin: 0; color: #C9D6E3; }\
+  .sf-A .sf-reg { margin: 4px 0 14px; } .sf-A .sf-links { padding-top: 14px; border-top: 1px solid rgba(160,190,220,0.08); width: 100%; }\
+  .sf-C .sf-links { padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px solid rgba(160,190,220,0.08); width: 100%; } .sf-C .sf-reg { margin: 4px 0 0; }\
+  .sf-B .sf-links { margin: 10px 0 0; } .sf-B .sf-reg { margin: 14px 0 0; padding-top: 14px; border-top: 1px solid rgba(160,190,220,0.08); width: 100%; }\
   .sf-links { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 0; padding: 0; list-style: none; }\
   .sf-links a, .sf-links button { padding: 0; border: 0; background: none; font: inherit; color: #A8B7C6; text-decoration: none; cursor: pointer; }\
   .sf-links a:hover, .sf-links button:hover { color: #EEF2F5; }\
@@ -239,17 +243,23 @@
 
   function mount() {
     var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
-    var root = document.getElementById('site-footer');
-    if (root) {
-      root.innerHTML = '<footer class="sf"><div class="sf-in"><div class="sf-top">' +
+    // Footer layout. 'A': © and company details together, then the notice links. 'B': ©, then the links, then company details.
+    var LAYOUT = 'C';
+    function build(v) {
+      var copy = '<p class="sf-copy">© ' + new Date().getFullYear() + ' ' + COMPANY.name + '</p>';
+      var links = '<ul class="sf-links">' +
+        '<li><a href="legal-notice.html">Legal notice</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="privacy.html">Privacy notice</a></li><li><button type="button" data-cookie-prefs>Cookie preferences</button></li><li><a href="accessibility.html">Accessibility</a></li><li><a href="credits.html">Trademarks &amp; credits</a></li><li><a href="contact.html">Contact us</a></li></ul>';
+      var tail = v === 'B' ? copy + links + reg() : v === 'C' ? links + copy + reg() : copy + reg() + links;
+      return '<footer class="sf sf-' + v + '"><div class="sf-in"><div class="sf-top">' +
         '<div class="sf-brand"><a href="./" aria-label="9 Degrees East home">' + logo + '<span>9 DEGREES EAST</span></a><p>Commercial advisory for low-carbon fuels.</p></div>' +
         col('About', [['Who we are', 'about.html'], ['Our history', 'our-history.html'], ['Purpose, mission & values', 'purpose.html'], ['How we work', 'how-we-work.html'], ['Locations', 'locations.html']]) +
         col('Insights', [['Fuel Weather', 'fuel-weather.html'], ['Policy Tracker', 'policy-tracker.html'], ['Market Conditions', 'market-conditions.html'], ['The 9DE Journal', 'journal.html']]) +
         col('Services', [['Offtake strategy', 'offtake-strategy.html'], ['Deal structuring', 'deal-structuring.html'], ['Supply agreements', 'supply-agreements.html'], ['Regulatory advisory', 'regulatory-advisory.html']]) +
-        '</div><div class="sf-legal"><span>© ' + new Date().getFullYear() + ' ' + COMPANY.name + '</span><ul class="sf-links">' +
-        '<li><a href="legal-notice.html">Legal notice</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="privacy.html">Privacy notice</a></li><li><button type="button" data-cookie-prefs>Cookie preferences</button></li><li><a href="accessibility.html">Accessibility</a></li><li><a href="credits.html">Trademarks &amp; credits</a></li><li><a href="contact.html">Contact us</a></li>' +
-        '</ul></div>' + reg() + '</div></footer>';
+        '</div><div class="sf-legal">' + tail + '</div></div></footer>';
     }
+    var root = document.getElementById('site-footer');
+    if (root) root.innerHTML = build(root.dataset.layout || LAYOUT);
+    document.querySelectorAll('[data-footer-demo]').forEach(function (el) { el.innerHTML = build(el.dataset.footerDemo); });
     document.addEventListener('click', function (e) { var t = e.target.closest && e.target.closest('[data-cookie-prefs]'); if (t) { e.preventDefault(); openPanel(); } });
     // Fill company details on the legal pages
     document.querySelectorAll('[data-company]').forEach(function (el) { var v = COMPANY[el.dataset.company]; if (v) el.textContent = v; else if (el.dataset.empty === 'hide') el.closest('[data-row]').hidden = true; });
