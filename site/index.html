@@ -130,7 +130,7 @@
 <script>
 (function () {
   // Before launch, set this to true so visitors who ask for less motion get the finished frame.
-  var RESPECT_REDUCED_MOTION = false;
+  var RESPECT_REDUCED_MOTION = true;
   var body = document.body;
   var seen = false; try { seen = sessionStorage.getItem('9de-intro') === '1'; sessionStorage.setItem('9de-intro', '1'); } catch (e) {}
   var reduced = RESPECT_REDUCED_MOTION && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
