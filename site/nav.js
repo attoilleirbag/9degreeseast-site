@@ -247,7 +247,7 @@
         col('Insights', [['Fuel Weather', 'fuel-weather.html'], ['Policy Tracker', 'policy-tracker.html'], ['Market Conditions', 'market-conditions.html'], ['The 9DE Journal', 'journal.html']]) +
         col('Services', [['Offtake strategy', 'offtake-strategy.html'], ['Deal structuring', 'deal-structuring.html'], ['Supply agreements', 'supply-agreements.html'], ['Regulatory advisory', 'regulatory-advisory.html']]) +
         '</div><div class="sf-legal"><span>© ' + new Date().getFullYear() + ' ' + COMPANY.name + '</span><ul class="sf-links">' +
-        '<li><a href="legal-notice.html">Legal notice</a></li><li><a href="privacy.html">Privacy notice</a></li><li><button type="button" data-cookie-prefs>Cookie preferences</button></li><li><a href="accessibility.html">Accessibility</a></li><li><a href="contact.html">Contact us</a></li>' +
+        '<li><a href="legal-notice.html">Legal notice</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="privacy.html">Privacy notice</a></li><li><button type="button" data-cookie-prefs>Cookie preferences</button></li><li><a href="accessibility.html">Accessibility</a></li><li><a href="credits.html">Trademarks &amp; credits</a></li><li><a href="contact.html">Contact us</a></li>' +
         '</ul></div>' + reg() + '</div></footer>';
     }
     document.addEventListener('click', function (e) { var t = e.target.closest && e.target.closest('[data-cookie-prefs]'); if (t) { e.preventDefault(); openPanel(); } });

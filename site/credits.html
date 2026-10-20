@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trademarks and credits | 9 Degrees East</title>
+<meta name="description" content="Trademarks, data sources, licences and software used on the 9 Degrees East website.">
+<meta name="theme-color" content="#061527">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<style>
+  /* Notices: a calm reading page. Contents list on the left, numbered sections on the right. */
+  :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  html { scroll-behavior: smooth; }
+  body { min-height: 100vh; display: flex; flex-direction: column; color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+         background: radial-gradient(900px 600px at 85% 0%, rgba(31,74,122,0.24), transparent 65%), var(--ink); background-attachment: fixed; }
+  ::selection { background: var(--accent); color: var(--ink); }
+  a { color: var(--accent); } a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .wrap { width: min(100% - 80px, 1080px); margin-inline: auto; }
+  main { flex: 1; }
+  .head { padding-block: 80px 40px; }
+  .k { display: flex; align-items: center; gap: 12px; margin: 0 0 16px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .k::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+  h1 { margin: 0 0 16px; font: 400 clamp(46px, 6vw, 80px)/1 'Instrument Serif', Georgia, serif; letter-spacing: -0.02em; }
+  .intro { margin: 0; max-width: 640px; font: 400 clamp(19px, 1.8vw, 23px)/1.45 'Instrument Serif', Georgia, serif; color: var(--soft); }
+  .updated { margin: 18px 0 0; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
+  .body { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 56px; padding-bottom: 80px; }
+  .toc { position: sticky; top: 100px; align-self: start; margin: 0; padding: 0; list-style: none; border-left: 1px solid var(--line); }
+  .toc a { display: block; padding: 6px 0 6px 16px; font-size: 13px; color: var(--muted); text-decoration: none; }
+  .toc a:hover { color: var(--text); }
+  article section { padding: 0 0 30px; margin-bottom: 30px; border-bottom: 1px solid var(--line); scroll-margin-top: 100px; }
+  article section:last-child { border-bottom: 0; }
+  article h2 { margin: 0 0 14px; font: 400 30px/1.15 'Instrument Serif', Georgia, serif; }
+  article h2 span { font: 500 12px Manrope, sans-serif; color: var(--accent); margin-right: 12px; vertical-align: 6px; font-variant-numeric: tabular-nums; }
+  article h3 { margin: 22px 0 8px; font-size: 14px; font-weight: 600; color: var(--text); }
+  article p, article li { font-size: 14.5px; line-height: 1.8; color: var(--soft); max-width: 680px; }
+  article p { margin: 0 0 12px; }
+  article ul { margin: 0 0 12px; padding-left: 20px; }
+  article b { color: var(--text); font-weight: 600; }
+  .facts { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); max-width: 680px; }
+  .facts li { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+  .facts li[hidden] { display: none; }
+  .facts li > span:first-child { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); padding-top: 3px; }
+  .facts li > span:last-child { color: var(--text); }
+  .tbl { width: 100%; max-width: 720px; border-collapse: collapse; font-size: 13.5px; margin: 6px 0 14px; }
+  .tbl th { text-align: left; font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); }
+  .tbl td { padding: 11px 12px 11px 0; border-bottom: 1px solid var(--line); color: var(--soft); vertical-align: top; line-height: 1.6; }
+  .tbl td:first-child { color: var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; white-space: nowrap; }
+  .scroll { overflow-x: auto; }
+  .btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; margin-top: 6px; border: 0; border-radius: 2px; background: var(--accent); color: var(--ink); font: 600 13px Manrope, sans-serif; text-decoration: none; cursor: pointer; }
+  @media (max-width: 860px) { .wrap { width: calc(100% - 40px); } .body { grid-template-columns: minmax(0, 1fr); gap: 24px; } .toc { position: static; display: none; } .facts li { grid-template-columns: 1fr; gap: 2px; } .head { padding-block: 56px 28px; } }
+</style>
+<script src="nav.js" defer></script>
+</head>
+<body>
+  <div id="site-nav"></div>
+  <main>
+    <header class="wrap head">
+      <p class="k">Notices</p>
+      <h1>Trademarks &amp; credits</h1>
+      <p class="updated">Last updated 20 October 2026</p>
+    </header>
+    <div class="wrap body">
+      <ol class="toc" aria-label="On this page"><li><a href="#ours">Our name and mark</a></li><li><a href="#trademarks">Third-party trademarks</a></li><li><a href="#data">Data sources</a></li><li><a href="#policy">Policy Tracker sources</a></li><li><a href="#news">Trade press headlines</a></li><li><a href="#translation">Machine translation</a></li><li><a href="#maps">Maps</a></li><li><a href="#software">Fonts and software</a></li><li><a href="#images">Photography</a></li><li><a href="#changes">Changes and contact</a></li></ol>
+      <article>
+        <section id="ours"><h2><span>01</span>Our name and mark</h2><p>“9 Degrees East”, “9DE”, “Fuel Weather” and the 9° mark are used by 9 Degrees East Limited. Please ask before using them, other than to refer to us or link to this site.</p></section>
+        <section id="trademarks"><h2><span>02</span>Third-party trademarks</h2><p>The following names and logos appear on the site. They are trademarks or registered trademarks of their owners and are used only to identify those organisations:</p>
+<ul>
+<li><b>bp</b>, the bp logo and the Helios mark are trademarks of BP p.l.c., used here to refer to BP and its Integrated Supply and Trading business. © BP p.l.c.</li>
+<li><b>HIF</b>, HIF Global and the HIF logo are trademarks of HIF Global and its affiliates. © HIF Global.</li>
+<li><b>Maersk Tankers</b> and its logo are trademarks of Maersk Tankers A/S. MAERSK and the seven-pointed star are trademarks of A.P. Møller - Mærsk A/S, used by Maersk Tankers under licence.</li>
+<li><b>Xpansiv</b> and the Xpansiv logo are trademarks of Xpansiv and its affiliates. OTX is an Xpansiv company, and OTX is a trademark of Xpansiv. © Xpansiv.</li>
+<li><b>Calpine</b> and the Calpine logo are trademarks of Calpine Corporation. © Calpine Corporation.</li>
+<li><b>Channoil</b>, Channoil Energy and the Channoil logo are trademarks of Channoil Consulting Limited. © Channoil Consulting Limited.</li>
+<li><b>LinkedIn</b> and the LinkedIn logo are trademarks of LinkedIn Corporation, a Microsoft company.</li>
+<li><b>Substack</b> and the Substack logo are trademarks of Substack Inc.</li>
+<li><b>DeepL</b> is a trademark of DeepL SE.</li>
+</ul>
+<p>All logos are © their respective owners and are reproduced from the owners' own published artwork. No right to use any of these marks is granted to anyone by their appearance on this site.</p>
+<p>The trade names and logos displayed under the heading “Experience across” on the home page identify organisations by which Tom Fox, founder and director of 9 Degrees East Limited, has been employed or engaged, or with which he has worked, in the course of his career. They are reproduced solely for that factual, descriptive purpose. <b>Their display does not state or imply that any such organisation endorses, sponsors, recommends or is affiliated with 9 Degrees East Limited or its services, and no such relationship exists unless expressly stated.</b> Each logo is reproduced in a single neutral colour, without alteration to its form or proportions, and is not used in connection with the marketing of any product or service. The LinkedIn and Substack logos are used solely to identify links to Tom Fox’s profiles and publications on those services.</p>
+<p>Other names of companies, products, publications, programmes and regulations mentioned on the site, such as those on our service pages, belong to their owners and are used for identification only.</p>
+<p>If you own a mark shown here and would like it shown differently or removed, email <a href="mailto:tomfox@9degreeseast.com">tomfox@9degreeseast.com</a> and we will act on it promptly.</p></section>
+        <section id="data"><h2><span>03</span>Data sources</h2><p>Fuel Weather and the home page strip use these public sources. Full details are in the <a href="legal-notice.html#data">legal notice</a>.</p>
+<ul>
+<li><b>U.S. Energy Information Administration (EIA)</b>: spot prices for jet fuel, ultra-low sulfur diesel and Henry Hub natural gas. EIA data is in the public domain. Source: U.S. Energy Information Administration.</li>
+<li><b>Ember</b>: European wholesale electricity prices, used under the <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Creative Commons Attribution 4.0</a> licence. Source: Ember. We average the daily figures by month.</li>
+<li><b>Methanex</b>: posted methanol contract prices, published by Methanex Corporation, referenced as a benchmark and linked to their source.</li>
+</ul></section>
+        <section id="policy"><h2><span>04</span>Policy Tracker sources</h2><ul>
+<li><b>U.S. Federal Register</b>: documents published by the U.S. government, in the public domain.</li>
+<li><b>GOV.UK</b>: contains public sector information licensed under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" target="_blank" rel="noopener">Open Government Licence v3.0</a>.</li>
+<li><b>European Commission</b>: © European Union. Reuse is authorised under Commission Decision 2011/833/EU, provided the source is acknowledged.</li>
+<li><b>International Maritime Organization (IMO)</b>: press briefings, linked to their source.</li>
+<li><b>National Development and Reform Commission (NDRC) and National Energy Administration (NEA)</b> of the People’s Republic of China: policy releases, linked to their source.</li>
+</ul>
+<p>We show titles, dates and links, plus our own short summaries. We do not reproduce the official texts. Always read the official source before relying on anything.</p></section>
+        <section id="news"><h2><span>05</span>Trade press headlines</h2><p>Headlines on Market conditions come from the public news feeds of <b>Manifold Times</b>, <b>Offshore Energy</b>, <b>Biofuels Digest</b> and the <b>U.S. EIA</b> (Today in Energy). We show only the headline, the publisher and the date, each linked to the publisher’s own article. Articles and headlines remain the property of their publishers, who are not affiliated with us.</p></section>
+        <section id="translation"><h2><span>06</span>Machine translation</h2><p>Policy Tracker headlines published in other languages are translated automatically by <b>DeepL</b>. DeepL is a trademark of DeepL SE. Translations may contain errors; the original-language text is the authoritative version.</p></section>
+        <section id="maps"><h2><span>07</span>Maps</h2><p>The globes on the home and Locations pages are drawn from <b>Natural Earth</b> land data, which is in the public domain (naturalearthdata.com).</p></section>
+        <section id="software"><h2><span>08</span>Fonts and software</h2><ul>
+<li><b>Instrument Serif</b> and <b>Manrope</b> typefaces, served by Google Fonts under the <a href="https://openfontlicense.org" target="_blank" rel="noopener">SIL Open Font License 1.1</a>.</li>
+<li><b>three.js</b> (the 3D globes), MIT License, © three.js authors.</li>
+<li><b>Chart.js</b> (Fuel Weather charts), MIT License, © Chart.js contributors.</li>
+<li><b>GSAP</b> and ScrollTrigger (scroll animation on the About pages), used under the GSAP Standard “No Charge” License.</li>
+</ul>
+<p>The libraries are loaded from the cdnjs and jsDelivr content networks.</p></section>
+        <section id="images"><h2><span>09</span>Photography</h2><p>The photograph of Tom Fox is used with his permission. All other graphics on the site are our own.</p></section>
+        <section id="changes"><h2><span>10</span>Changes and contact</h2><p>We update this page when we add a new source, logo or tool. If you think something here is missing or wrong, email <a href="mailto:tomfox@9degreeseast.com">tomfox@9degreeseast.com</a>.</p></section>
+      </article>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+</body>
+</html>
