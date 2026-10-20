@@ -535,6 +535,26 @@ if (window.Chart) document.documentElement.classList.add('has-charts');
     requestAnimationFrame(step);
   }
   addEventListener('pointermove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; mouse.on = true; });
+  // A hidden game: catch five of the rising renewable gas bubbles
+  var pops = [], caught = 0;
+  cv.addEventListener('pointerdown', function (e) {
+    var hit = -1, best = 1e9;
+    for (var r = 0; r < rings.length; r++) { var g = rings[r], d = Math.hypot(g.x - e.clientX, g.y - e.clientY); if (d < g.r + 16 && d < best) { best = d; hit = r; } }
+    if (hit < 0) return;
+    var g2 = rings.splice(hit, 1)[0]; pops.push({ x: g2.x, y: g2.y, r: g2.r, a: 1 }); caught++;
+    if (caught === 5) egg();
+  });
+  (function popLoop() {
+    for (var i = pops.length - 1; i >= 0; i--) { var q = pops[i]; q.r += 3; q.a *= 0.9; ctx.globalCompositeOperation = 'lighter'; ctx.strokeStyle = 'rgba(240,212,154,' + q.a.toFixed(3) + ')'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(q.x, q.y, q.r, 0, 7); ctx.stroke(); if (q.a < 0.03) pops.splice(i, 1); }
+    requestAnimationFrame(popLoop);
+  })();
+  function egg() {
+    var t = document.createElement('div');
+    t.setAttribute('role', 'status');
+    t.style.cssText = 'position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;z-index:90;max-width:calc(100% - 32px);padding:14px 18px;background:rgba(9,28,50,0.96);border:1px solid rgba(216,182,110,0.6);border-radius:3px;font:500 13.5px Manrope,sans-serif;color:#EEF2F5;box-shadow:0 18px 40px rgba(0,0,0,0.4);transition:opacity 400ms ease,transform 400ms ease;';
+    t.innerHTML = 'Five bubbles of renewable gas, caught. Now sell them. <a href="offtake-game.html" style="color:#D8B66E;font-weight:600;text-decoration:none;margin-left:6px">Play Offtake →</a>';
+    document.body.appendChild(t); requestAnimationFrame(function () { t.style.opacity = 1; t.style.transform = 'translateX(-50%)'; });
+  }
   addEventListener('resize', size);
   size(); requestAnimationFrame(step);
 })();

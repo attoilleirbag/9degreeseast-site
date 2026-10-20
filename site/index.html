@@ -475,6 +475,21 @@
   })();
 </script>
 <script>
+  // Hidden: spin the globe round five times by hand and the radio tunes in
+  (function () {
+    var total = 0, done = false, TURNS = 5;
+    window.__spun = function (rad) {
+      if (done) return; total += Math.abs(rad);
+      if (total < TURNS * 2 * Math.PI) return;
+      done = true;
+      var t = document.createElement('div'); t.setAttribute('role', 'status');
+      t.style.cssText = 'position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;z-index:90;max-width:calc(100% - 32px);padding:14px 18px;background:rgba(9,28,50,0.96);border:1px solid rgba(216,182,110,0.6);border-radius:3px;font:500 13.5px Manrope,sans-serif;color:#EEF2F5;box-shadow:0 18px 40px rgba(0,0,0,0.4);transition:opacity 400ms ease,transform 400ms ease;';
+      t.innerHTML = 'Five times round the world. Hear it play. <a href="radio.html" style="color:#D8B66E;font-weight:600;text-decoration:none;margin-left:6px">Meridian Radio →</a>';
+      document.body.appendChild(t); requestAnimationFrame(function () { t.style.opacity = 1; t.style.transform = 'translateX(-50%)'; });
+    };
+  })();
+</script>
+<script>
   // ===== Classic canvas globe: kept as the fallback if the 3D globe cannot load =====
   window.oldGlobe = function () {
     var wrap = document.getElementById('globe-wrap');
@@ -616,7 +631,7 @@
 
     function frame(time) {
       var t = time / 1000;
-      if (!dragging) { vel *= 0.94; rot += (spin + vel) / 60; }
+      if (!dragging) { vel *= 0.94; rot += (spin + vel) / 60; if (Math.abs(vel) > 0.12 && window.__spun) __spun(vel / 60); }
       tilt += (tiltT - tilt) * 0.05; yaw += (yawT - yaw) * 0.05;
 
       ctx.clearRect(0, 0, W, H);
@@ -749,7 +764,7 @@
       yawT = ((e.clientY - r.top) / r.height - 0.5) * 0.6;
       if (!dragging) return;
       var dx = e.clientX - lastX; lastX = e.clientX;
-      rot += dx * 0.006; vel = dx * 0.006 * 60;
+      rot += dx * 0.006; vel = dx * 0.006 * 60; window.__spun && __spun(dx * 0.006);
     });
     function release() { dragging = false; }
     wrap.addEventListener('pointerup', release);
@@ -863,13 +878,13 @@
       function size() { var r = wrap.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height); renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); }
       size(); addEventListener('resize', size);
       wrap.addEventListener('pointerdown', function (e) { dragging = true; lastX = e.clientX; vel = 0; wrap.setPointerCapture(e.pointerId); });
-      wrap.addEventListener('pointermove', function (e) { if (!dragging) return; var dx = e.clientX - lastX; lastX = e.clientX; rotY += dx * 0.006; vel = dx * 0.006; });
+      wrap.addEventListener('pointermove', function (e) { if (!dragging) return; var dx = e.clientX - lastX; lastX = e.clientX; rotY += dx * 0.006; vel = dx * 0.006; window.__spun && __spun(dx * 0.006); });
       ['pointerup', 'pointercancel'].forEach(function (ev) { wrap.addEventListener(ev, function () { dragging = false; }); });
 
       var tmp = new THREE.Vector3(), camDir = new THREE.Vector3();
       function frame(ms) {
         var now = ms / 1000, dt = Math.min(0.05, now - (lastT || now)); lastT = now;
-        if (!dragging) { rotY += vel; vel *= 0.94; rotY += spin * dt; }
+        if (!dragging) { rotY += vel; if (Math.abs(vel) > 0.002 && window.__spun) __spun(vel); vel *= 0.94; rotY += spin * dt; }
         globe.rotation.y = rotY;
         globe.updateMatrixWorld();
         HUBS.forEach(function (h) { var k = (now / 2.6 + h.phase) % 1; h.ring.scale.setScalar((h.major ? 0.06 : 0.045) + k * (h.major ? 0.16 : 0.1)); h.ring.material.opacity = (1 - k) * 0.7; });

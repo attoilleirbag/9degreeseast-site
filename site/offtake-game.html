@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Offtake: the game | 9 Degrees East</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Get a low-carbon fuel plant to final investment decision before the financing window closes.">
+<meta name="theme-color" content="#061527">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<style>
+  /* Offtake: a hidden 9 Degrees East game. Balance the term sheet until buyer, lender and shareholders all sign. */
+  :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E; --good: #7FC7A4; --bad: #E58C7A; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { min-height: 100vh; display: flex; flex-direction: column; color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+         background: radial-gradient(1000px 640px at 80% 0%, rgba(31,74,122,0.32), transparent 65%), var(--ink); background-attachment: fixed; }
+  ::selection { background: var(--accent); color: var(--ink); }
+  a { color: var(--accent); }
+  main { flex: 1; }
+  .wrap { width: min(100% - 80px, 1180px); margin: 0 auto; }
+  .serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+  .glass { background: var(--glass); border: 1px solid var(--line); border-radius: 3px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+  button { font: inherit; cursor: pointer; }
+  button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .btn { min-height: 48px; padding: 0 22px; border-radius: 2px; border: 0; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; transition: transform 180ms ease, background 180ms ease, opacity 180ms ease, border-color 180ms ease; }
+  .go { background: var(--accent); color: var(--ink); } .go:hover:not(:disabled) { background: #E8C987; transform: translateY(-2px); }
+  .go:disabled { opacity: 0.35; cursor: default; }
+  .ghost { background: transparent; color: var(--text); border: 1px solid rgba(160,190,220,0.35); } .ghost:hover { border-color: var(--muted); }
+
+  /* Level picker */
+  .pick { padding-block: 64px 90px; }
+  .pick h1 { margin: 0 0 16px; font-size: clamp(54px, 7vw, 96px); line-height: 0.98; letter-spacing: -0.025em; }
+  .pick h1 em { color: var(--accent); font-style: italic; }
+  .pick .lede { margin: 0 0 34px; max-width: 640px; font-family: 'Instrument Serif', Georgia, serif; font-size: clamp(20px, 2vw, 25px); line-height: 1.4; color: var(--soft); }
+  .levels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .lvl { text-align: left; color: var(--text); padding: 22px 22px 20px; display: flex; flex-direction: column; gap: 10px; transition: border-color 250ms ease, transform 250ms ease; }
+  .lvl:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .lvl .k { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+  .lvl h2 { margin: 0; font-size: 30px; line-height: 1.05; }
+  .lvl p { margin: 0; font-size: 13.5px; line-height: 1.65; color: var(--soft); }
+  .lvl .meta { margin-top: auto; padding-top: 8px; display: flex; justify-content: space-between; font-size: 11.5px; color: var(--faint); }
+  .lvl .meta b { color: var(--accent); font-weight: 600; }
+  .practice { display: flex; align-items: center; gap: 12px; margin-top: 22px; font-size: 13.5px; color: var(--soft); cursor: pointer; width: fit-content; }
+  .practice input { width: 18px; height: 18px; accent-color: var(--accent); }
+  .small { margin-top: 26px; font-size: 11.5px; line-height: 1.7; color: var(--faint); max-width: 720px; }
+
+  /* Game board */
+  .game { padding-block: 44px 80px; }
+  .game[hidden], .pick[hidden] { display: none; }
+  .ghead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+  .ghead h1 { margin: 0; font-size: clamp(38px, 5vw, 60px); line-height: 1; }
+  .ghead h1 em { color: var(--accent); font-style: italic; }
+  .ghead .brief { margin: 10px 0 0; max-width: 620px; font-size: 14px; line-height: 1.7; color: var(--muted); }
+  .clock { text-align: right; }
+  .clock .lbl { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .clock .t { font-family: 'Instrument Serif', Georgia, serif; font-size: 60px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .clock .t.low { color: var(--bad); }
+  .board { display: grid; grid-template-columns: 1.15fr 1fr; gap: 44px; margin-top: 26px; }
+  h3.sec { margin: 0 0 6px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .term { padding: 15px 0 16px; border-bottom: 1px solid var(--line); }
+  .term .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+  .term label { font-size: 14px; font-weight: 500; }
+  .term .hint { display: block; margin-top: 3px; font-size: 11px; color: #8FA6BF; font-weight: 400; }
+  .term output { font-family: 'Instrument Serif', Georgia, serif; font-size: 26px; color: var(--accent); white-space: nowrap; }
+  .term.nudge output { color: #F0D49A; text-shadow: 0 0 14px rgba(216,182,110,0.6); }
+  input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 30px; background: transparent; cursor: pointer; }
+  input[type=range]::-webkit-slider-runnable-track { height: 2px; background: linear-gradient(90deg, var(--accent) var(--p, 50%), #2A4466 var(--p, 50%)); }
+  input[type=range]::-moz-range-track { height: 2px; background: #2A4466; }
+  input[type=range]::-moz-range-progress { height: 2px; background: var(--accent); }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; margin-top: -9px; border-radius: 50%; background: var(--ink); border: 2px solid var(--accent); box-shadow: 0 0 0 5px rgba(216,182,110,0.12); }
+  input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--ink); border: 2px solid var(--accent); }
+  input:disabled { opacity: 0.4; cursor: default; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+  .meters { display: grid; gap: 22px; margin-top: 14px; }
+  .meter .top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 9px; }
+  .meter .name { font-size: 14px; font-weight: 500; }
+  .meter .who { display: block; font-size: 11px; color: #8FA6BF; margin-top: 2px; }
+  .meter .val { font-family: 'Instrument Serif', Georgia, serif; font-size: 30px; font-variant-numeric: tabular-nums; }
+  .bar { position: relative; height: 8px; background: #132E50; border-radius: 4px; }
+  .fill { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 4px; background: linear-gradient(90deg, #3E6A9C, #8FB4DC); transition: width 260ms ease, background 300ms ease; }
+  .fill.ok { background: linear-gradient(90deg, #B79652, #F0D49A); box-shadow: 0 0 14px rgba(216,182,110,0.45); }
+  .tick { position: absolute; top: -5px; bottom: -5px; width: 2px; background: var(--text); opacity: 0.7; }
+  .tick::after { content: attr(data-l); position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 9px; color: var(--muted); letter-spacing: 0.08em; white-space: nowrap; }
+  .meter .want { margin-top: 8px; min-height: 18px; font-size: 12px; color: #F0D49A; }
+  .feed { margin-top: 26px; border-top: 1px solid var(--line); padding-top: 12px; min-height: 140px; }
+  .msg { display: flex; gap: 12px; padding: 8px 0; font-size: 13px; line-height: 1.6; color: var(--soft); animation: in 380ms ease both; }
+  .msg b { flex: none; width: 84px; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); padding-top: 4px; font-weight: 600; }
+  .msg.event b { color: #8FB4DC; } .msg.event { color: var(--text); }
+  @keyframes in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* Result */
+  .overlay { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 20px; background: rgba(4,12,24,0.84); backdrop-filter: blur(6px); }
+  .overlay[hidden] { display: none; }
+  .card { width: min(100%, 580px); max-height: calc(100vh - 40px); overflow: auto; padding: 40px 38px 34px; background: linear-gradient(180deg, #0F2A4B, #0A1E37); border: 1px solid #2E4C74; animation: in 500ms ease both; }
+  .card h2 { margin: 0 0 10px; font-size: 46px; line-height: 1.02; }
+  .card h2 em { color: var(--accent); font-style: italic; }
+  .card p { margin: 0 0 20px; font-size: 14px; line-height: 1.75; color: var(--muted); }
+  .sheet { margin: 0 0 20px; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; font-size: 13px; }
+  .sheet span { color: var(--muted); } .sheet strong { display: block; color: var(--text); font-weight: 600; margin-top: 2px; }
+  .score { font-family: 'Instrument Serif', Georgia, serif; font-size: 22px; color: var(--accent); margin-bottom: 20px; }
+  .card .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  .card .real { display: block; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 13px; color: var(--soft); }
+  .card .real a { font-weight: 600; text-decoration: none; }
+
+  @media (max-width: 900px) { .levels { grid-template-columns: 1fr; } .board { grid-template-columns: 1fr; gap: 24px; } .meters-wrap { order: -1; } }
+  @media (max-width: 700px) { .wrap { width: calc(100% - 40px); } .pick { padding-block: 40px 70px; } .clock .t { font-size: 46px; } .card { padding: 30px 22px 24px; } .card h2 { font-size: 38px; } .sheet { grid-template-columns: 1fr; } }
+</style>
+<script src="nav.js" defer></script>
+</head>
+<body>
+  <div id="site-nav"></div>
+  <main>
+    <section class="wrap pick" id="pick" aria-labelledby="pick-title">
+      <p class="eyebrow">You found it · A 9 Degrees East game</p>
+      <h1 class="serif" id="pick-title">Off<em>take</em></h1>
+      <p class="lede">Every low-carbon fuel plant stalls at the same point: nobody lends until someone buys, and nobody buys until the price works. Write the supply deal that gets the plant to final investment decision before the financing window closes.</p>
+      <div class="levels" id="levels"></div>
+      <label class="practice"><input type="checkbox" id="practice"> Practice round: no clock, and the parties tell you what they want as you go</label>
+      <p class="small">A game, not a model. The numbers are illustrative and simplified, though the trade-offs are the real ones. For a real deal, <a href="contact.html">talk to us</a>.</p>
+    </section>
+
+    <section class="wrap game" id="game" hidden aria-labelledby="g-title">
+      <div class="ghead">
+        <div>
+          <p class="eyebrow" id="g-level"></p>
+          <h1 class="serif" id="g-title"></h1>
+          <p class="brief" id="g-brief"></p>
+        </div>
+        <div class="clock"><div class="lbl" id="clock-lbl">FID window</div><div class="t" id="clock" aria-live="off">0</div></div>
+      </div>
+      <div class="board">
+        <section aria-labelledby="ts">
+          <h3 class="sec" id="ts">Term sheet</h3>
+          <div class="term" data-k="P"><div class="row"><label for="P">Price<span class="hint">What the buyer pays per unit</span></label><output id="o-P"></output></div><input type="range" id="P"></div>
+          <div class="term" data-k="T"><div class="row"><label for="T">Tenor<span class="hint">How long the contract runs</span></label><output id="o-T"></output></div><input type="range" id="T" min="3" max="20" step="1"></div>
+          <div class="term" data-k="V"><div class="row"><label for="V">Volume<span class="hint">How much of the plant's output the buyer takes each year</span></label><output id="o-V"></output></div><input type="range" id="V"></div>
+          <div class="term" data-k="top"><div class="row"><label for="top">Take-or-pay<span class="hint">Share the buyer pays for even if it doesn't take it</span></label><output id="o-top"></output></div><input type="range" id="top" min="0" max="100" step="5"></div>
+          <div class="term" data-k="idx"><div class="row"><label for="idx">Indexation<span class="hint">Fixed price ←→ linked to market prices</span></label><output id="o-idx"></output></div><input type="range" id="idx" min="0" max="100" step="5"></div>
+          <div class="actions">
+            <button class="btn go" id="propose" type="button">Propose term sheet</button>
+            <button class="btn ghost" id="back" type="button">Choose another deal</button>
+          </div>
+        </section>
+        <section class="meters-wrap" aria-labelledby="pt">
+          <h3 class="sec" id="pt">The parties</h3>
+          <div class="meters">
+            <div class="meter"><div class="top"><div class="name">Buyer appetite<span class="who" id="who-b"></span></div><div class="val" id="v-b">0</div></div><div class="bar"><div class="fill" id="f-b"></div><div class="tick" style="left:70%" data-l="70 TO SIGN"></div></div><div class="want" id="w-b"></div></div>
+            <div class="meter"><div class="top"><div class="name">Lender comfort<span class="who">The banks financing the plant</span></div><div class="val" id="v-l">0</div></div><div class="bar"><div class="fill" id="f-l"></div><div class="tick" style="left:70%" data-l="70 TO LEND"></div></div><div class="want" id="w-l"></div></div>
+            <div class="meter"><div class="top"><div class="name">Project margin<span class="who">Your own shareholders</span></div><div class="val" id="v-m">0</div></div><div class="bar"><div class="fill" id="f-m"></div><div class="tick" style="left:55%" data-l="55 TO BUILD"></div></div><div class="want" id="w-m"></div></div>
+          </div>
+          <div class="feed" id="feed" aria-live="polite"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div class="overlay" id="end" hidden>
+    <div class="card" role="dialog" aria-modal="true" aria-labelledby="end-title">
+      <h2 class="serif" id="end-title"></h2>
+      <p id="end-text"></p>
+      <div class="sheet" id="end-sheet"></div>
+      <div class="score" id="end-score"></div>
+      <div class="btns"><button class="btn go" id="next" type="button"></button><button class="btn ghost" id="again" type="button">Play again</button><button class="btn ghost" id="save" type="button">Save term sheet</button></div>
+      <span class="real">Doing this for real? <a href="contact.html">Talk to someone who has negotiated these deals →</a></span>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+
+<script>
+// Offtake game model: shared by the page and the balance test.
+var OFFTAKE = (function () {
+  function cl(x) { return Math.max(0, Math.min(100, x)); }
+  var LEVELS = {
+    rng: { name: 'Renewable natural gas', short: 'RNG', level: 1,
+      project: 'Project Meridian Gas, a landfill gas upgrade plant making 1.2 million MMBtu of RNG a year',
+      buyer: 'A gas utility meeting its renewable gas target', unit: '$/MMBtu', vunit: 'k MMBtu', cap: 1200, vstep: 20,
+      price: [10, 40, 0.5], start: { P: 34, T: 4, V: 1100, top: 20, idx: 85 },
+      C: 19, W: 26, debt: 10, need: 800, prefT: 12, prefIdx: 30, time: 90,
+      events: [
+        ['The state raises its renewable gas target. The utility can pay more.', function (m) { m.W *= 1.06; }],
+        ['Gas cleanup costs come in over budget. Your cost per MMBtu rises.', function (m) { m.C *= 1.05; }],
+        ['Rates rise. Lenders now want 12 years of contract.', function (m) { m.debt = 12; }],
+        ['A second landfill site joins the utility’s programme. It needs less from you.', function (m) { m.need = 650; }],
+        ['Federal credit guidance is confirmed. Your net cost falls.', function (m) { m.C *= 0.95; }]
+      ] },
+    saf: { name: 'Sustainable aviation fuel', short: 'SAF', level: 2,
+      project: 'Project Meridian Jet, a 120,000-tonne-a-year HEFA SAF plant',
+      buyer: 'An airline group meeting ReFuelEU Aviation', unit: '$/t', vunit: 'kt', cap: 120, vstep: 2,
+      price: [1600, 3200, 10], start: { P: 2900, T: 3, V: 115, top: 15, idx: 90 },
+      C: 2150, W: 2600, debt: 10, need: 70, prefT: 8, prefIdx: 50, time: 80,
+      events: [
+        ['The EU mandate rises and penalties bite. The airline can pay more.', function (m) { m.W *= 1.05; }],
+        ['Used cooking oil prices jump. Your production cost rises.', function (m) { m.C *= 1.05; }],
+        ['Rates rise. Lenders now want 12 years of contract.', function (m) { m.debt = 12; }],
+        ['The airline adds new long-haul routes. It needs more volume.', function (m) { m.need = 95; }],
+        ['A refinery partner offers cheaper hydrogen. Your cost falls.', function (m) { m.C *= 0.96; }]
+      ] },
+    meoh: { name: 'Green methanol', short: 'e-methanol', level: 3,
+      project: 'Project Meridian, a 250,000-tonne-a-year e-methanol plant',
+      buyer: 'A shipping line meeting FuelEU Maritime', unit: '$/t', vunit: 'kt', cap: 250, vstep: 5,
+      price: [800, 1800, 10], start: { P: 1650, T: 5, V: 240, top: 30, idx: 80 },
+      C: 1150, W: 1350, debt: 12, need: 150, prefT: 9, prefIdx: 40, time: 75,
+      events: [
+        ['FuelEU penalties tighten. The shipping line can pay more.', function (m) { m.W *= 1.05; }],
+        ['Electrolyser costs overrun. Your production cost rises.', function (m) { m.C *= 1.05; }],
+        ['Interest rates rise. Lenders now want 14 years of contract.', function (m) { m.debt = 14; }],
+        ['The line orders four more methanol ships. It needs more volume.', function (m) { m.need = 200; }],
+        ['A hydrogen subsidy is approved. Your production cost falls.', function (m) { m.C *= 0.95; }]
+      ] }
+  };
+  function market(L) { return { C: L.C, W: L.W, debt: L.debt, need: L.need }; }
+  // s: {P, T, V, top, idx}; m: market; L: level
+  function score(s, m, L) {
+    var M = cl(40 + (s.P - m.C) / m.C * 250);
+    var lp = { tenor: cl((s.T - 3) / (m.debt - 3) * 100), top: s.top, vol: cl(s.V / (L.cap * 0.8) * 100), idx: 100 - s.idx * 0.6 };
+    var Lc = 0.3 * lp.tenor + 0.25 * lp.top + 0.2 * lp.vol + 0.15 * lp.idx + 0.1 * M;
+    var bp = { price: cl(50 + (m.W - s.P) / m.W * 400), tenor: cl(100 - Math.max(0, s.T - L.prefT) * 8),
+      top: 100 - s.top * 0.6, vol: cl(100 - Math.abs(s.V - m.need) / L.cap * 250), idx: cl(100 - Math.abs(s.idx - L.prefIdx) * 1.2) };
+    var B = 0.4 * bp.price + 0.2 * bp.tenor + 0.15 * bp.top + 0.15 * bp.vol + 0.1 * bp.idx;
+    // Round once, then decide on the rounded numbers, so a bar that shows 70 always passes
+    var r = { M: Math.round(M), L: Math.round(Lc), B: Math.round(B), lp: lp, bp: bp };
+    r.win = r.B >= 70 && r.L >= 70 && r.M >= 55;
+    return r;
+  }
+  // What the furthest-off party wants changed: [who, message, slider, direction]
+  function hint(s, m, L) {
+    var r = score(s, m, L);
+    if (r.M < 55) return ['Your board', s.P < m.C ? 'We would lose money on every unit. Raise the price.' : 'The margin is too thin to justify building. Raise the price.', 'P', 1];
+    var bw = r.B < 70 ? 70 - r.B : 0, lw = r.L < 70 ? 70 - r.L : 0;
+    if (!bw && !lw) return null;
+    if (bw >= lw) {
+      var k = Object.keys(r.bp).sort(function (a, b) { return r.bp[a] - r.bp[b]; })[0];
+      return ({
+        price: ['Buyer', 'That price will never get past our board. Bring it down.', 'P', -1],
+        tenor: ['Buyer', 'We cannot commit for that long. Shorten the contract.', 'T', -1],
+        top: ['Buyer', 'That much take-or-pay kills our flexibility. Lower it.', 'top', -1],
+        vol: s.V > m.need ? ['Buyer', 'We do not need that much. Cut the volume.', 'V', -1] : ['Buyer', 'We need more volume than that.', 'V', 1],
+        idx: s.idx > L.prefIdx ? ['Buyer', 'Too much market exposure for us. Fix more of the price.', 'idx', -1] : ['Buyer', 'A fully fixed price worries us if markets fall. Link more of it to the market.', 'idx', 1]
+      })[k];
+    }
+    var k2 = Object.keys(r.lp).sort(function (a, b) { return r.lp[a] - r.lp[b]; })[0];
+    return ({
+      tenor: ['Lender', 'Our debt runs ' + m.debt + ' years. The contract has to run as long.', 'T', 1],
+      top: ['Lender', 'We need volume certainty. Raise the take-or-pay.', 'top', 1],
+      vol: ['Lender', 'Too much of the plant is left uncontracted. Sell more of it.', 'V', 1],
+      idx: ['Lender', 'Market-linked pricing makes the cash flows too volatile. Fix more of it.', 'idx', -1]
+    })[k2];
+  }
+  return { LEVELS: LEVELS, market: market, score: score, hint: hint, cl: cl };
+})();
+if (typeof module !== 'undefined') module.exports = OFFTAKE;
+
+(function () {
+  var O = OFFTAKE, $ = function (id) { return document.getElementById(id); };
+  var ORDER = ['rng', 'saf', 'meoh'], KEYS = ['P', 'T', 'V', 'top', 'idx'];
+  var L, key, m, timeLeft, timer, running = false, practice = false, events, tries;
+  function best(k, v) { try { if (v != null) localStorage.setItem('9de-offtake-' + k, v); return +localStorage.getItem('9de-offtake-' + k) || 0; } catch (e) { return 0; } }
+  function money(v) { return L.unit === '$/MMBtu' ? '$' + v.toFixed(2) : '$' + Math.round(v).toLocaleString('en-GB'); }
+
+  // Level cards
+  $('levels').innerHTML = ORDER.map(function (k) {
+    var l = O.LEVELS[k], b = best(k);
+    return '<button class="lvl glass" type="button" data-k="' + k + '"><span class="k">Level ' + l.level + ' · ' + ['Warm-up', 'Harder', 'Hardest'][l.level - 1] + '</span><h2 class="serif">' + l.name + '</h2><p>' + l.project + '. Buyer: ' + l.buyer.charAt(0).toLowerCase() + l.buyer.slice(1) + '.</p><span class="meta"><span>' + l.time + ' seconds</span><span>' + (b ? 'Best <b>' + b + '</b>' : 'Not played yet') + '</span></span></button>';
+  }).join('');
+  $('levels').addEventListener('click', function (e) { var b = e.target.closest('.lvl'); if (b) open(b.dataset.k); });
+
+  function open(k) {
+    key = k; L = O.LEVELS[k]; practice = $('practice').checked;
+    $('pick').hidden = true; $('game').hidden = false; window.scrollTo(0, 0);
+    $('g-level').textContent = 'Level ' + L.level + ' · ' + L.name + (practice ? ' · Practice' : '');
+    $('g-title').innerHTML = practice ? 'Practice <em>round</em>' : 'Reach <em>FID</em>';
+    $('g-brief').textContent = L.project + '. Write a deal the buyer will sign, the lender will finance and your shareholders will build.';
+    $('who-b').textContent = L.buyer;
+    $('P').min = L.price[0]; $('P').max = L.price[1]; $('P').step = L.price[2];
+    $('V').min = L.cap * 0.2; $('V').max = L.cap; $('V').step = L.vstep;
+    start();
+  }
+
+  function start() {
+    m = O.market(L); tries = 0;
+    KEYS.forEach(function (k) { $(k).value = L.start[k]; $(k).disabled = false; });
+    timeLeft = L.time; $('clock').textContent = practice ? '∞' : timeLeft; $('clock').classList.remove('low');
+    $('clock-lbl').textContent = practice ? 'No clock' : 'FID window';
+    // three market events, spread through the round
+    var pool = L.events.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 3);
+    events = pool.map(function (e, i) { return { t: e[0], f: e[1], at: Math.round(L.time * (0.78 - i * 0.24)) }; });
+    $('feed').innerHTML = '';
+    say('Brief', practice ? 'Take your time. Under each bar you’ll see what that party wants. Get all three past their lines, then propose.' : 'Get all three bars past their lines, then propose. Each rejected proposal costs 6 seconds, and the market will move while you work.');
+    running = true; $('propose').disabled = false;
+    clearInterval(timer); if (!practice) timer = setInterval(tick, 1000);
+    render();
+  }
+
+  function state() { var s = {}; KEYS.forEach(function (k) { s[k] = +$(k).value; }); return s; }
+  function render() {
+    var s = state(), r = O.score(s, m, L);
+    $('o-P').textContent = money(s.P) + (L.unit === '$/MMBtu' ? ' /MMBtu' : ' /t');
+    $('o-T').textContent = s.T + ' years';
+    $('o-V').textContent = Math.round(s.V).toLocaleString('en-GB') + ' ' + L.vunit;
+    $('o-top').textContent = s.top + '%';
+    $('o-idx').textContent = s.idx < 20 ? 'Fixed' : s.idx > 80 ? 'Market' : s.idx + '% market';
+    KEYS.forEach(function (k) { var i = $(k); i.style.setProperty('--p', ((i.value - i.min) / (i.max - i.min) * 100) + '%'); });
+    [['b', r.B, 70], ['l', r.L, 70], ['m', r.M, 55]].forEach(function (x) {
+      $('v-' + x[0]).textContent = x[1]; $('f-' + x[0]).style.width = x[1] + '%'; $('f-' + x[0]).classList.toggle('ok', x[1] >= x[2]);
+    });
+    // practice: show what the furthest-off party wants, and light up that slider
+    ['b', 'l', 'm'].forEach(function (x) { $('w-' + x).textContent = ''; });
+    document.querySelectorAll('.term').forEach(function (t) { t.classList.remove('nudge'); });
+    if (practice && running) {
+      var h = O.hint(s, m, L);
+      if (h) {
+        $('w-' + (h[0] === 'Buyer' ? 'b' : h[0] === 'Lender' ? 'l' : 'm')).textContent = h[1];
+        document.querySelector('.term[data-k="' + h[2] + '"]').classList.add('nudge');
+      } else $('w-m').textContent = 'Everyone is ready to sign. Propose it.';
+    }
+    return { s: s, r: r };
+  }
+
+  function say(who, text, cls) {
+    var d = document.createElement('div'); d.className = 'msg' + (cls ? ' ' + cls : '');
+    d.innerHTML = '<b>' + who + '</b><span>' + text + '</span>';
+    var f = $('feed'); f.insertBefore(d, f.firstChild); while (f.children.length > 5) f.removeChild(f.lastChild);
+  }
+
+  function tick() {
+    timeLeft = Math.max(0, timeLeft - 1); $('clock').textContent = timeLeft; $('clock').classList.toggle('low', timeLeft <= 10);
+    events.forEach(function (e) { if (!e.done && timeLeft <= e.at) { e.done = true; e.f(m); say('Market', e.t, 'event'); render(); } });
+    if (timeLeft === 0) finish(false);
+  }
+  // practice still has market moves, triggered by proposals instead of the clock
+  function practiceEvent() { var e = events.filter(function (x) { return !x.done; })[0]; if (e) { e.done = true; e.f(m); say('Market', e.t, 'event'); } }
+
+  function propose() {
+    if (!running) return;
+    var x = render(); tries++;
+    if (x.r.win) return finish(true, x);
+    var h = O.hint(x.s, m, L); say(h[0], h[1]);
+    if (practice) { if (tries === 2 || tries === 4) practiceEvent(); render(); return; }
+    timeLeft = Math.max(0, timeLeft - 6); $('clock').textContent = timeLeft;
+    if (timeLeft === 0) finish(false);
+  }
+
+  var last = null;
+  function finish(won, x) {
+    running = false; clearInterval(timer); $('propose').disabled = true;
+    KEYS.forEach(function (k) { $(k).disabled = true; });
+    x = x || render(); last = { won: won, s: x.s, r: x.r };
+    $('end-title').innerHTML = won ? 'FID <em>reached.</em>' : 'Window <em>closed.</em>';
+    $('end-text').textContent = won
+      ? 'All three parties signed. ' + L.project.split(',')[0] + ' goes to construction, on terms both sides can live with.'
+      : 'The financing window closed before the parties lined up. In real life, this is where projects quietly stall.';
+    $('end-sheet').innerHTML =
+      '<div><span>Price</span><strong>' + $('o-P').textContent + '</strong></div><div><span>Tenor</span><strong>' + x.s.T + ' years</strong></div>' +
+      '<div><span>Volume</span><strong>' + $('o-V').textContent + ' a year</strong></div><div><span>Take-or-pay</span><strong>' + x.s.top + '%</strong></div>' +
+      '<div><span>Buyer · Lender · Margin</span><strong>' + x.r.B + ' · ' + x.r.L + ' · ' + x.r.M + '</strong></div>' +
+      '<div><span>' + (practice ? 'Proposals' : 'Time left') + '</span><strong>' + (practice ? tries : timeLeft + ' s') + '</strong></div>';
+    var sc = won && !practice ? Math.round(x.r.M * 10 + timeLeft * 20 + (tries === 1 ? 300 : 0)) : 0, b = best(key);
+    if (sc > b) b = best(key, sc);
+    last.score = sc;
+    $('end-score').textContent = practice ? (won ? 'Practice deal closed. Now try it against the clock.' : '') : won ? 'Score ' + sc + (tries === 1 ? ' · first-time bonus' : '') + (sc >= b ? ' · new best' : ' · best ' + b) : (b ? 'Best so far ' + b : '');
+    var i = ORDER.indexOf(key), nx = won && !practice && i < 2 ? ORDER[i + 1] : null;
+    $('next').textContent = practice ? 'Play it for real' : nx ? 'Next: ' + O.LEVELS[nx].name : won ? 'Choose a deal' : 'Try again';
+    $('next').onclick = function () { $('end').hidden = true; if (practice) { $('practice').checked = false; open(key); } else if (nx) open(nx); else if (won) back(); else start(); };
+    $('save').hidden = !won;
+    $('end').hidden = false; $('next').focus();
+  }
+
+  function back() { running = false; clearInterval(timer); $('game').hidden = true; $('pick').hidden = false; location.reload(); }
+
+  // Term sheet as an image to keep or share
+  $('save').addEventListener('click', function () {
+    if (!last) return;
+    var W = 1200, H = 630, c = document.createElement('canvas'); c.width = W; c.height = H; var g = c.getContext('2d');
+    var bg = g.createLinearGradient(0, 0, W, H); bg.addColorStop(0, '#0F2A4B'); bg.addColorStop(1, '#061527'); g.fillStyle = bg; g.fillRect(0, 0, W, H);
+    g.strokeStyle = 'rgba(216,182,110,0.35)'; g.lineWidth = 2; g.strokeRect(30, 30, W - 60, H - 60);
+    g.fillStyle = '#D8B66E'; g.font = '600 18px Manrope, sans-serif'; g.fillText('TERM SHEET · ' + L.name.toUpperCase(), 80, 105);
+    g.fillStyle = '#EEF2F5'; g.font = '400 76px "Instrument Serif", Georgia, serif'; g.fillText('FID reached.', 80, 190);
+    g.fillStyle = '#A8B7C6'; g.font = '400 22px Manrope, sans-serif'; g.fillText(L.project.split(',')[0], 80, 232);
+    var rows = [['Price', $('o-P').textContent], ['Tenor', last.s.T + ' years'], ['Volume', $('o-V').textContent + ' a year'], ['Take-or-pay', last.s.top + '%'], ['Indexation', $('o-idx').textContent], ['Score', String(last.score || '')]];
+    rows.forEach(function (rw, n) { var x = 80 + (n % 3) * 350, y = 320 + Math.floor(n / 3) * 110;
+      g.fillStyle = '#8FA6BF'; g.font = '600 15px Manrope, sans-serif'; g.fillText(rw[0].toUpperCase(), x, y);
+      g.fillStyle = '#EEF2F5'; g.font = '400 40px "Instrument Serif", Georgia, serif'; g.fillText(rw[1], x, y + 46); });
+    g.fillStyle = '#D8B66E'; g.font = '600 18px Manrope, sans-serif'; g.fillText('9 DEGREES EAST', 80, H - 70);
+    g.fillStyle = '#6F87A3'; g.font = '400 16px Manrope, sans-serif'; g.fillText('9degreeseast.com', W - 240, H - 70);
+    c.toBlob(function (bl) { var a = document.createElement('a'); a.href = URL.createObjectURL(bl); a.download = '9DE-term-sheet-' + key + '.png'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000); });
+  });
+
+  KEYS.forEach(function (k) { $(k).addEventListener('input', render); });
+  $('propose').addEventListener('click', propose);
+  $('back').addEventListener('click', back);
+  $('again').addEventListener('click', function () { $('end').hidden = true; start(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !$('end').hidden) $('end').hidden = true; });
+  if (/[?&]level=(rng|saf|meoh)/.test(location.search)) open(RegExp.$1);
+})();
+</script>
+</body>
+</html>

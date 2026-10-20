@@ -140,7 +140,7 @@
           <h2 class="serif">Asia <em style="font-style:italic;color:var(--accent)">and</em> Australia</h2>
           <p>A major source of green methanol and eFuels supply, and a growing share of demand. Experience sourcing volumes from Asia and pricing into Asian regulation.</p>
           <ul class="places">
-            <li data-p="china"><span class="pl">China<small>2024–2026</small></span><span class="wd">For <b>Maersk Tankers</b>, led origination of <b>800,000 tonnes of long-term green methanol</b> and structured sales into petrochemical and fuel markets, with terms flexible enough to support several project FIDs at once.</span></li>
+            <li data-p="china"><span class="pl">China<small>2024–2026</small></span><span class="wd">For <b>Maersk Tankers</b>, led origination of <b id="egg-meoh">800,000 tonnes of long-term green methanol</b> and structured sales into petrochemical and fuel markets, with terms flexible enough to support several project FIDs at once.</span></li>
             <li data-p="japan"><span class="pl">Japan<small>2022–2024</small></span><span class="wd">For <b>HIF Global</b>, worked Japanese regulation and pricing into eFuels offtake, alongside the EU and US.</span></li>
             <li data-p="australia"><span class="pl">Australia<small>2022–2024</small></span><span class="wd">Led commercial activity for <b>HIF Global’s</b> Australian eFuels development.</span></li>
           </ul>
@@ -315,6 +315,22 @@
     frame(performance.now());
   }
 })();
+</script>
+<script>
+  // Hidden: tap the 800,000 tonnes and follow one molecule of it
+  (function () {
+    var el = document.getElementById('egg-meoh'), shown = false; if (!el) return;
+    el.addEventListener('click', function (e) {
+      var f = document.createElement('span'); f.textContent = 'CH₃OH';
+      f.style.cssText = 'position:fixed;left:' + e.clientX + 'px;top:' + e.clientY + 'px;z-index:91;transform:translate(-50%,-50%);font:600 22px Manrope,sans-serif;letter-spacing:.14em;color:#8FE6F2;text-shadow:0 0 6px #5EC8D8,0 0 18px #5EC8D8,0 0 2px #061527;background:rgba(6,21,39,0.55);padding:4px 10px;border-radius:999px;pointer-events:none;transition:transform 2600ms cubic-bezier(.3,.6,.4,1),opacity 600ms ease 2000ms;';
+      document.body.appendChild(f); requestAnimationFrame(function () { requestAnimationFrame(function () { f.style.transform = 'translate(-50%,' + (-e.clientY - 60) + 'px)'; f.style.opacity = 0; }); }); setTimeout(function () { f.remove(); }, 2700);
+      if (shown) return; shown = true;
+      var t = document.createElement('div'); t.setAttribute('role', 'status');
+      t.style.cssText = 'position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;z-index:90;max-width:calc(100% - 32px);padding:14px 18px;background:rgba(9,28,50,0.96);border:1px solid rgba(216,182,110,0.6);border-radius:3px;font:500 13.5px Manrope,sans-serif;color:#EEF2F5;box-shadow:0 18px 40px rgba(0,0,0,0.4);transition:opacity 400ms ease,transform 400ms ease;';
+      t.innerHTML = 'That’s a lot of molecules. Follow just one. <a href="one-molecule.html" style="color:#D8B66E;font-weight:600;text-decoration:none;margin-left:6px">One Molecule →</a>';
+      setTimeout(function () { document.body.appendChild(t); requestAnimationFrame(function () { t.style.opacity = 1; t.style.transform = 'translateX(-50%)'; }); }, 1200);
+    });
+  })();
 </script>
 </body>
 </html>

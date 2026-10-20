@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One Molecule | 9 Degrees East</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#061527">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<style>
+  :root { --ink: #061527; --surface: #0D2440; --text: #EEF2F5; --muted: #A8B7C6; --line: #22395A; --accent: #D8B66E; --o: #E58C7A; --c: #8FA8C6; --h: #F2F5F8; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--ink); color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .story { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); width: min(100% - 48px, 1240px); margin: 0 auto; }
+  .steps { position: relative; z-index: 2; }
+  .step { min-height: 92vh; display: flex; flex-direction: column; justify-content: center; padding: 0 40px 0 0; opacity: 0.25; transition: opacity 600ms ease; }
+  .step.on { opacity: 1; }
+  .num { margin: 0 0 18px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 12px; }
+  .num::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+  .step h2 { margin: 0 0 16px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(34px, 4vw, 54px); line-height: 1.05; letter-spacing: -0.02em; }
+  .step h2 em { color: var(--accent); }
+  .step p { margin: 0; max-width: 440px; font-size: 16px; line-height: 1.8; color: var(--muted); }
+  .step .fact { margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--line); max-width: 440px; font-size: 12px; letter-spacing: 0.04em; color: #8FA6BF; }
+  .intro h1 { margin: 0 0 18px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(58px, 8vw, 110px); line-height: 0.95; letter-spacing: -0.03em; }
+  .intro h1 em { color: var(--accent); }
+  .scroll-cue { margin-top: 34px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #6F87A3; animation: bob 2.4s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(6px); } }
+
+  .stage-wrap { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; }
+  svg.stage { width: min(100%, 620px); height: auto; overflow: hidden; }
+
+  /* scene groups fade in and out by step */
+  .sc { opacity: 0; transition: opacity 260ms ease; }
+  .sc.show { opacity: 1; transition: opacity 650ms 320ms ease; }
+  .sc.dim { opacity: 0.18; transition: opacity 650ms 320ms ease; }
+
+  /* atoms: positioned per step */
+  .atom { transition: transform 1300ms 200ms cubic-bezier(.6,.05,.25,1), opacity 500ms 250ms ease; opacity: 0; }
+  .atom circle { stroke-width: 1.2; }
+  .atom text { font-family: Manrope, sans-serif; font-size: 13px; font-weight: 600; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+  .bond { opacity: 0; stroke: #9DB2CB; stroke-width: 3; stroke-linecap: round; transition: opacity 150ms ease; }
+  [data-step="0"] .atom.mol, [data-step="4"] .atom.mol, [data-step="5"] .atom.mol { opacity: 1; }
+  [data-step="0"] .bond, [data-step="4"] .bond, [data-step="5"] .bond { opacity: 1; transition: opacity 600ms 1300ms ease; }
+  [data-step="2"] .atom.h { opacity: 1; }
+  [data-step="3"] .atom.h, [data-step="3"] .atom.c, [data-step="3"] .atom.o, [data-step="3"] .atom.ox { opacity: 1; }
+  [data-step="4"] .atom.ox, [data-step="5"] .atom.ox { opacity: 0; }
+
+  /* step 2: hydrogens freshly split, floating at left */
+  [data-step="2"] .h1 { transform: translate(-150px, -90px); }
+  [data-step="2"] .h2 { transform: translate(-110px, -30px); }
+  [data-step="2"] .h3 { transform: translate(-60px, 40px); }
+  [data-step="2"] .h4 { transform: translate(-180px, 20px); }
+  /* step 3: hydrogens waiting left, CO2 drifting in from right */
+  [data-step="3"] .h1 { transform: translate(-170px, -70px); }
+  [data-step="3"] .h2 { transform: translate(-150px, -10px); }
+  [data-step="3"] .h3 { transform: translate(-110px, 50px); }
+  [data-step="3"] .h4 { transform: translate(-200px, 40px); }
+  [data-step="3"] .c { transform: translate(140px, -40px); }
+  [data-step="3"] .o { transform: translate(122px, -40px); }
+  [data-step="3"] .ox { transform: translate(-16px, 10px); }
+  /* step 1 & earlier: everything hidden off to the sides */
+  [data-step="1"] .h, [data-step="7"] .h, [data-step="8"] .h { transform: translate(-260px, -40px); }
+  [data-step="1"] .c, [data-step="1"] .o, [data-step="1"] .ox, [data-step="7"] .c, [data-step="7"] .o, [data-step="7"] .ox, [data-step="8"] .c, [data-step="8"] .o, [data-step="8"] .ox { transform: translate(260px, 0); }
+  /* step 5: molecule shrinks into the ship's tank */
+  [data-step="6"] .mol-g { transform: translate(17px, 96px) scale(0.2); opacity: 0; }
+  .mol-g { transition: transform 1400ms cubic-bezier(.6,.05,.25,1), opacity 900ms ease; }
+  .mol-g { transition: transform 1400ms cubic-bezier(.6,.05,.25,1); transform-origin: 300px 280px; transform-box: view-box; }
+
+  /* motion details */
+  .rotor { transform-origin: 160px 210px; animation: spin 3.2s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .flow { stroke-dasharray: 2 10; animation: flow 1.2s linear infinite; }
+  @keyframes flow { to { stroke-dashoffset: -24; } }
+  .bubble { animation: rise 3s ease-in infinite; }
+  .bubble.b2 { animation-delay: 1s; } .bubble.b3 { animation-delay: 2s; }
+  @keyframes rise { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(-90px); opacity: 0; } }
+  .smoke { animation: drift 5s ease-in-out infinite; }
+  @keyframes drift { 50% { transform: translateX(-14px); } }
+  .reactor-glow { animation: glow 2.2s ease-in-out infinite; }
+  @keyframes glow { 50% { opacity: 0.35; } }
+  .ship { animation: sail 14s ease-in-out infinite; }
+  @keyframes sail { 0% { transform: translateX(-120px); } 50% { transform: translateX(110px); } 100% { transform: translateX(-120px); } }
+  .wave { animation: wave 3s ease-in-out infinite; }
+  @keyframes wave { 50% { transform: translateX(-20px); } }
+  .sig { stroke-dasharray: 260; stroke-dashoffset: 260; }
+  [data-step="8"] .sig { animation: sign 2.4s 0.6s ease forwards; }
+  @keyframes sign { to { stroke-dashoffset: 0; } }
+  .seal { opacity: 0; transform-origin: 396px 340px; transform-box: view-box; }
+  [data-step="8"] .seal { animation: stamp 600ms 2.6s cubic-bezier(.2,1.6,.4,1) forwards; }
+  @keyframes stamp { from { opacity: 0; transform: scale(1.8); } to { opacity: 1; transform: scale(1); } }
+
+  .end { min-height: 70vh; display: grid; place-items: center; text-align: center; padding: 60px 24px 90px; border-top: 1px solid var(--line); }
+  .end h2 { margin: 0 0 16px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(40px, 5.5vw, 76px); line-height: 1.02; letter-spacing: -0.02em; }
+  .end h2 em { color: var(--accent); }
+  .end p { margin: 0 auto; max-width: 520px; font-size: 16px; line-height: 1.8; color: var(--muted); }
+  .end .sign { margin-top: 34px; font-size: 11px; letter-spacing: 0.24em; color: var(--accent); }
+
+  @media (max-width: 860px) {
+    .story { display: flex; flex-direction: column; width: 100%; }
+    .stage-wrap { order: -1; position: sticky; top: 0; z-index: 5; height: 44vh; height: 44svh; padding: 10px 0; background: var(--ink); border-bottom: 1px solid var(--line); box-shadow: 0 18px 30px rgba(8,26,46,0.9); }
+    svg.stage { width: auto; height: 100%; max-width: calc(100% - 24px); }
+    .steps { z-index: 1; padding: 0 22px; }
+    .step { min-height: 70vh; padding: 34px 0 0; justify-content: flex-start; }
+    .step p, .step .fact { max-width: none; }
+    .intro h1 { font-size: 54px; }
+  }
+
+  /* Fuel switch, atom facts, new scenes */
+  .fuels { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 26px; }
+  .fuels button { min-height: 40px; padding: 0 16px; border: 1px solid #2E4C74; border-radius: 999px; background: none; color: var(--muted); font: 500 13px Manrope, sans-serif; cursor: pointer; }
+  .fuels button[aria-pressed="true"] { border-color: var(--accent); color: var(--text); }
+  .fuels button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .atom { cursor: pointer; } .atom text { pointer-events: none; }
+  .tipbox { position: absolute; z-index: 6; max-width: 240px; padding: 10px 12px; background: rgba(9,28,50,0.95); border: 1px solid rgba(216,182,110,0.5); border-radius: 3px; font-size: 12.5px; line-height: 1.55; color: var(--text); pointer-events: none; opacity: 0; transition: opacity 200ms ease; }
+  .tipbox.on { opacity: 1; }
+  .tapnote { position: absolute; bottom: 14px; left: 0; right: 0; text-align: center; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #6F87A3; transition: opacity 300ms; }
+  .stage-wrap { position: sticky; }
+  [data-fuel="saf"] .mol-g, [data-fuel="diesel"] .mol-g { display: none; }
+  .chain { opacity: 0; transition: opacity 600ms 400ms ease; }
+  [data-fuel="saf"][data-step="0"] .chain, [data-fuel="saf"][data-step="4"] .chain, [data-fuel="saf"][data-step="5"] .chain,
+  [data-fuel="diesel"][data-step="0"] .chain, [data-fuel="diesel"][data-step="4"] .chain, [data-fuel="diesel"][data-step="5"] .chain { opacity: 1; }
+  .plane { animation: fly 9s ease-in-out infinite; } @keyframes fly { 0% { transform: translate(-160px, 40px); } 50% { transform: translate(120px, -30px); } 100% { transform: translate(-160px, 40px); } }
+  .truck { animation: drive 8s ease-in-out infinite; } @keyframes drive { 0% { transform: translateX(-150px); } 50% { transform: translateX(120px); } 100% { transform: translateX(-150px); } }
+  .road { stroke-dasharray: 14 12; animation: flow 1.2s linear infinite; }
+  .check { opacity: 0; } [data-step="5"] .check { animation: tick-in 400ms ease forwards; }
+  [data-step="5"] .check.c2 { animation-delay: 500ms; } [data-step="5"] .check.c3 { animation-delay: 1000ms; } [data-step="5"] .check.c4 { animation-delay: 1500ms; }
+  @keyframes tick-in { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+  .gapbar { transform-origin: 50% 100%; transform: scaleY(0); transform-box: fill-box; transition: transform 1100ms 300ms cubic-bezier(.2,.9,.3,1); }
+  [data-step="7"] .gapbar { transform: scaleY(1); }
+  [data-step="5"] .mol-g { transform: translate(-130px, 0) scale(0.85); }
+  .back { display: inline-block; margin-top: 26px; font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; }
+</style>
+<script src="nav.js" defer></script>
+</head>
+<body>
+  <div id="site-nav"></div>
+  <main class="story">
+    <div class="steps">
+      <section class="step intro on" data-s="0">
+        <p class="num">You found it · A 9 Degrees East jam</p>
+        <h1 data-t="title">One <em>molecule</em></h1>
+        <p data-t="intro"></p>
+        <div class="fuels" role="group" aria-label="Choose a fuel"><button type="button" data-fuel="meoh" aria-pressed="true">e-methanol</button><button type="button" data-fuel="saf" aria-pressed="false">e-SAF</button><button type="button" data-fuel="diesel" aria-pressed="false">e-diesel</button></div>
+        <div class="scroll-cue">Scroll to begin ↓</div>
+      </section>
+      <section class="step" data-s="1">
+        <p class="num">01 · Wind</p>
+        <h2>It starts as a <em>gust.</em></h2>
+        <p>A turbine on a windy coast turns moving air into electricity. That power is the real raw material: everything that follows runs on it.</p>
+        <p class="fact">Making e-fuels takes a lot of electricity. The power bill is one of the biggest numbers in any project’s model.</p>
+      </section>
+      <section class="step" data-s="2">
+        <p class="num">02 · Water</p>
+        <h2>Water is <em>split in two.</em></h2>
+        <p>In an electrolyser, that electricity pulls water apart into oxygen and hydrogen. The hydrogen is what our molecule is built on.</p>
+        <p class="fact" data-t="h2fact"></p>
+      </section>
+      <section class="step" data-s="3">
+        <p class="num">03 · Carbon</p>
+        <h2>Carbon is <em>caught,</em> not dug up.</h2>
+        <p>The carbon comes from CO₂ captured from biogenic sources or straight from the air, CO₂ that would otherwise be lost to the atmosphere.</p>
+        <p class="fact">Where the CO₂ comes from matters: it decides whether the fuel counts as renewable under the rules.</p>
+      </section>
+      <section class="step" data-s="4">
+        <p class="num">04 · Synthesis</p>
+        <h2 data-t="synthH"></h2>
+        <p data-t="synthP"></p>
+        <p class="fact" data-t="synthF"></p>
+      </section>
+      <section class="step" data-s="5">
+        <p class="num">05 · Proof</p>
+        <h2>Green has to be <em>proved,</em> not claimed.</h2>
+        <p>Before the molecule counts towards any target, an auditor checks where every input came from. In the EU, the hydrogen must run on new renewable power, matched to production in time and place.</p>
+        <p class="fact">Time matching is monthly until the end of 2029, then hourly from 2030. The finished fuel must also cut greenhouse gas emissions by at least 70% compared with fossil fuel.</p>
+      </section>
+      <section class="step" data-s="6">
+        <p class="num" data-t="moveN"></p>
+        <h2 data-t="moveH"></h2>
+        <p data-t="moveP"></p>
+        <p class="fact" data-t="moveF"></p>
+      </section>
+      <section class="step" data-s="7">
+        <p class="num">07 · The gap</p>
+        <h2>Cleaner, but <em>several times the price.</em></h2>
+        <p>Today, fuel made this way costs several times as much as the fossil fuel it replaces. Mandates, penalties and carbon prices are what close the gap, for now.</p>
+        <p class="fact">The gap narrows as electrolysers and renewable power get cheaper. Our <a href="fuel-weather.html" style="color:inherit">Fuel Weather</a> tracks the power price signal every week.</p>
+      </section>
+      <section class="step" data-s="8">
+        <p class="num">08 · The part nobody sees</p>
+        <h2>None of it gets built <em>without a signature.</em></h2>
+        <p data-t="dealP"></p>
+        <p class="fact">This is the offtake agreement. It’s the quiet document that turns a project on paper into a project in the ground.</p>
+      </section>
+    </div>
+
+    <div class="stage-wrap">
+      <svg class="stage" id="stage" data-step="0" data-fuel="meoh" viewBox="0 0 600 600" fill="none" role="img" aria-label="Illustration that changes with each step of the story">
+        <defs>
+          <radialGradient id="halo" r="50%"><stop stop-color="#1D4677" stop-opacity=".7"/><stop offset="1" stop-color="#081A2E" stop-opacity="0"/></radialGradient>
+          <radialGradient id="hot" r="50%"><stop stop-color="#F0C877" stop-opacity=".55"/><stop offset="1" stop-color="#F0C877" stop-opacity="0"/></radialGradient>
+        </defs>
+        <circle cx="300" cy="290" r="260" fill="url(#halo)"/>
+
+        <!-- 0 intro: rings around the molecule -->
+        <g class="sc sc-intro" stroke="#2C4766">
+          <circle cx="300" cy="280" r="190" stroke-dasharray="2 8"/>
+          <circle cx="300" cy="280" r="160" stroke="#D8B66E" stroke-opacity=".3"/>
+          <text id="formula" x="300" y="520" fill="#D8B66E" font-family="Manrope" font-size="11" letter-spacing="4" text-anchor="middle" stroke="none">CH₃OH</text>
+        </g>
+
+        <!-- 1 wind -->
+        <g class="sc sc-wind">
+          <path d="M160 210 L156 470 M164 210 L168 470" stroke="#8FA8C6" stroke-width="1.5"/>
+          <g class="rotor" stroke="#EEF2F5" stroke-width="2.5" stroke-linecap="round">
+            <path d="M160 210 L160 110"/><path d="M160 210 L246 260"/><path d="M160 210 L74 260"/>
+          </g>
+          <circle cx="160" cy="210" r="6" fill="#EEF2F5"/>
+          <path d="M40 120 q40 -14 80 0 t80 0 M60 160 q40 -12 80 0" stroke="#5E7FA6" stroke-width="1.2" class="smoke"/>
+          <path class="flow" d="M168 460 C 260 460, 330 420, 440 420" stroke="#F0C877" stroke-width="2"/>
+          <rect x="440" y="390" width="80" height="60" rx="4" stroke="#8FA8C6"/>
+          <text x="480" y="475" fill="#8FA8C6" font-family="Manrope" font-size="9" letter-spacing="2" text-anchor="middle">GRID</text>
+        </g>
+
+        <!-- 2 water / electrolyser -->
+        <g class="sc sc-water">
+          <rect x="340" y="300" width="150" height="150" rx="6" stroke="#8FA8C6"/>
+          <path d="M340 380 h150" stroke="#2F5E8F" stroke-width="40" stroke-opacity=".35"/>
+          <path d="M395 310 v130 M435 310 v130" stroke="#EEF2F5" stroke-width="2"/>
+          <circle class="bubble" cx="395" cy="370" r="4" stroke="#EEF2F5"/>
+          <circle class="bubble b2" cx="400" cy="390" r="3" stroke="#EEF2F5"/>
+          <circle class="bubble b3" cx="435" cy="380" r="4" stroke="#E58C7A"/>
+          <text x="415" y="475" fill="#8FA8C6" font-family="Manrope" font-size="9" letter-spacing="2" text-anchor="middle">ELECTROLYSER</text>
+          <text x="395" y="290" fill="#EEF2F5" font-family="Manrope" font-size="10" text-anchor="middle">H₂</text>
+          <text x="435" y="290" fill="#E58C7A" font-family="Manrope" font-size="10" text-anchor="middle">O₂</text>
+        </g>
+
+        <!-- 3 co2 capture -->
+        <g class="sc sc-co2">
+          <path d="M470 470 V360 h30 V470" stroke="#8FA8C6"/>
+          <path class="smoke" d="M485 350 q-20 -30 0 -60 q20 -30 0 -60" stroke="#5E7FA6" stroke-width="1.5"/>
+          <text x="485" y="495" fill="#8FA8C6" font-family="Manrope" font-size="9" letter-spacing="2" text-anchor="middle">CO₂ CAPTURE</text>
+          <text x="420" y="215" fill="#8FA8C6" font-family="Manrope" font-size="10" text-anchor="middle">CO₂</text>
+        </g>
+
+        <!-- 4 reactor -->
+        <g class="sc sc-reactor">
+          <circle cx="300" cy="280" r="150" fill="url(#hot)" class="reactor-glow"/>
+          <rect x="150" y="130" width="300" height="300" rx="150" stroke="#D8B66E" stroke-opacity=".5"/>
+          <text x="300" y="470" fill="#D8B66E" font-family="Manrope" font-size="9" letter-spacing="2" text-anchor="middle">REACTOR · 250°C · 50 BAR</text>
+        </g>
+
+        <!-- 5 ship -->
+        <g class="sc sc-ship">
+          <path d="M300 60 V540" stroke="#D8B66E" stroke-opacity=".7" stroke-dasharray="3 6"/>
+          <text x="308" y="76" fill="#D8B66E" font-family="Manrope" font-size="10" letter-spacing="2">9°E</text>
+          <g class="wave" stroke="#3E6A9C" stroke-width="1.4"><path d="M60 420 q30 -10 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/><path d="M40 450 q30 -10 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0" stroke-opacity=".5"/></g>
+          <g class="ship">
+            <path d="M230 400 L370 400 L352 432 L246 432 Z" fill="#0D2440" stroke="#EEF2F5" stroke-width="1.6"/>
+            <rect x="250" y="370" width="22" height="30" stroke="#EEF2F5" stroke-width="1.4"/>
+            <rect x="282" y="352" width="70" height="48" rx="8" stroke="#D8B66E" stroke-width="1.4"/>
+            <text x="317" y="440" fill="#8FA8C6" font-family="Manrope" font-size="7" letter-spacing="1.5" text-anchor="middle">METHANOL</text>
+            <g class="cargo"><circle cx="317" cy="376" r="13" fill="url(#hot)"/><circle cx="312" cy="376" r="5" fill="#22395A" stroke="#8FA8C6"/><circle cx="323" cy="376" r="4.4" fill="#4A2B2E" stroke="#E58C7A"/><circle cx="306" cy="369" r="2.6" fill="#2B3E55" stroke="#F2F5F8"/><circle cx="305" cy="382" r="2.6" fill="#2B3E55" stroke="#F2F5F8"/><circle cx="312" cy="385" r="2.6" fill="#2B3E55" stroke="#F2F5F8"/><circle cx="329" cy="369" r="2.6" fill="#2B3E55" stroke="#F2F5F8"/></g>
+          </g>
+        </g>
+
+        <!-- 6 contract -->
+        <g class="sc sc-contract">
+          <rect x="170" y="110" width="260" height="340" rx="4" fill="#0D2440" stroke="#8FA8C6"/>
+          <text x="300" y="150" fill="#EEF2F5" font-family="Instrument Serif, Georgia, serif" font-size="22" text-anchor="middle">Offtake Agreement</text>
+          <path d="M200 180 h200 M200 200 h170 M200 220 h190 M200 250 h200 M200 270 h150 M200 290 h185 M200 310 h120" stroke="#3B5F8C" stroke-width="3" stroke-linecap="round"/>
+          <path d="M200 390 h90 M320 390 h80" stroke="#5E7FA6"/>
+          <text x="245" y="406" fill="#8FA8C6" font-family="Manrope" font-size="8" letter-spacing="1.5" text-anchor="middle">PRODUCER</text>
+          <text id="buyer" x="360" y="406" fill="#8FA8C6" font-family="Manrope" font-size="8" letter-spacing="1.5" text-anchor="middle">SHIPPING LINE</text>
+          <path class="sig" d="M205 385 c10 -24 18 8 26 -10 s10 -18 16 4 c6 16 14 -16 22 -6 s8 10 16 -2" stroke="#EEF2F5" stroke-width="1.6" stroke-linecap="round"/>
+          <path class="sig" d="M325 385 c8 -18 16 10 24 -6 s12 -14 18 6 c6 10 12 -12 22 -4" stroke="#EEF2F5" stroke-width="1.6" stroke-linecap="round"/>
+          <g class="seal"><circle cx="396" cy="340" r="22" fill="#D8B66E" fill-opacity=".14" stroke="#D8B66E"/><text x="396" y="340" fill="#D8B66E" font-family="Manrope" font-size="9" font-weight="600" letter-spacing="1.5" text-anchor="middle" dominant-baseline="central">FID</text></g>
+        </g>
+
+        <!-- 5 proof: a certificate being checked -->
+        <g class="sc sc-cert">
+          <rect x="350" y="150" width="200" height="260" rx="4" fill="#0D2440" stroke="#8FA8C6"/>
+          <text x="450" y="182" fill="#EEF2F5" font-family="Instrument Serif, Georgia, serif" font-size="18" text-anchor="middle">Proof of sustainability</text>
+          <g font-family="Manrope" font-size="10" fill="#C9D6E3">
+            <g class="check c1"><text x="372" y="226" fill="#7FC7A4">✓</text><text x="390" y="226">New renewable power</text></g>
+            <g class="check c2"><text x="372" y="262" fill="#7FC7A4">✓</text><text x="390" y="262">Matched in time</text></g>
+            <g class="check c3"><text x="372" y="298" fill="#7FC7A4">✓</text><text x="390" y="298">Qualifying CO₂ source</text></g>
+            <g class="check c4"><text x="372" y="334" fill="#7FC7A4">✓</text><text x="390" y="334">70% lower emissions</text></g>
+          </g>
+          <circle cx="510" cy="380" r="18" fill="#D8B66E" fill-opacity=".14" stroke="#D8B66E"/><text x="510" y="380" fill="#D8B66E" font-family="Manrope" font-size="8" font-weight="600" text-anchor="middle" dominant-baseline="central">AUDIT</text>
+        </g>
+
+        <!-- 6b plane and 6c truck -->
+        <g class="sc sc-plane">
+          <path d="M60 470 H540" stroke="#3E6A9C" stroke-dasharray="2 10"/>
+          <g class="plane" stroke="#EEF2F5" stroke-width="1.6" fill="#0D2440">
+            <path d="M200 300 L380 300 Q404 300 404 310 Q404 320 380 320 L200 320 Q192 310 200 300 Z"/>
+            <path d="M290 300 L250 250 L270 250 L330 300 Z M290 320 L250 370 L270 370 L330 320 Z M205 300 L190 278 L203 278 L225 300 Z"/>
+            <rect x="300" y="322" width="42" height="12" rx="6" stroke="#D8B66E"/>
+          </g>
+          <text x="300" y="520" fill="#8FA8C6" font-family="Manrope" font-size="9" letter-spacing="2" text-anchor="middle">BLENDED WITH FOSSIL JET FUEL</text>
+        </g>
+        <g class="sc sc-truck">
+          <path class="road" d="M40 440 H560" stroke="#3E6A9C" stroke-width="2"/>
+          <g class="truck" stroke="#EEF2F5" stroke-width="1.6" fill="#0D2440">
+            <rect x="200" y="330" width="130" height="80" rx="4" stroke="#D8B66E"/><path d="M330 355 H372 L392 380 V410 H330 Z"/>
+            <circle cx="232" cy="414" r="14"/><circle cx="300" cy="414" r="14"/><circle cx="368" cy="414" r="14"/>
+            <text x="265" y="374" fill="#8FA8C6" stroke="none" font-family="Manrope" font-size="8" letter-spacing="1.5" text-anchor="middle">E-DIESEL</text>
+          </g>
+        </g>
+
+        <!-- 7 the gap -->
+        <g class="sc sc-gap">
+          <path d="M150 440 H450" stroke="#5E7FA6"/>
+          <rect class="gapbar" x="190" y="370" width="80" height="70" fill="#3B5F8C"/>
+          <rect class="gapbar" x="330" y="170" width="80" height="270" fill="#D8B66E" fill-opacity=".8"/>
+          <text x="230" y="466" fill="#8FA8C6" font-family="Manrope" font-size="9" letter-spacing="2" text-anchor="middle">FOSSIL</text>
+          <text x="370" y="466" fill="#D8B66E" font-family="Manrope" font-size="9" letter-spacing="2" text-anchor="middle">GREEN</text>
+          <path d="M290 370 V170" stroke="#F0D49A" stroke-dasharray="3 5"/><text x="300" y="160" fill="#F0D49A" font-family="Manrope" font-size="9" letter-spacing="1.5" text-anchor="middle">THE GAP</text>
+        </g>
+
+        <!-- the chain: a long hydrocarbon, for e-SAF and e-diesel -->
+        <g class="chain" id="chain">
+          <path d="M180 300 L215 270 L250 300 L285 270 L320 300 L355 270 L390 300 L425 270" stroke="#9DB2CB" stroke-width="3" stroke-linecap="round"/>
+          <g class="chain-c"></g>
+        </g>
+
+        <!-- the molecule: CH3OH. Final positions are the atoms' home coordinates -->
+        <g class="mol-g">
+          <line class="bond" x1="300" y1="280" x2="372" y2="280"/>
+          <line class="bond" x1="372" y1="280" x2="410" y2="240"/>
+          <line class="bond" x1="300" y1="280" x2="262" y2="220"/>
+          <line class="bond" x1="300" y1="280" x2="244" y2="300"/>
+          <line class="bond" x1="300" y1="280" x2="296" y2="350"/>
+          <g class="atom mol c"><circle cx="300" cy="280" r="26" fill="#22395A" stroke="#8FA8C6"/><text x="300" y="280" fill="#EEF2F5">C</text></g>
+          <g class="atom mol o"><circle cx="372" cy="280" r="23" fill="#4A2B2E" stroke="#E58C7A"/><text x="372" y="280" fill="#F7D2CA">O</text></g>
+          <g class="atom ox"><circle cx="420" cy="230" r="21" fill="#4A2B2E" stroke="#E58C7A" stroke-opacity=".7"/><text x="420" y="230" fill="#F7D2CA">O</text></g>
+          <g class="atom mol h h1"><circle cx="410" cy="240" r="15" fill="#2B3E55" stroke="#F2F5F8"/><text x="410" y="240" fill="#F2F5F8">H</text></g>
+          <g class="atom mol h h2"><circle cx="262" cy="220" r="15" fill="#2B3E55" stroke="#F2F5F8"/><text x="262" y="220" fill="#F2F5F8">H</text></g>
+          <g class="atom mol h h3"><circle cx="244" cy="300" r="15" fill="#2B3E55" stroke="#F2F5F8"/><text x="244" y="300" fill="#F2F5F8">H</text></g>
+          <g class="atom mol h h4"><circle cx="296" cy="350" r="15" fill="#2B3E55" stroke="#F2F5F8"/><text x="296" y="350" fill="#F2F5F8">H</text></g>
+        </g>
+      </svg>
+    </div>
+  </main>
+
+  <section class="end">
+    <div>
+      <h2>Every molecule starts <em>with a deal.</em></h2>
+      <p>The wind, the water and the chemistry are the visible part. The agreements that make lenders say yes are the part that decides whether any of it gets built.</p>
+      <div class="sign">9° EAST</div>
+      <a class="back" href="contact.html">Working on a molecule like this? Talk to us →</a>
+    </div>
+  </section>
+  <div id="site-footer"></div>
+
+<script>
+(function () {
+  var stage = document.getElementById('stage');
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  var FUELS = {
+    meoh: { formula: 'CH₃OH', buyer: 'SHIPPING LINE', move: 'ship',
+      title: 'One <em>molecule</em>',
+      intro: 'CH₃OH. One carbon, one oxygen, four hydrogens. This is the story of how a single molecule of e-methanol gets made, and what really decides whether it ever exists.',
+      h2fact: 'This green hydrogen is the “e” in e-methanol. No fossil fuel goes in.',
+      synthH: 'Under heat and pressure, <em>it clicks.</em>',
+      synthP: 'In a reactor with a catalyst, the hydrogen and carbon dioxide combine. Out comes methanol, a clear liquid that’s easy to store, ship and burn.',
+      synthF: 'CO₂ + 3H₂ → CH₃OH + H₂O. Chemically identical to methanol made from natural gas, with a very different footprint.',
+      moveN: '06 · Shipping', moveH: 'Into the tank, <em>across the meridian.</em>',
+      moveP: 'Our molecule is loaded onto a dual-fuel vessel and heads out to sea, burned in an engine that would otherwise run on heavy fuel oil.',
+      moveF: 'Shipping lines are ordering methanol-capable ships to meet rules like FuelEU Maritime.',
+      dealP: 'Before a single turbine turns, lenders need to know a shipping line will buy the molecules, at what price and for how long. The plant only exists once that contract does.' },
+    saf: { formula: 'C₈–C₁₆ HYDROCARBONS', buyer: 'AIRLINE', move: 'plane',
+      title: 'One <em>molecule</em> of jet fuel',
+      intro: 'e-SAF. Jet fuel made from the same two ingredients, green hydrogen and captured CO₂, built up into the long chains of carbon and hydrogen that a jet engine burns. This is how one molecule of it gets made, and what decides whether it ever exists.',
+      h2fact: 'This green hydrogen is the “e” in e-SAF. No crude oil goes in.',
+      synthH: 'Built up, <em>one carbon at a time.</em>',
+      synthP: 'First the CO₂ is turned into carbon monoxide. Then, in a Fischer-Tropsch reactor, carbon monoxide and hydrogen join into long chains. Refined, the right lengths become jet fuel.',
+      synthF: 'Fischer-Tropsch jet fuel can be blended with fossil jet fuel at up to 50% under the ASTM D7566 standard.',
+      moveN: '06 · Flying', moveH: 'Into the tank, <em>and up to 35,000 feet.</em>',
+      moveP: 'Blended with fossil kerosene, our molecule is loaded into an aircraft at an EU airport, where fuel suppliers must already include sustainable aviation fuel.',
+      moveF: 'Under ReFuelEU Aviation, synthetic fuels must make up at least 1.2% of jet fuel at EU airports from 2030.',
+      dealP: 'Before a single turbine turns, lenders need to know an airline or fuel supplier will buy the fuel, at what price and for how long. The plant only exists once that contract does.' },
+    diesel: { formula: 'C₁₀–C₂₂ HYDROCARBONS', buyer: 'FLEET', move: 'truck',
+      title: 'One <em>molecule</em> of diesel',
+      intro: 'e-diesel. The same green hydrogen and captured CO₂, made into a drop-in replacement for the diesel in trucks, trains and machinery. This is how one molecule of it gets made, and what decides whether it ever exists.',
+      h2fact: 'This green hydrogen is the “e” in e-diesel. No crude oil goes in.',
+      synthH: 'Built up, <em>one carbon at a time.</em>',
+      synthP: 'First the CO₂ is turned into carbon monoxide. Then, in a Fischer-Tropsch reactor, carbon monoxide and hydrogen join into long chains. Refined, the longer ones become diesel.',
+      synthF: 'Diesel made this way is a paraffinic fuel covered by the EN 15940 standard, the same one as renewable diesel (HVO).',
+      moveN: '06 · Driving', moveH: 'Into the tank, <em>and down the highway.</em>',
+      moveP: 'Our molecule goes into a truck’s tank. No engine changes are needed for vehicles approved for paraffinic diesel.',
+      moveF: 'Paraffinic diesel can run neat or blended with fossil diesel.',
+      dealP: 'Before a single turbine turns, lenders need to know a fuel buyer will take the output, at what price and for how long. The plant only exists once that contract does.' }
+  };
+  var ATOMS = {
+    c: 'Carbon: captured from CO₂, not dug up. Where it came from decides whether the fuel counts as renewable.',
+    o: 'Oxygen: arrives with the CO₂. A second oxygen leaves as water in the reactor.',
+    h: 'Hydrogen: split from water with renewable power. Four of them in every molecule of methanol.',
+    chain: 'A chain of carbon atoms, each carrying hydrogen. Jet fuel is mostly chains of about 8 to 16 carbons; diesel runs longer.'
+  };
+  var fuel = 'meoh';
+  var SCENES = { 0: ['intro'], 1: ['wind'], 2: ['water', '~wind'], 3: ['co2'], 4: ['reactor'], 5: ['cert'], 6: ['ship'], 7: ['gap'], 8: ['contract'] };
+  // carbons on the chain
+  var cg = document.querySelector('.chain-c'), pts = [[180,300],[215,270],[250,300],[285,270],[320,300],[355,270],[390,300],[425,270]], h = '';
+  pts.forEach(function (p, i) { var up = i % 2 ? -1 : 1; h += '<line x1="' + p[0] + '" y1="' + p[1] + '" x2="' + p[0] + '" y2="' + (p[1] + up * 38) + '" stroke="#9DB2CB" stroke-width="2"/><circle cx="' + p[0] + '" cy="' + (p[1] + up * 38) + '" r="9" fill="#2B3E55" stroke="#F2F5F8"/>'; });
+  pts.forEach(function (p) { h += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="16" fill="#22395A" stroke="#8FA8C6"/><text x="' + p[0] + '" y="' + p[1] + '" fill="#EEF2F5" font-family="Manrope" font-size="12" font-weight="600" text-anchor="middle" dominant-baseline="central">C</text>'; });
+  cg.innerHTML = h;
+
+  function setFuel(f) {
+    fuel = f; var F = FUELS[f];
+    stage.setAttribute('data-fuel', f);
+    document.querySelectorAll('[data-t]').forEach(function (el) { el.innerHTML = F[el.getAttribute('data-t')]; });
+    document.getElementById('formula').textContent = F.formula;
+    document.getElementById('buyer').textContent = F.buyer;
+    SCENES[6] = [F.move];
+    document.querySelectorAll('.fuels button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.fuel === f)); });
+    var c = current; current = null; apply(c == null ? '0' : c);
+  }
+  var current = null, pending = null, timer;
+  function apply(n) {
+    if (n === current) return;
+    current = n;
+    stage.setAttribute('data-step', n);
+    var want = SCENES[n] || [];
+    stage.querySelectorAll('.sc').forEach(function (g) {
+      var name = (g.getAttribute('class').match(/sc-(\w+)/) || [])[1];
+      g.classList.toggle('show', want.indexOf(name) > -1);
+      g.classList.toggle('dim', want.indexOf('~' + name) > -1);
+    });
+    steps.forEach(function (s) { s.classList.toggle('on', s.getAttribute('data-s') === String(n)); });
+    hideTip();
+  }
+  function set(n) { pending = n; clearTimeout(timer); timer = setTimeout(function () { apply(pending); }, current === null ? 0 : 140); }
+  var mobile = window.matchMedia('(max-width: 860px)').matches;
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) set(e.target.getAttribute('data-s')); }); },
+      { rootMargin: mobile ? '-58% 0px -32% 0px' : '-45% 0px -45% 0px' });
+    steps.forEach(function (s) { io.observe(s); });
+  } else { steps.forEach(function (s) { s.classList.add('on'); }); }
+
+  // Tap an atom for a fact
+  var wrap = document.querySelector('.stage-wrap'), tip = document.createElement('div'), note = document.createElement('div');
+  tip.className = 'tipbox'; tip.setAttribute('role', 'status'); wrap.appendChild(tip);
+  note.className = 'tapnote'; note.textContent = 'Tap an atom'; wrap.appendChild(note);
+  function hideTip() { tip.classList.remove('on'); note.style.opacity = (current === '0' || current === '4' || current === '5') ? 1 : 0; }
+  stage.addEventListener('click', function (e) {
+    var a = e.target.closest('.atom, .chain'); if (!a) { hideTip(); return; }
+    var k = a.classList.contains('chain') ? 'chain' : a.classList.contains('c') ? 'c' : (a.classList.contains('o') || a.classList.contains('ox')) ? 'o' : 'h';
+    tip.textContent = ATOMS[k];
+    var r = wrap.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    tip.style.left = Math.max(10, Math.min(r.width - 250, x - 120)) + 'px'; tip.style.top = Math.max(10, y - 90) + 'px';
+    tip.classList.add('on'); note.style.opacity = 0;
+  });
+  document.querySelectorAll('.fuels button').forEach(function (b) { b.addEventListener('click', function () { setFuel(b.dataset.fuel); }); });
+  var q = /[?&]fuel=(meoh|saf|diesel)/.exec(location.search);
+  setFuel(q ? q[1] : 'meoh');
+  apply('0');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A postcard from 9° East | 9 Degrees East</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="How far is your city from the 9° East meridian? Make a postcard.">
+<meta name="theme-color" content="#061527">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<style>
+  /* A postcard from 9° East: pick a city or tap the map, see how far it sits from the meridian, keep the card. */
+  :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { min-height: 100vh; display: flex; flex-direction: column; color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+         background: radial-gradient(1000px 640px at 80% 0%, rgba(31,74,122,0.32), transparent 65%), var(--ink); background-attachment: fixed; }
+  a { color: var(--accent); }
+  main { flex: 1; }
+  .wrap { width: min(100% - 80px, 1180px); margin: 0 auto; }
+  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+  .head { padding-block: 60px 26px; }
+  h1 { margin: 0 0 14px; font: 400 clamp(50px, 6.5vw, 88px)/0.98 'Instrument Serif', Georgia, serif; letter-spacing: -0.025em; }
+  h1 em { color: var(--accent); }
+  .lede { margin: 0; max-width: 640px; font: 400 clamp(19px, 1.9vw, 24px)/1.4 'Instrument Serif', Georgia, serif; color: var(--soft); }
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 36px; padding-bottom: 90px; align-items: start; }
+  .pickers label { display: block; margin: 0 0 8px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .search { position: relative; }
+  .search input { width: 100%; min-height: 50px; padding: 0 16px; border: 1px solid var(--line); border-radius: 3px; background: rgba(9,28,50,0.72); color: var(--text); font: 500 15px Manrope, sans-serif; }
+  .search input:focus { outline: 2px solid var(--accent); outline-offset: 2px; border-color: transparent; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 26px; }
+  .chips button { min-height: 36px; padding: 0 13px; border: 1px solid var(--line); border-radius: 999px; background: none; color: var(--soft); font: 500 12px Manrope, sans-serif; cursor: pointer; }
+  .chips button:hover, .chips button[aria-pressed="true"] { border-color: var(--accent); color: var(--text); }
+  .chips button:focus-visible, .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .map { position: relative; border: 1px solid var(--line); border-radius: 3px; background: rgba(9,28,50,0.55); cursor: crosshair; touch-action: manipulation; }
+  .map canvas { display: block; width: 100%; height: auto; }
+  .map .tip { position: absolute; left: 12px; bottom: 10px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); pointer-events: none; }
+  .card-wrap { position: sticky; top: 24px; }
+  .card { width: 100%; aspect-ratio: 1200 / 760; border-radius: 4px; overflow: hidden; box-shadow: 0 30px 70px rgba(0,0,0,0.45); border: 1px solid rgba(216,182,110,0.3); }
+  .card canvas { display: block; width: 100%; height: 100%; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+  .btn { min-height: 48px; padding: 0 22px; border-radius: 2px; border: 0; font: 600 13px Manrope, sans-serif; cursor: pointer; display: inline-flex; align-items: center; text-decoration: none; }
+  .go { background: var(--accent); color: var(--ink); } .go:hover { background: #E8C987; }
+  .ghost { background: transparent; color: var(--text); border: 1px solid rgba(160,190,220,0.35); }
+  .note { margin-top: 14px; font-size: 11.5px; line-height: 1.7; color: var(--faint); }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } .card-wrap { position: static; order: -1; } }
+  @media (max-width: 700px) { .wrap { width: calc(100% - 40px); } .head { padding-block: 40px 20px; } }
+</style>
+<script src="nav.js" defer></script>
+<script src="land.js"></script>
+</head>
+<body>
+  <div id="site-nav"></div>
+  <main>
+    <header class="wrap head">
+      <p class="eyebrow">You found it · A postcard from 9° East</p>
+      <h1>How far are you from <em>9° East?</em></h1>
+      <p class="lede">Pick a place, or tap anywhere on the map, and we’ll send you a postcard.</p>
+    </header>
+    <div class="wrap grid">
+      <section class="pickers" aria-label="Choose a place">
+        <label for="q">Find a city</label>
+        <div class="search"><input id="q" type="search" list="cities" placeholder="Try Houston, Singapore or Milan" autocomplete="off"><datalist id="cities"></datalist></div>
+        <div class="chips" id="chips" role="group" aria-label="Places with a story"></div>
+        <label>Or tap the map</label>
+        <div class="map" id="map"><canvas id="mapc" width="1200" height="600" aria-label="World map. Tap to choose a point."></canvas><span class="tip">Tap anywhere</span></div>
+      </section>
+      <section class="card-wrap" aria-label="Your postcard">
+        <div class="card"><canvas id="card" width="1200" height="760" role="img" aria-label="Postcard"></canvas></div>
+        <div class="btns"><button class="btn go" id="save" type="button">Save postcard</button><a class="btn ghost" href="locations.html">Where we work</a></div>
+        <p class="note">Distances are the shortest path across the Earth’s surface to the 9° East meridian, on a sphere. Good enough for a postcard, not for navigation.</p>
+      </section>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+
+<script>
+(function () {
+  // Places with a story. Facts kept short and checkable.
+  var PLACES = [
+    ['Hamburg', 53.55, 9.99, 'Germany’s largest port, about 65 km east of the line.'],
+    ['Stuttgart', 48.78, 9.18, 'Home of Porsche, a partner in HIF Global’s Haru Oni e-fuels plant in Chile. Practically on the line.'],
+    ['Milan', 45.46, 9.19, 'Italy’s financial capital sits almost exactly on 9° East.'],
+    ['Zurich', 47.38, 8.54, 'Just west of the line. Nearby Zug and Geneva are home to many of the world’s commodity trading houses.'],
+    ['Douala', 4.05, 9.70, 'Cameroon’s main port, less than 80 km east of the line.'],
+    ['Tunis', 36.81, 10.18, 'The meridian runs down through Sardinia and on into Tunisia, about 100 km west of Tunis.'],
+    ['London', 51.51, -0.13, 'Our base. The UK SAF Mandate has required sustainable aviation fuel in UK jet fuel since 2025.'],
+    ['Rotterdam', 51.92, 4.48, 'Europe’s largest port and main fuel hub, home to one of the world’s biggest renewable diesel and SAF refineries.'],
+    ['Copenhagen', 55.68, 12.57, 'Home of Maersk, whose methanol-powered container ships helped start green methanol demand at sea.'],
+    ['Houston', 29.76, -95.37, 'Where Tom’s career began in 1998, and home to HIF Global’s headquarters.'],
+    ['Chicago', 41.88, -87.63, 'Gateway to the US Corn Belt, where most of America’s ethanol is made.'],
+    ['New York', 40.71, -74.01, 'New York Harbor sets the US benchmark price for ultra-low sulfur diesel, one of our Fuel Weather signals.'],
+    ['Los Angeles', 34.05, -118.24, 'California’s Low Carbon Fuel Standard has made the state one of the biggest markets for renewable diesel.'],
+    ['São Paulo', -23.55, -46.63, 'Brazil’s sugarcane ethanol heartland, where most cars can run on ethanol.'],
+    ['Punta Arenas', -53.16, -70.92, 'Near HIF Global’s Haru Oni plant, which produced its first e-gasoline in 2022.'],
+    ['Cape Town', -33.92, 18.42, 'The far end of our 9° East route on the globe, London to Cape Town.'],
+    ['Singapore', 1.35, 103.82, 'The world’s largest ship-refuelling port, and a test bed for methanol and biofuel bunkering.'],
+    ['Shanghai', 31.23, 121.47, 'The world’s busiest container port, which now refuels ships with green methanol.'],
+    ['Tokyo', 35.68, 139.69, 'Japan aims for sustainable aviation fuel to make up 10% of fuel used by its airlines by 2030.'],
+    ['Dubai', 25.20, 55.27, 'Home to the world’s busiest airport for international passengers.'],
+    ['Sydney', -33.87, 151.21, 'Australia’s largest city. Strong wind and sun make the country a contender for green hydrogen and e-fuels exports.']
+  ];
+  var R = 6371, D = Math.PI / 180, MER = 9;
+  var $ = function (id) { return document.getElementById(id); };
+  var pick = null;
+
+  // Shortest distance across the sphere to the 9°E meridian (the half great circle from pole to pole at 9°E).
+  // Within 90° of longitude the closest point is level with you on the line; beyond that, it is the nearer pole.
+  function dist9(lat, lon) {
+    var dl = ((lon - MER + 540) % 360) - 180, a = Math.abs(dl) * D, f = lat * D;
+    var km = Math.abs(dl) <= 90 ? R * Math.asin(Math.cos(f) * Math.sin(a)) : R * (Math.PI / 2 - Math.abs(f));
+    return { km: Math.round(km), side: dl >= 0 ? 'east' : 'west', dl: dl };
+  }
+  function fmtLat(v) { return Math.abs(v).toFixed(2) + '° ' + (v >= 0 ? 'N' : 'S'); }
+  function fmtLon(v) { return Math.abs(v).toFixed(2) + '° ' + (v >= 0 ? 'E' : 'W'); }
+
+  // ---- map ----
+  var mc = $('mapc'), mg = mc.getContext('2d'), MW = 1200, MH = 600;
+  function xy(lat, lon) { return [(lon + 180) / 360 * MW, (90 - lat) / 180 * MH]; }
+  function drawMap() {
+    mg.clearRect(0, 0, MW, MH);
+    mg.fillStyle = 'rgba(170,205,240,0.5)';
+    for (var la = 84; la > -60; la -= 2) for (var lo = -180; lo < 180; lo += 2) if (NINE_LAND.isLand(la, lo)) { var p = xy(la, lo); mg.fillRect(p[0] - 1.6, p[1] - 1.6, 3.2, 3.2); }
+    var x9 = xy(0, MER)[0];
+    mg.strokeStyle = 'rgba(216,182,110,0.85)'; mg.lineWidth = 2; mg.setLineDash([]); mg.beginPath(); mg.moveTo(x9, 0); mg.lineTo(x9, MH); mg.stroke();
+    mg.fillStyle = '#D8B66E'; mg.font = '600 18px Manrope, sans-serif'; mg.fillText('9°E', x9 + 8, 26);
+    PLACES.forEach(function (c) { var p = xy(c[1], c[2]); mg.fillStyle = 'rgba(216,182,110,0.9)'; mg.beginPath(); mg.arc(p[0], p[1], 3.2, 0, 7); mg.fill(); });
+    if (pick) { var q = xy(pick.lat, pick.lon), x0 = Math.abs(((pick.lon - MER + 540) % 360) - 180) <= 90 ? xy(pick.lat, MER)[0] : q[0];
+      mg.strokeStyle = 'rgba(240,212,154,0.9)'; mg.setLineDash([6, 6]); mg.lineWidth = 2; mg.beginPath(); mg.moveTo(q[0], q[1]); mg.lineTo(x0, q[1]); mg.stroke(); mg.setLineDash([]);
+      mg.fillStyle = '#FFE9B8'; mg.beginPath(); mg.arc(q[0], q[1], 7, 0, 7); mg.fill(); mg.strokeStyle = '#061527'; mg.lineWidth = 2; mg.stroke(); }
+  }
+  $('map').addEventListener('click', function (e) {
+    var r = mc.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * MW, y = (e.clientY - r.top) / r.height * MH;
+    var lat = 90 - y / MH * 180, lon = x / MW * 360 - 180, near = null, nd = 14;
+    PLACES.forEach(function (c) { var p = xy(c[1], c[2]), d = Math.hypot(p[0] - x, p[1] - y); if (d < nd) { nd = d; near = c; } });
+    if (near) choose(near); else choose(null, lat, lon);
+  });
+
+  // ---- card ----
+  var cc = $('card'), g = cc.getContext('2d'), CW = 1200, CH = 760;
+  function wrapText(t, x, y, w, lh) { var words = t.split(' '), line = ''; for (var i = 0; i < words.length; i++) { var test = line + words[i] + ' '; if (g.measureText(test).width > w && line) { g.fillText(line, x, y); line = words[i] + ' '; y += lh; } else line = test; } g.fillText(line, x, y); return y; }
+  function drawCard() {
+    var c = pick, d = dist9(c.lat, c.lon);
+    var bg = g.createLinearGradient(0, 0, CW, CH); bg.addColorStop(0, '#0F2A4B'); bg.addColorStop(1, '#061527'); g.fillStyle = bg; g.fillRect(0, 0, CW, CH);
+    var glow = g.createRadialGradient(930, 300, 10, 930, 300, 380); glow.addColorStop(0, 'rgba(31,74,122,0.55)'); glow.addColorStop(1, 'rgba(31,74,122,0)'); g.fillStyle = glow; g.fillRect(0, 0, CW, CH);
+    g.strokeStyle = 'rgba(216,182,110,0.4)'; g.lineWidth = 2; g.strokeRect(28, 28, CW - 56, CH - 56);
+    // stamp: a little globe with the meridian and the place
+    var gx = 960, gy = 300, gr = 175, rot = (c.lon + MER) / 2;
+    g.save(); g.beginPath(); g.arc(gx, gy, gr, 0, 7); g.clip();
+    var body = g.createRadialGradient(gx - 60, gy - 70, 10, gx, gy, gr); body.addColorStop(0, '#163A66'); body.addColorStop(1, '#071629'); g.fillStyle = body; g.fillRect(gx - gr, gy - gr, gr * 2, gr * 2);
+    function proj(la, lo) { var l = (lo - rot) * D, f = la * D, t = 0.35; var x = Math.cos(f) * Math.sin(l), y = Math.sin(f), z = Math.cos(f) * Math.cos(l); var y2 = y * Math.cos(t) - z * Math.sin(t), z2 = y * Math.sin(t) + z * Math.cos(t); return [gx + x * gr, gy - y2 * gr, z2]; }
+    for (var la = -58; la <= 80; la += 3) for (var lo = -180; lo < 180; lo += 3) { if (!NINE_LAND.isLand(la, lo)) continue; var p = proj(la, lo); if (p[2] > 0) { g.fillStyle = 'rgba(170,205,240,' + (0.25 + 0.6 * p[2]).toFixed(2) + ')'; g.fillRect(p[0] - 1.5, p[1] - 1.5, 3, 3); } }
+    g.strokeStyle = 'rgba(216,182,110,0.95)'; g.lineWidth = 2.5; g.beginPath(); var on = false;
+    for (var m = -88; m <= 88; m += 2) { var q = proj(m, MER); if (q[2] > 0) { on ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]); on = true; } else on = false; } g.stroke();
+    var pp = proj(c.lat, c.lon); if (pp[2] > 0) { g.fillStyle = '#FFE9B8'; g.beginPath(); g.arc(pp[0], pp[1], 8, 0, 7); g.fill(); g.strokeStyle = 'rgba(255,233,184,0.5)'; g.lineWidth = 2; g.beginPath(); g.arc(pp[0], pp[1], 18, 0, 7); g.stroke(); }
+    g.restore();
+    g.strokeStyle = 'rgba(130,180,240,0.4)'; g.lineWidth = 1.5; g.beginPath(); g.arc(gx, gy, gr, 0, 7); g.stroke();
+    // words
+    g.fillStyle = '#D8B66E'; g.font = '600 20px Manrope, sans-serif'; g.fillText('GREETINGS FROM', 80, 110);
+    g.fillStyle = '#EEF2F5'; var fs = 92; g.font = '400 ' + fs + 'px "Instrument Serif", Georgia, serif'; while (g.measureText(c.name).width > 640 && fs > 50) { fs -= 4; g.font = '400 ' + fs + 'px "Instrument Serif", Georgia, serif'; } g.fillText(c.name, 76, 200);
+    g.fillStyle = '#A8B7C6'; g.font = '500 22px Manrope, sans-serif'; g.fillText(fmtLat(c.lat) + '   ·   ' + fmtLon(c.lon), 80, 250);
+    var line = d.km < 25 ? 'Right on the 9° East line.' : d.km.toLocaleString('en-GB') + ' km ' + d.side + ' of 9° East';
+    g.fillStyle = '#F0D49A'; g.font = '400 54px "Instrument Serif", Georgia, serif'; wrapText(line, 80, 350, 680, 60);
+    if (c.fact) { g.fillStyle = '#C9D6E3'; g.font = '400 23px Manrope, sans-serif'; wrapText(c.fact, 80, 450, 640, 36); }
+    g.strokeStyle = 'rgba(160,190,220,0.25)'; g.lineWidth = 1; g.beginPath(); g.moveTo(80, CH - 120); g.lineTo(CW - 80, CH - 120); g.stroke();
+    g.fillStyle = '#D8B66E'; g.font = '600 20px Manrope, sans-serif'; g.fillText('9 DEGREES EAST', 80, CH - 72);
+    g.fillStyle = '#6F87A3'; g.font = '500 19px Manrope, sans-serif'; var u = 'Commercial advisory for low-carbon fuels · 9degreeseast.com'; g.fillText(u, CW - 80 - g.measureText(u).width, CH - 72);
+  }
+
+  function choose(c, lat, lon) {
+    pick = c ? { name: c[0], lat: c[1], lon: c[2], fact: c[3] } : { name: 'Your pin', lat: lat, lon: lon, fact: '' };
+    [].forEach.call($('chips').children, function (b) { b.setAttribute('aria-pressed', String(!!c && b.textContent === c[0])); });
+    drawMap(); drawCard();
+  }
+
+  $('chips').innerHTML = PLACES.map(function (c) { return '<button type="button">' + c[0] + '</button>'; }).join('');
+  $('cities').innerHTML = PLACES.map(function (c) { return '<option value="' + c[0] + '">'; }).join('');
+  $('chips').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) choose(PLACES.filter(function (c) { return c[0] === b.textContent; })[0]); });
+  $('q').addEventListener('change', function () { var v = this.value.trim().toLowerCase(), c = PLACES.filter(function (p) { return p[0].toLowerCase() === v || p[0].toLowerCase().indexOf(v) === 0; })[0]; if (c) choose(c); });
+  $('save').addEventListener('click', function () {
+    cc.toBlob(function (bl) { var a = document.createElement('a'); a.href = URL.createObjectURL(bl); a.download = '9DE-postcard-' + pick.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.png'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000); });
+  });
+  var start = PLACES[0]; var m = /[?&]city=([^&]+)/.exec(location.search); if (m) { var want = decodeURIComponent(m[1]).toLowerCase(); start = PLACES.filter(function (p) { return p[0].toLowerCase() === want; })[0] || start; }
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () { choose(start); });
+  choose(start);
+})();
+</script>
+</body>
+</html>

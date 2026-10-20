@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meridian Radio | 9 Degrees East</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#061527">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<style>
+  :root { --ink: #061527; --text: #EEF2F5; --muted: #A8B7C6; --line: #22395A; --accent: #D8B66E; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { min-height: 100vh; display: flex; flex-direction: column; background: radial-gradient(1100px 700px at 70% 30%, rgba(31,74,122,0.32), transparent 65%), var(--ink); background-attachment: fixed; color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  main { flex: 1; }
+  .stage { position: relative; min-height: calc(100vh - 120px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); align-items: center; gap: 24px; padding: 0 5vw; }
+  .copy { position: relative; z-index: 2; max-width: 440px; }
+  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 22px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+  h1 { margin: 0 0 18px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(48px, 6vw, 84px); line-height: 1; letter-spacing: -0.02em; }
+  h1 em { color: var(--accent); }
+  p { margin: 0 0 28px; font-size: 15px; line-height: 1.8; color: var(--muted); }
+  .controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  button { font: inherit; min-height: 48px; padding: 0 22px; border-radius: 2px; cursor: pointer; font-size: 13px; font-weight: 600; transition: transform 180ms ease, background 180ms ease, border-color 180ms ease; }
+  .go { background: var(--accent); color: var(--ink); border: 0; }
+  .go:hover { background: #E8C987; transform: translateY(-2px); }
+  .ghost { background: transparent; color: var(--text); border: 1px solid #4A6585; }
+  .ghost:hover { border-color: var(--muted); }
+  .ghost[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+  .now { margin-top: 30px; min-height: 64px; border-top: 1px solid var(--line); padding-top: 16px; }
+  .now .lbl { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .now .city { margin-top: 8px; font-family: 'Instrument Serif', Georgia, serif; font-size: 30px; color: var(--text); transition: opacity 300ms ease; }
+  .sub { margin: 18px 0 0; font-size: 13px; line-height: 1.7; color: var(--muted); }
+  .now .yr { margin-top: 4px; font-size: 12px; color: var(--muted); min-height: 18px; }
+  .rec-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #E58C7A; margin-right: 8px; animation: blink 1s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .now .city small { font-family: Manrope, sans-serif; font-size: 11px; letter-spacing: 0.14em; color: var(--accent); margin-left: 10px; }
+  .globe-wrap { position: relative; width: min(100%, 78vh); aspect-ratio: 520 / 490; justify-self: center; cursor: grab; touch-action: none; }
+  .globe-wrap:active { cursor: grabbing; }
+  .globe-wrap canvas, .globe-wrap .hud { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .globe-wrap .hud { pointer-events: none; }
+  .ring-spin { transform-origin: 260px 244px; animation: spin 140s linear infinite; }
+  .ring-spin.rev { animation-duration: 90s; animation-direction: reverse; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .hint { position: absolute; right: 5vw; bottom: 10px; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #6F87A3; }
+  .mark { display: none; font-size: 11px; letter-spacing: 0.24em; color: var(--muted); }
+  @media (max-width: 860px) {
+    .stage { grid-template-columns: 1fr; height: auto; padding: 40px 20px 80px; }
+    .globe-wrap { width: 100%; }
+    .hint, .mark { position: static; display: block; padding: 0 20px 24px; }
+  }
+</style>
+<script src="nav.js" defer></script>
+<script src="land.js"></script>
+</head>
+<body>
+  <div id="site-nav"></div>
+  <main class="stage">
+    <section class="copy">
+      <p class="eyebrow">You found it · A 9 Degrees East jam</p>
+      <h1>Meridian <em>Radio</em></h1>
+      <p>The routes play themselves. Each time a light lands on a city, that city sounds a note: north sings high, south hums low. London and Cape Town, the two ends of the 9°E line, ring in harmony.</p>
+      <div class="controls">
+        <button class="go" id="go" type="button">Tune in</button>
+        <button class="ghost" id="mode" type="button" aria-pressed="false">Night shift</button>
+        <button class="ghost" id="career" type="button" aria-pressed="false">Tom’s route</button>
+        <button class="ghost" id="rec" type="button" aria-pressed="false">Record 20 s</button>
+      </div>
+      <p class="sub" id="sub" hidden>Tom’s career, one stop at a time: the globe turns to each city and plays it in order, from a student in Cambridge, Massachusetts to 9 Degrees East today.</p>
+      <div class="now" aria-live="polite">
+        <div class="lbl">Now landing</div>
+        <div class="city" id="city">—</div>
+        <div class="yr" id="yr"></div>
+      </div>
+    </section>
+
+    <div class="globe-wrap" id="globe-wrap" aria-label="Rotating globe. Drag to spin, tap a city to play it.">
+      <canvas id="globe"></canvas>
+      <svg class="hud" viewBox="0 0 520 490" fill="none" aria-hidden="true">
+        <g class="ring-spin" stroke="#2C4766" stroke-width=".7"><circle cx="260" cy="244" r="222" stroke-dasharray="2 8"/></g>
+        <g class="ring-spin rev" stroke="#D8B66E" stroke-opacity=".35" stroke-width=".8"><circle cx="260" cy="244" r="204" stroke-dasharray="60 260 14 300"/></g>
+        <g stroke="#2C4766" stroke-width=".7"><path d="M260 10v20m0 428v20M18 244h20m444 0h20M89 73l14 14m314 314 14 14M89 415l14-14M417 87l14-14"/></g>
+        <g fill="#D8B66E" font-family="Manrope, sans-serif" font-size="9" letter-spacing="2"><text x="256" y="8">N</text><text x="488" y="248">E</text></g>
+      </svg>
+    </div>
+  </main>
+  <span class="hint">Drag to spin · tap a city to play it</span>
+  <div id="site-footer"></div>
+
+<script>
+  // ===== Sound: a small ambient synth =====
+  (function () {
+    var ac = null, master, delay, fb, wet, comp, on = false, night = false;
+    // D minor pentatonic across three octaves, low to high
+    var SCALE = [73.42, 87.31, 98.0, 110.0, 130.81, 146.83, 174.61, 196.0, 220.0, 261.63, 293.66, 349.23, 392.0, 440.0, 523.25];
+    var cityEl = document.getElementById('city');
+    var last = 0;
+
+    function init() {
+      ac = new (window.AudioContext || window.webkitAudioContext)();
+      master = ac.createGain(); master.gain.value = 0.5;
+      comp = ac.createDynamicsCompressor();
+      delay = ac.createDelay(2); delay.delayTime.value = 0.42;
+      fb = ac.createGain(); fb.gain.value = 0.38;
+      wet = ac.createGain(); wet.gain.value = 0.35;
+      var lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 2600;
+      delay.connect(fb); fb.connect(lp); lp.connect(delay);
+      delay.connect(wet); wet.connect(master);
+      master.connect(comp); comp.connect(ac.destination);
+      // a quiet drone on D to sit under everything
+      [73.42, 110.0].forEach(function (f, i) {
+        var o = ac.createOscillator(), g = ac.createGain(), lfo = ac.createOscillator(), lg = ac.createGain();
+        o.type = 'sine'; o.frequency.value = f; g.gain.value = 0.0;
+        g.gain.linearRampToValueAtTime(i ? 0.018 : 0.03, ac.currentTime + 4);
+        lfo.frequency.value = 0.07 + i * 0.05; lg.gain.value = 0.01; lfo.connect(lg); lg.connect(g.gain);
+        o.connect(g); g.connect(master); o.start(); lfo.start();
+      });
+    }
+
+    function pluck(freq, when, vel, bright) {
+      var t = when, o = ac.createOscillator(), o2 = ac.createOscillator(), g = ac.createGain(), f = ac.createBiquadFilter();
+      o.type = night ? 'triangle' : 'sine'; o2.type = 'sine';
+      o.frequency.value = freq; o2.frequency.value = freq * 2.005;
+      f.type = 'lowpass'; f.frequency.setValueAtTime(bright ? 5200 : 2400, t); f.frequency.exponentialRampToValueAtTime(500, t + 2.4);
+      var g2 = ac.createGain(); g2.gain.value = 0.25;
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vel, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + (night ? 4.5 : 3));
+      o.connect(f); o2.connect(g2); g2.connect(f); f.connect(g); g.connect(master); g.connect(delay);
+      o.start(t); o2.start(t); o.stop(t + 5); o2.stop(t + 5);
+    }
+
+    window.__note = function (y, special, name, byHand, note) {
+      var yr = document.getElementById('yr'); if (yr) yr.textContent = note || '';
+      if (cityEl) {
+        var nice = name.toLowerCase().split(' ').map(function (w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join(' ');
+        cityEl.innerHTML = nice + ' <small>' + Math.abs(Math.round(Math.asin(y) * 180 / Math.PI)) + '° ' + (y >= 0 ? 'N' : 'S') + '</small>';
+      }
+      if (!on || !ac) return;
+      var now = ac.currentTime;
+      if (!byHand && now - last < 0.12) return; // keep it from crowding
+      last = now;
+      var idx = Math.max(0, Math.min(SCALE.length - 1, Math.round((y + 0.85) / 1.7 * (SCALE.length - 1))));
+      var f = SCALE[idx];
+      if (special) { pluck(f, now, 0.22, true); pluck(f * 1.5, now + 0.06, 0.14, true); pluck(f * 2, now + 0.12, 0.1, true); }
+      else pluck(f, now, byHand ? 0.22 : 0.15, byHand);
+    };
+
+    var go = document.getElementById('go'), mode = document.getElementById('mode');
+    go.addEventListener('click', function () {
+      if (!ac) init();
+      if (on) { ac.suspend(); on = false; go.textContent = 'Tune in'; }
+      else { ac.resume(); on = true; go.textContent = 'Mute'; }
+    });
+    function soundOn() { if (!ac) init(); ac.resume(); on = true; go.textContent = 'Mute'; }
+    var career = document.getElementById('career'), sub = document.getElementById('sub');
+    career.addEventListener('click', function () {
+      var now = career.getAttribute('aria-pressed') !== 'true';
+      career.setAttribute('aria-pressed', String(now)); sub.hidden = !now;
+      if (now) { soundOn(); window.__route.start(); } else window.__route.stop();
+    });
+    window.__tourEnd = function () { career.setAttribute('aria-pressed', 'false'); };
+    // Record a short clip of whatever is playing
+    var rec = document.getElementById('rec');
+    if (!window.MediaRecorder) rec.hidden = true;
+    rec.addEventListener('click', function () {
+      if (rec.getAttribute('aria-pressed') === 'true') return;
+      soundOn();
+      var dest = ac.createMediaStreamDestination(); comp.connect(dest);
+      var types = ['audio/webm;codecs=opus', 'audio/mp4', 'audio/webm', 'audio/ogg'], type = types.filter(function (t) { return MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t); })[0] || '';
+      var mr = new MediaRecorder(dest.stream, type ? { mimeType: type } : undefined), chunks = [], left = 20;
+      mr.ondataavailable = function (e) { if (e.data.size) chunks.push(e.data); };
+      mr.onstop = function () {
+        comp.disconnect(dest); clearInterval(iv);
+        var bl = new Blob(chunks, { type: mr.mimeType || 'audio/webm' }), ext = /mp4/.test(bl.type) ? 'm4a' : /ogg/.test(bl.type) ? 'ogg' : 'webm';
+        var a = document.createElement('a'); a.href = URL.createObjectURL(bl); a.download = 'meridian-radio.' + ext; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 3000);
+        rec.setAttribute('aria-pressed', 'false'); rec.textContent = 'Record 20 s';
+      };
+      rec.setAttribute('aria-pressed', 'true'); rec.innerHTML = '<span class="rec-dot"></span>Recording · 20';
+      var iv = setInterval(function () { left--; rec.innerHTML = '<span class="rec-dot"></span>Recording · ' + left; }, 1000);
+      mr.start(); setTimeout(function () { mr.stop(); }, 20000);
+    });
+    mode.addEventListener('click', function () {
+      night = !night; mode.setAttribute('aria-pressed', String(night));
+      if (delay) { delay.delayTime.value = night ? 0.62 : 0.42; fb.gain.value = night ? 0.52 : 0.38; }
+    });
+  })();
+  // ===== 3D dotted globe =====
+  (function () {
+    var wrap = document.getElementById('globe-wrap');
+    var cv = document.getElementById('globe');
+    if (!cv || !cv.getContext) return;
+    var ctx = cv.getContext('2d');
+    var D = Math.PI / 180;
+
+    // Natural Earth land, the same map the site's other globes use (land.js)
+    function isLand(lon, lat) { return window.NINE_LAND ? NINE_LAND.isLand(lat, lon) : false; }
+
+    // Evenly spaced points on the sphere, keep land only
+    var dots = [];
+    var N = 16000, GA = Math.PI * (3 - Math.sqrt(5));
+    for (var i = 0; i < N; i++) {
+      var y = 1 - 2 * (i + 0.5) / N;
+      var lat = Math.asin(y) / D;
+      var lon = ((i * GA) / D) % 360; if (lon > 180) lon -= 360;
+      if (lat > -60 && isLand(lon, lat)) dots.push(vec(lat, lon));
+    }
+
+    function vec(lat, lon) {
+      var p = lat * D, l = lon * D;
+      return [Math.cos(p) * Math.sin(l), Math.sin(p), Math.cos(p) * Math.cos(l)];
+    }
+
+    // Hubs across the markets 9 Degrees East works in
+    // major: bigger dot and label priority. Europe, Americas, Asia, Middle East, Oceania
+    var HUBS = [
+      { n: 'LONDON', v: vec(51.5, -0.1), major: true },        // 0
+      { n: 'ROTTERDAM', v: vec(51.9, 4.5) },                   // 1  Europe's main fuel hub
+      { n: 'COPENHAGEN', v: vec(55.7, 12.6) },                 // 2  shipping
+      { n: 'HAMBURG', v: vec(53.55, 10.0) },                   // 3
+      { n: 'HOUSTON', v: vec(29.8, -95.4), major: true },      // 4
+      { n: 'CHICAGO', v: vec(41.9, -87.6) },                   // 5
+      { n: 'NEW YORK', v: vec(40.7, -74.0) },                  // 6
+      { n: 'RIO DE JANEIRO', v: vec(-22.9, -43.2), major: true }, // 7
+      { n: 'SÃO PAULO', v: vec(-23.5, -46.6) },                // 8  ethanol
+      { n: 'SANTIAGO', v: vec(-33.4, -70.6), major: true },    // 9
+      { n: 'PUNTA ARENAS', v: vec(-53.2, -70.9) },             // 10 Chilean eFuels
+      { n: 'BEIJING', v: vec(39.9, 116.4), major: true },      // 11
+      { n: 'SHANGHAI', v: vec(31.2, 121.5), major: true },     // 12
+      { n: 'SINGAPORE', v: vec(1.35, 103.8), major: true },    // 13 bunkering
+      { n: 'TOKYO', v: vec(35.7, 139.7) },                     // 14
+      { n: 'DUBAI', v: vec(25.2, 55.3) },                      // 15
+      { n: 'SYDNEY', v: vec(-33.9, 151.2) },                   // 16
+      { n: 'CAPE TOWN', v: vec(-33.9, 18.4), major: true },    // 17 London to Cape Town: the 9°E line
+      { n: 'CAMBRIDGE, MA', v: vec(42.37, -71.11) },           // 18 Harvard and MIT
+      { n: 'BOSTON', v: vec(42.36, -71.06) },                  // 19
+      { n: 'TORONTO', v: vec(43.65, -79.38) },                 // 20
+      { n: 'SALTEND', v: vec(53.74, -0.24) }                   // 21 Calpine's power station
+    ];
+    // Tom's career, in order: [hub, year, what]
+    var ROUTE = [[18, '1994', 'Harvard and MIT'], [4, '1998', 'Reliant Energy'], [19, '2000', 'Calpine'], [0, '2003', 'Calpine, international'], [21, '2003', 'Saltend power station'], [20, '2004', 'Calpine, Canada'],
+      [0, '2006', 'BP, biofuels origination'], [5, '2013', 'BP, global biofuels'], [0, '2018', '9 Degrees East is founded'], [0, '2021', 'OTX, an Xpansiv company'], [4, '2022', 'HIF Global'], [10, '2022', 'Haru Oni e-fuels'],
+      [2, '2024', 'Maersk Tankers'], [12, '2024', 'Green methanol from China'], [0, 'Today', '9 Degrees East']];
+    window.__route = { start: function () { tour(0); }, stop: function () { touring = false; clearTimeout(tourT); } };
+    var touring = false, tourT, rotT = null;
+    function tour(i) {
+      touring = true;
+      if (i >= ROUTE.length) { touring = false; rotT = null; if (window.__tourEnd) window.__tourEnd(); return; }
+      var st = ROUTE[i], h = HUBS[st[0]], lon = Math.atan2(h.v[0], h.v[2]);
+      rotT = -lon; // bring the city to the front
+      tourT = setTimeout(function () { if (!touring) return; land(st[0], st[0] === 0 && i === ROUTE.length - 1, true, st[1] + ' · ' + st[2]); tourT = setTimeout(function () { tour(i + 1); }, 650); }, 1250);
+    }
+    var ROUTES = [[0, 17, 'feature'], [17, 7], [17, 13],[0, 4], [0, 12], [1, 13], [4, 9], [7, 0], [2, 11], [5, 0], [14, 4], [13, 16], [9, 7], [12, 13], [15, 13], [6, 3], [8, 1], [10, 9], [11, 14]];
+
+    function slerp(a, b, t) {
+      var d = Math.acos(Math.min(1, a[0] * b[0] + a[1] * b[1] + a[2] * b[2]));
+      var s = Math.sin(d), w1 = Math.sin((1 - t) * d) / s, w2 = Math.sin(t * d) / s;
+      return [a[0] * w1 + b[0] * w2, a[1] * w1 + b[1] * w2, a[2] * w1 + b[2] * w2, d];
+    }
+    var arcs = ROUTES.map(function (r, idx) {
+      var a = HUBS[r[0]].v, b = HUBS[r[1]].v, pts = [], STEPS = 72;
+      for (var s = 0; s <= STEPS; s++) {
+        var t = s / STEPS, p = slerp(a, b, t), lift = 1 + Math.sin(Math.PI * t) * Math.min(0.24, 0.05 + p[3] * 0.1);
+        pts.push([p[0] * lift, p[1] * lift, p[2] * lift]);
+      }
+      return { from: r[0], to: r[1], last: -1, pts: pts, off: (idx * 0.37) % 1, dur: r[2] ? 3.6 : 4.4 + (idx % 4) * 0.8, feature: !!r[2] };
+    });
+
+    // 9°E meridian
+    var meridian = [];
+    for (var m = -80; m <= 80; m += 1.5) meridian.push(vec(m, 9));
+
+    // View state
+    var W, H, R, CX, CY, dpr;
+    var rot = -20 * D, spin = 0.11, tilt = 0.32, tiltT = 0.32, yaw = 0, yawT = 0;
+    var dragging = false, lastX = 0, vel = 0;
+
+    function size() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var r = cv.getBoundingClientRect();
+      W = r.width; H = r.height;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      CX = W * (260 / 520); CY = H * (244 / 490); R = W * (172 / 520);
+    }
+
+    function proj(v) {
+      var cr = Math.cos(rot), sr = Math.sin(rot);
+      var x = v[0] * cr + v[2] * sr, z = -v[0] * sr + v[2] * cr, y = v[1];
+      var ct = Math.cos(tilt + yaw * 0.3), st = Math.sin(tilt + yaw * 0.3);
+      var y2 = y * ct - z * st, z2 = y * st + z * ct;
+      return [CX + x * R, CY - y2 * R, z2, x, y2];
+    }
+    function visible(q) { return q[2] > 0 || (q[3] * q[3] + q[4] * q[4]) > 1; }
+
+    function frame(time) {
+      var t = time / 1000;
+      if (rotT !== null && !dragging) { var dr = ((rotT - rot) % (2 * Math.PI) + 3 * Math.PI) % (2 * Math.PI) - Math.PI; rot += dr * 0.08; vel = 0; }
+      else if (!dragging) { vel *= 0.94; rot += (spin + vel) / 60; }
+      tilt += (tiltT - tilt) * 0.05; yaw += (yawT - yaw) * 0.05;
+
+      ctx.clearRect(0, 0, W, H);
+
+      // atmosphere
+      var g = ctx.createRadialGradient(CX, CY, R * 0.92, CX, CY, R * 1.32);
+      g.addColorStop(0, 'rgba(74,140,220,0.30)'); g.addColorStop(0.35, 'rgba(60,120,210,0.10)'); g.addColorStop(1, 'rgba(40,90,180,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(CX, CY, R * 1.32, 0, 7); ctx.fill();
+
+      // body
+      var b = ctx.createRadialGradient(CX - R * 0.35, CY - R * 0.4, R * 0.1, CX, CY, R);
+      b.addColorStop(0, '#163A66'); b.addColorStop(0.55, '#0C2443'); b.addColorStop(1, '#071629');
+      ctx.fillStyle = b; ctx.beginPath(); ctx.arc(CX, CY, R, 0, 7); ctx.fill();
+
+      // faint latitude rings
+      ctx.lineWidth = 0.6; ctx.strokeStyle = 'rgba(90,140,200,0.10)';
+      for (var la = -60; la <= 60; la += 30) {
+        ctx.beginPath(); var started = false;
+        for (var lo = -180; lo <= 180; lo += 4) {
+          var q = proj(vec(la, lo));
+          if (q[2] > 0) { if (!started) { ctx.moveTo(q[0], q[1]); started = true; } else ctx.lineTo(q[0], q[1]); } else started = false;
+        }
+        ctx.stroke();
+      }
+
+      // land dots
+      for (var i = 0; i < dots.length; i++) {
+        var p = proj(dots[i]);
+        if (p[2] > 0) {
+          var a = 0.25 + 0.75 * p[2];
+          ctx.fillStyle = 'rgba(170,205,240,' + a.toFixed(3) + ')';
+          var s = 0.7 + 0.9 * p[2];
+          ctx.fillRect(p[0] - s / 2, p[1] - s / 2, s, s);
+        } else if (p[2] > -0.35) {
+          ctx.fillStyle = 'rgba(120,160,210,0.05)';
+          ctx.fillRect(p[0] - 0.5, p[1] - 0.5, 1, 1);
+        }
+      }
+
+      // 9°E meridian
+      ctx.lineWidth = 1.2; ctx.strokeStyle = 'rgba(216,182,110,0.75)'; ctx.shadowColor = 'rgba(216,182,110,0.6)'; ctx.shadowBlur = 6;
+      ctx.beginPath(); var on = false, top = null;
+      for (var k = 0; k < meridian.length; k++) {
+        var mq = proj(meridian[k]);
+        if (mq[2] > 0) { if (!on) { ctx.moveTo(mq[0], mq[1]); on = true; } else ctx.lineTo(mq[0], mq[1]); top = mq; } else on = false;
+      }
+      ctx.stroke(); ctx.shadowBlur = 0;
+      if (top) {
+        ctx.fillStyle = 'rgba(216,182,110,0.95)'; ctx.font = '600 9px Manrope, sans-serif';
+        if ('letterSpacing' in ctx) ctx.letterSpacing = '2px';
+        ctx.fillText('9°E', top[0] + 6, top[1] + 4);
+      }
+
+      // arcs with travelling light
+      for (var r = 0; r < arcs.length; r++) {
+        var A = arcs[r], P = A.pts.map(proj), n = P.length - 1;
+        ctx.lineWidth = A.feature ? 1.3 : 0.8; ctx.strokeStyle = A.feature ? 'rgba(232,201,135,0.6)' : 'rgba(216,182,110,0.22)';
+        if (A.feature) { ctx.shadowColor = 'rgba(216,182,110,0.7)'; ctx.shadowBlur = 8; }
+        ctx.beginPath(); var go = false;
+        for (var j = 0; j <= n; j++) { if (visible(P[j])) { if (!go) { ctx.moveTo(P[j][0], P[j][1]); go = true; } else ctx.lineTo(P[j][0], P[j][1]); } else go = false; }
+        ctx.stroke(); ctx.shadowBlur = 0;
+        var ph = ((t / A.dur) + A.off) % 1, head = Math.floor(ph * n), tail = Math.max(0, head - 16);
+        if (A.last >= 0 && ph < A.last) land(A.to, A.feature);
+        A.last = ph;
+        for (var j2 = tail; j2 < head; j2++) {
+          if (!visible(P[j2]) || !visible(P[j2 + 1])) continue;
+          var f = (j2 - tail) / 16;
+          ctx.strokeStyle = 'rgba(240,210,140,' + (f * 0.95).toFixed(3) + ')'; ctx.lineWidth = 0.6 + f * 1.4;
+          ctx.beginPath(); ctx.moveTo(P[j2][0], P[j2][1]); ctx.lineTo(P[j2 + 1][0], P[j2 + 1][1]); ctx.stroke();
+        }
+        var H0 = P[head];
+        if (H0 && visible(H0)) {
+          var hg = ctx.createRadialGradient(H0[0], H0[1], 0, H0[0], H0[1], 7);
+          hg.addColorStop(0, 'rgba(255,236,190,1)'); hg.addColorStop(0.4, 'rgba(216,182,110,0.6)'); hg.addColorStop(1, 'rgba(216,182,110,0)');
+          ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(H0[0], H0[1], 7, 0, 7); ctx.fill();
+        }
+      }
+
+      // hubs: dots and pulses first, then labels (major first, no overlaps)
+      for (var hz = 0; hz < HUBS.length; hz++) HUBS[hz].front = false;
+      var shown = [];
+      for (var h = 0; h < HUBS.length; h++) {
+        var hq = proj(HUBS[h].v); if (hq[2] <= 0.02) continue;
+        var vis = Math.min(1, hq[2] * 3), big = HUBS[h].major;
+        HUBS[h].front = true; HUBS[h].sx = hq[0]; HUBS[h].sy = hq[1];
+        var fl = HUBS[h].flash != null ? t - HUBS[h].flash : 9;
+        if (fl < 1.4) {
+          var k = 1 - fl / 1.4;
+          ctx.strokeStyle = 'rgba(255,232,180,' + (0.9 * k).toFixed(3) + ')'; ctx.lineWidth = 1.6;
+          ctx.beginPath(); ctx.arc(hq[0], hq[1], 4 + fl * 34, 0, 7); ctx.stroke();
+          var fg = ctx.createRadialGradient(hq[0], hq[1], 0, hq[0], hq[1], 18);
+          fg.addColorStop(0, 'rgba(255,240,200,' + (0.9 * k).toFixed(3) + ')'); fg.addColorStop(1, 'rgba(216,182,110,0)');
+          ctx.fillStyle = fg; ctx.beginPath(); ctx.arc(hq[0], hq[1], 18, 0, 7); ctx.fill();
+        }
+        var pulse = ((t * 0.4 + h * 0.29) % 1);
+        ctx.strokeStyle = 'rgba(216,182,110,' + ((big ? 0.8 : 0.5) * (1 - pulse) * vis).toFixed(3) + ')'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.arc(hq[0], hq[1], 2.5 + pulse * (big ? 13 : 8), 0, 7); ctx.stroke();
+        ctx.fillStyle = 'rgba(216,182,110,' + vis.toFixed(3) + ')';
+        ctx.beginPath(); ctx.arc(hq[0], hq[1], big ? 2.6 : 1.8, 0, 7); ctx.fill();
+        if (hq[2] > 0.3) shown.push({ q: hq, h: HUBS[h], vis: vis });
+      }
+      shown.sort(function (a, b) { return (b.h.major ? 1 : 0) - (a.h.major ? 1 : 0) || b.q[2] - a.q[2]; });
+      var boxes = [];
+      for (var L = 0; L < shown.length; L++) {
+        var it = shown[L], big2 = it.h.major;
+        ctx.font = (big2 ? '600 8.5px' : '500 7.5px') + ' Manrope, sans-serif';
+        if ('letterSpacing' in ctx) ctx.letterSpacing = big2 ? '1.6px' : '1.2px';
+        var w = ctx.measureText(it.h.n).width, x0 = it.q[0] + 8, y0 = it.q[1] - 6;
+        if (x0 + w > W - 4) x0 = it.q[0] - 8 - w;
+        var box = [x0 - 3, y0 - 10, x0 + w + 3, y0 + 3], hit = false;
+        for (var bb = 0; bb < boxes.length; bb++) {
+          var o = boxes[bb];
+          if (box[0] < o[2] && box[2] > o[0] && box[1] < o[3] && box[3] > o[1]) { hit = true; break; }
+        }
+        if (hit) continue;
+        boxes.push(box);
+        ctx.fillStyle = big2 ? 'rgba(226,234,242,' + (0.9 * it.vis).toFixed(3) + ')' : 'rgba(170,190,212,' + (0.75 * it.vis).toFixed(3) + ')';
+        ctx.fillText(it.h.n, x0, y0);
+      }
+      if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+
+      // rim light
+      var rim = ctx.createRadialGradient(CX, CY, R * 0.82, CX, CY, R);
+      rim.addColorStop(0, 'rgba(120,180,255,0)'); rim.addColorStop(1, 'rgba(120,180,255,0.18)');
+      ctx.fillStyle = rim; ctx.beginPath(); ctx.arc(CX, CY, R, 0, 7); ctx.fill();
+      ctx.lineWidth = 0.8; ctx.strokeStyle = 'rgba(130,180,240,0.35)'; ctx.beginPath(); ctx.arc(CX, CY, R, 0, 7); ctx.stroke();
+    }
+
+    // loop, paused when offscreen or tab hidden
+    var running = true, raf;
+    function loop(ts) { frame(ts); if (running) raf = requestAnimationFrame(loop); }
+    function start() { if (!running) { running = true; raf = requestAnimationFrame(loop); } }
+    function stop() { running = false; cancelAnimationFrame(raf); }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (e) { e[0].isIntersecting ? start() : stop(); }).observe(wrap);
+    }
+    document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+
+    // drag to spin, gentle tilt toward the cursor
+    wrap.addEventListener('pointerdown', function (e) { dragging = true; lastX = e.clientX; vel = 0; wrap.setPointerCapture(e.pointerId); });
+    wrap.addEventListener('pointermove', function (e) {
+      var r = wrap.getBoundingClientRect();
+      yawT = ((e.clientY - r.top) / r.height - 0.5) * 0.6;
+      if (!dragging) return;
+      var dx = e.clientX - lastX; lastX = e.clientX;
+      rot += dx * 0.006; vel = dx * 0.006 * 60;
+    });
+    var downX = 0, downY = 0;
+    wrap.addEventListener('pointerdown', function (e) { downX = e.clientX; downY = e.clientY; });
+    function release(e) {
+      dragging = false;
+      if (!e || Math.abs(e.clientX - downX) + Math.abs(e.clientY - downY) > 6) return;
+      var r = wrap.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top, best = -1, bd = 22;
+      for (var i = 0; i < HUBS.length; i++) {
+        if (!HUBS[i].front) continue;
+        var d = Math.hypot(HUBS[i].sx - mx, HUBS[i].sy - my);
+        if (d < bd) { bd = d; best = i; }
+      }
+      if (best >= 0) land(best, best === 0 || best === 17, true);
+    }
+    function land(i, special, byHand, note) {
+      HUBS[i].flash = performance.now() / 1000;
+      if (touring && !note) return; // during the route, only the route plays
+      if (window.__note) window.__note(HUBS[i].v[1], special, HUBS[i].n, byHand, note);
+    }
+    wrap.addEventListener('pointerup', release);
+    wrap.addEventListener('pointercancel', release);
+    wrap.addEventListener('pointerleave', function () { yawT = 0; });
+
+    window.addEventListener('resize', size);
+    size();
+    raf = requestAnimationFrame(loop);
+  })();
+
+
+</script>
+</body>
+</html>

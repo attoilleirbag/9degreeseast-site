@@ -115,7 +115,8 @@ var JOURNAL = /*DATA:START*/{
     return '<div class="card glass waiting" style="--sc:' + SOURCES[k][1] + '"><span class="src ic"><img src="' + ICON[k] + '" alt="" width="14" height="14">' + SOURCES[k][0] + '</span><p>' + text + '</p></div>';
   }
   function render() {
-    var list = items.filter(function (i) { return active === 'all' || i.source === active; });
+    var RANK = { journal: 0, substack: 1, linkedin: 2, press: 3 };
+    var list = items.filter(function (i) { return active === 'all' || i.source === active; }).slice().sort(function (a, b) { return (RANK[a.source] - RANK[b.source]) || String(b.date).localeCompare(String(a.date)); });
     var html = list.map(function (i) {
       var s = SOURCES[i.source] || SOURCES.journal, tag = i.url ? 'a' : 'article';
       var href = i.url ? ' href="' + esc(i.url) + '"' + (/^https?:/.test(i.url) ? ' target="_blank" rel="noopener noreferrer"' : '') : '';
@@ -123,8 +124,11 @@ var JOURNAL = /*DATA:START*/{
       return '<' + tag + ' class="card glass" style="--sc:' + s[1] + '"' + href + '><div class="meta">' + (ICON[i.source] ? '<span class="src ic"><img src="' + ICON[i.source] + '" alt="" width="14" height="14">' : '<span class="src">') + s[0] + '</span><span>' + when(i.date) + outlet + (i.reposted ? ' · Reposted' : '') + '</span></div>' +
         '<h2 class="serif">' + esc(i.title) + '</h2>' + (i.summary ? '<p>' + esc(i.summary) + '</p>' : '') + (i.url ? '<span class="go">Read on ' + (i.source === 'press' ? esc(i.outlet || 'the publisher') : s[0]) + ' →</span>' : '') + '</' + tag + '>';
     }).join('');
-    if ((active === 'all' || active === 'substack') && !counts.substack) html += waiting('substack');
-    if ((active === 'all' || active === 'linkedin') && !counts.linkedin) html += waiting('linkedin');
+    // Substack and LinkedIn first, then press and talks
+    var lead = '';
+    if ((active === 'all' || active === 'substack') && !counts.substack) lead += waiting('substack');
+    if ((active === 'all' || active === 'linkedin') && !counts.linkedin) lead += waiting('linkedin');
+    html = lead + html;
     cards.innerHTML = html;
   }
   chips.addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; active = b.dataset.s; chips.querySelectorAll('.chip').forEach(function (c) { c.setAttribute('aria-pressed', String(c === b)); }); render(); });
