@@ -28,7 +28,7 @@
         { label: 'Regulatory advisory', href: 'regulatory-advisory.html', blurb: 'What RED, ReFuelEU, FuelEU, the RFS and LCFS mean for your contracts.' }
       ] }
   ];
-  var here = location.pathname.split('/').pop() || 'index.html';
+  var here = location.pathname.split('/').pop() || 'index.html'; if (here.indexOf('.') < 0) here += '.html'; // pretty URLs drop .html
 
   var css = '\
   #site-nav { position: relative; z-index: 50; }\
@@ -94,6 +94,7 @@
     .sn-mob details { border-bottom: 1px solid rgba(160,190,220,0.12); }\
     .sn-mob summary { list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 16px 4px; font: 400 26px "Instrument Serif", Georgia, serif; cursor: pointer; }\
     .sn-mob summary::-webkit-details-marker { display: none; }\
+    .sn-mobl { display: block; padding: 16px 4px; border-bottom: 1px solid rgba(160,190,220,0.12); font: 400 26px "Instrument Serif", Georgia, serif; color: #EEF2F5; text-decoration: none; }\
     .sn-mob summary::after { content: "+"; font: 300 22px Manrope, sans-serif; color: #D8B66E; transition: transform 250ms ease; }\
     .sn-mob details[open] summary::after { transform: rotate(45deg); }\
     .sn-mob ul { margin: 0 0 12px; padding: 0; list-style: none; }\
@@ -108,7 +109,7 @@
   var main = MENU.map(function (m) {
     var cur = (m.href === here || m.items.some(function (i) { return i.href === here; })) ? ' current' : '';
     return '<li><button class="sn-top' + cur + '" type="button" aria-expanded="false" aria-controls="sn-' + m.id + '" data-sec="' + m.id + '">' + m.label + '<i class="chev" aria-hidden="true"></i></button></li>';
-  }).join('');
+  }).join('') + '<li><a class="sn-top' + (here === 'faq.html' ? ' current' : '') + '" href="faq.html">FAQ</a></li>';
   var secs = MENU.map(function (m) {
     var first = m.items[0];
     return '<div class="sn-sec" id="sn-' + m.id + '" style="--c:' + m.c + '" role="region" aria-label="' + m.label + '">' +
@@ -122,14 +123,14 @@
   var mob = MENU.map(function (m) {
     return '<details><summary>' + m.label + '</summary><ul>' + (m.href ? '<li><a class="ov" href="' + m.href + '">' + 'Overview' + ' →</a></li>' : '') +
       m.items.map(function (i) { return '<li>' + (i.href ? '<a href="' + i.href + '">' + i.label + '</a>' : '<span>' + i.label + ' <small>Soon</small></span>') + '</li>'; }).join('') + '</ul></details>';
-  }).join('');
+  }).join('') + '<a class="sn-mobl" href="faq.html">FAQ</a>';
 
   var root = document.getElementById('site-nav'); if (!root) return;
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
   root.innerHTML = '<nav class="sn" aria-label="Main"><div class="sn-bar"><div class="sn-row">' + logo + '<ul class="sn-main">' + main + '</ul><div class="sn-right"><a class="sn-contact" href="contact.html">Contact</a><button class="sn-burger" type="button" aria-label="Menu" aria-expanded="false"><i></i></button></div></div>' +
     '<div class="sn-panel"><div>' + secs + '</div></div><div class="sn-mob">' + mob + '</div></div></nav><div class="sn-veil"></div>';
 
-  var nav = root.querySelector('.sn'), tops = [].slice.call(root.querySelectorAll('.sn-top')), veil = root.querySelector('.sn-veil');
+  var nav = root.querySelector('.sn'), tops = [].slice.call(root.querySelectorAll('.sn-top[data-sec]')), veil = root.querySelector('.sn-veil');
   var openId = null, closeT = 0, openT = 0, fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   function show(id) {
     clearTimeout(closeT); openId = id; nav.classList.add('open');
@@ -252,7 +253,7 @@
       var tail = v === 'B' ? copy + links + reg() : v === 'C' ? links + copy + reg() : copy + reg() + links;
       return '<footer class="sf sf-' + v + '"><div class="sf-in"><div class="sf-top">' +
         '<div class="sf-brand"><a href="./" aria-label="9 Degrees East home">' + logo + '<span>9 DEGREES EAST</span></a><p>Commercial advisory for low-carbon fuels.</p></div>' +
-        col('About', [['Who we are', 'about.html'], ['Our history', 'our-history.html'], ['Purpose, mission & values', 'purpose.html'], ['How we work', 'how-we-work.html'], ['Locations', 'locations.html']]) +
+        col('About', [['Who we are', 'about.html'], ['Our history', 'our-history.html'], ['Purpose, mission & values', 'purpose.html'], ['How we work', 'how-we-work.html'], ['Locations', 'locations.html'], ['FAQ', 'faq.html']]) +
         col('Insights', [['Fuel Weather', 'fuel-weather.html'], ['Policy Tracker', 'policy-tracker.html'], ['Market Conditions', 'market-conditions.html'], ['The 9DE Journal', 'journal.html']]) +
         col('Services', [['Offtake strategy', 'offtake-strategy.html'], ['Deal structuring', 'deal-structuring.html'], ['Supply agreements', 'supply-agreements.html'], ['Regulatory advisory', 'regulatory-advisory.html']]) +
         '</div><div class="sf-legal">' + tail + '</div></div></footer>';

@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
 <style>
-  /* Page shell: shared menu, title and intro, and placeholder slots for the sections the page will hold. */
+  /* Section page: shared menu, title and intro, then numbered sections. */
   :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E; --c: #F0C877; }
   * { box-sizing: border-box; }
   html, body { margin: 0; }
@@ -36,6 +36,50 @@
   .slot h2 { margin: 0; font-size: 28px; line-height: 1.1; }
   .slot p { margin: 0; font-size: 13px; color: var(--faint); }
   footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 22px 30px; border-top: 1px solid var(--line); font-size: 10.5px; letter-spacing: 0.06em; color: var(--faint); }
+
+  /* Section pages: numbered glass panels, lists, case cards */
+  .svc { display: grid; gap: 10px; padding-bottom: 40px; }
+  .sec { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 34px; padding: 30px 32px; animation: enter 800ms 150ms ease both; }
+  .sec .lab { display: flex; flex-direction: column; gap: 10px; }
+  .sec .n { font-size: 11px; color: var(--c); font-variant-numeric: tabular-nums; }
+  .sec h2 { margin: 0; font-size: 32px; line-height: 1.08; }
+  .sec .body p { margin: 0 0 14px; font-size: 15px; line-height: 1.8; color: var(--soft); max-width: 720px; }
+  .sec .body p.lead { font-family: 'Instrument Serif', Georgia, serif; font-size: 23px; line-height: 1.4; color: var(--text); }
+  .sec ul { margin: 4px 0 16px; padding: 0; list-style: none; max-width: 760px; }
+  .sec li { position: relative; padding: 9px 0 9px 22px; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.7; color: var(--soft); }
+  .sec li:last-child { border-bottom: 1px solid var(--line); }
+  .sec li::before { content: ""; position: absolute; left: 2px; top: 18px; width: 6px; height: 6px; border-radius: 50%; background: var(--c); box-shadow: 0 0 6px var(--c); }
+  .sec li b { color: var(--text); font-weight: 600; }
+  .sec .case { margin: 18px 0 4px; padding: 14px 16px; border-left: 2px solid var(--accent); background: rgba(216,182,110,0.06); font-size: 13.5px; line-height: 1.7; color: var(--soft); max-width: 720px; }
+  .sec .case b { color: var(--accent); font-weight: 600; letter-spacing: 0.06em; font-size: 10.5px; text-transform: uppercase; display: block; margin-bottom: 4px; }
+  .cases-h { margin: 40px 0 14px; font-size: 34px; line-height: 1.1; }
+  .cases-intro { margin: 0 0 18px; max-width: 680px; font-size: 15px; line-height: 1.8; color: var(--soft); }
+  .cases { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding-bottom: 30px; }
+  .cs { padding: 24px 24px 22px; display: flex; flex-direction: column; gap: 10px; }
+  .cs .tag { display: flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cc); }
+  .cs .tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--cc); box-shadow: 0 0 6px var(--cc); }
+  .cs h3 { margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: 26px; line-height: 1.15; }
+  .cs p { margin: 0; font-size: 14px; line-height: 1.75; color: var(--soft); }
+  .cs .why { margin-top: auto; padding-top: 10px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--text); }
+  .cs .why span { color: var(--accent); font-weight: 600; }
+  .srcs { padding-bottom: 20px; font-size: 11.5px; line-height: 1.8; color: var(--faint); max-width: 900px; }
+  .srcs a { color: var(--muted); }
+  .faq { padding-bottom: 40px; max-width: 900px; }
+  .faq details { border-top: 1px solid var(--line); }
+  .faq details:last-of-type { border-bottom: 1px solid var(--line); }
+  .faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px 4px; font-family: 'Instrument Serif', Georgia, serif; font-size: 24px; line-height: 1.25; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; flex: none; font: 400 22px Manrope, sans-serif; color: var(--c); transition: transform 240ms ease; }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .faq .a { padding: 0 4px 22px; max-width: 760px; }
+  .faq .a p { margin: 0 0 12px; font-size: 15px; line-height: 1.8; color: var(--soft); }
+  .faq .a a { color: var(--accent); }
+  .close { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 30px; padding-bottom: 100px; }
+  .close p { margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-size: 26px; line-height: 1.3; max-width: 640px; }
+  .close .btn { display: inline-flex; align-items: center; min-height: 46px; padding: 0 22px; border-radius: 2px; background: var(--accent); color: var(--ink); font-size: 13px; font-weight: 600; text-decoration: none; }
+  .close .btn:hover { background: #E8C987; }
+  @media (max-width: 860px) { .sec { grid-template-columns: 1fr; gap: 16px; padding: 24px 22px; } .sec .body p.lead { font-size: 21px; } .cases { grid-template-columns: 1fr; } .faq summary { font-size: 21px; } }
   @keyframes enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @media (max-width: 700px) { .wrap { width: calc(100% - 40px); } .head { padding-block: 56px 32px; } .slots { grid-template-columns: 1fr; } }
 </style>
@@ -49,12 +93,31 @@
       <h1 class="serif">How we <em>work</em></h1>
       <p class="intro">How an engagement runs, from first conversation to signed agreement.</p>
     </header>
-    <section class="wrap slots" aria-label="Sections">
-        <div class="slot glass"><span class="n">01</span><h2 class="serif">First conversation</h2><p>Content for this section is on its way.</p></div>
-        <div class="slot glass"><span class="n">02</span><h2 class="serif">Scoping the engagement</h2><p>Content for this section is on its way.</p></div>
-        <div class="slot glass"><span class="n">03</span><h2 class="serif">Structuring and negotiation</h2><p>Content for this section is on its way.</p></div>
-        <div class="slot glass"><span class="n">04</span><h2 class="serif">Signing and beyond</h2><p>Content for this section is on its way.</p></div>
+    <section class="wrap svc" aria-label="Sections">
+      <div class="sec glass"><div class="lab"><span class="n">01</span><h2 class="serif">First conversation</h2></div><div class="body"><p class="lead">It starts with where the project actually is, not where the pitch deck says it is.</p>
+<p>We talk through the technology, the site, the feedstock or power supply, the product, who you have already spoken to and what your lenders or investors are asking for. By the end, both sides should know whether there is a commercial problem we can help solve, and what solving it would involve.</p>
+<p>Most projects that stall do so for the same reason: the plant can be built, but nobody has yet signed to buy what it makes, on terms a lender will accept. That is usually the conversation.</p></div></div>
+      <div class="sec glass"><div class="lab"><span class="n">02</span><h2 class="serif">Scoping the engagement</h2></div><div class="body"><p>We agree what the work needs to deliver, and by when, before any of it starts. Typically that means:</p>
+<ul>
+<li><b>The buyer map:</b> who could take the fuel, what obligation drives each of them (ReFuelEU, FuelEU Maritime, the UK SAF Mandate, RED III, the RFS, the LCFS) and how much they might commit to.</li>
+<li><b>What financing needs:</b> how much of the output must be contracted, for how long and with what credit behind it.</li>
+<li><b>The pricing basis:</b> what the plant needs to earn, and which pricing structures could get the buyer there.</li>
+<li><b>The plan and timetable:</b> who to approach first, in what order, timed around the financing.</li>
+</ul></div></div>
+      <div class="sec glass"><div class="lab"><span class="n">03</span><h2 class="serif">Structuring and negotiation</h2></div><div class="body"><p>This is where most of the work happens. We turn the plan into term sheets and take them to buyers: pricing formulas, volumes and flexibility, take-or-pay, credit support, how certificates and credits are shared, and what happens if the rules change.</p>
+<p>The aim is a structure the buyer can sign, the lender can finance and the producer can live with for ten years or more. Getting all three to agree usually means trading flexibility for certainty, one term at a time.</p>
+<div class="case"><b>From Tom’s own deals</b>At Maersk Tankers, Tom led origination of 800,000 tonnes of long-term green methanol from China. That meant building pricing and volume terms flexible enough to work for several producers, each heading for its own FID at the same time. At HIF Global, he built the costs of green hydrogen, CO2 and renewable power into the pricing of 1.4 million tonnes of e-methanol offtake in the US.</div></div></div>
+      <div class="sec glass"><div class="lab"><span class="n">04</span><h2 class="serif">Signing and beyond</h2></div><div class="body"><p>A signed term sheet is not the end. The long-form contract has to carry the deal through lender due diligence and financial close, and the feedstock and power contracts on the other side have to match it on tenor, pricing and risk.</p>
+<p>After signing, contracts need looking after: price reviews, annual nominations, and renegotiation when regulation or markets move. We stay involved where that is useful.</p>
+<div class="case"><b>From Tom’s own deals</b>At BP, Tom originated and structured long-term biofuel offtake with plants in development and in operation, including bankable ten-year deals with new projects. He used fixed and flexible volume mechanisms, market indices and risk management tools, backed by credit, securitisation and trade finance.</div></div></div>
     </section>
+    <section class="wrap" aria-labelledby="cases-h"><h2 class="serif cases-h" id="cases-h">What makes a deal work</h2><p class="cases-intro">Four recent low-carbon fuel deals, and what decided them. The pattern is the same each time: projects that close have a buyer committed to a volume, on terms a lender can finance.</p><div class="cases">
+      <article class="cs glass" style="--cc:#5EC8D8"><span class="tag">Worked · e-methanol, Denmark</span><h3>Kassø: small, early, with committed buyers</h3><p>European Energy’s Kassø plant began producing e-methanol in May 2025, with capacity of up to 42,000 tonnes a year. Its first buyers were A.P. Moller-Maersk, the LEGO Group and Novo Nordisk.</p><p class="why"><span>Why:</span> Buyers with their own climate targets were willing to commit early, and the plant was sized to the demand that actually existed.</p></article>
+      <article class="cs glass" style="--cc:#5EC8D8"><span class="tag">Worked · green methanol, China</span><h3>Maersk and Goldwind: one anchor buyer, at scale</h3><p>In November 2023, Maersk agreed to buy 500,000 tonnes a year of green methanol, bio and e-methanol, from a new wind-powered Goldwind facility in north-east China, with production expected from 2026.</p><p class="why"><span>Why:</span> A single buyer with ships on order took a large, long volume, which gave the producer the certainty to invest. Allowing both bio and e-methanol gave room to deliver.</p></article>
+      <article class="cs glass" style="--cc:#A9A2F0"><span class="tag">Worked · green ammonia, Germany</span><h3>H2Global: closing the price gap in public</h3><p>In July 2024, Fertiglobe won Germany’s first H2Global tender to supply renewable ammonia from Egypt at €1,000 a tonne, with a minimum of 40,000 tonnes a year from 2028 to 2033. An intermediary buys long-term from the producer and resells to buyers, with public funding covering the difference.</p><p class="why"><span>Why:</span> Separating the long-term purchase from the shorter-term sale let a producer get a bankable contract while buyers were not yet ready to commit for ten years.</p></article>
+      <article class="cs glass" style="--cc:#E39A55"><span class="tag">Stalled · e-methanol, Sweden</span><h3>FlagshipONE: built to be big, but no buyers</h3><p>Ørsted took a final investment decision on FlagshipONE in December 2022 and broke ground in 2023, then stopped the project in August 2024, saying the e-fuel market was developing more slowly than expected. It had not secured long-term offtake.</p><p class="why"><span>Why:</span> Funding, subsidies and political support were not enough without signed buyers, and EU rules did not yet oblige shipping lines to buy e-fuels.</p></article>
+    </div><p class="srcs">Sources: <a href="https://renewablewatch.in/2026/01/21/european-energy-and-mitsui-secure-financing-for-e-methanol-project-in-denmark/" target="_blank" rel="noopener">Renewable Watch, Kassø financing</a> · <a href="https://www.marinelog.com/news/maersk-inks-deal-with-goldwind-for-500000-tonnes-of-green-methanol-a-year/" target="_blank" rel="noopener">Marine Log, Maersk and Goldwind</a> · <a href="https://www.spglobal.com/energy/en/news-research/latest-news/energy-transition/071124-fertiglobe-wins-first-german-h2global-green-ammonia-import-tender-at-eur1000mt" target="_blank" rel="noopener">S&amp;P Global, H2Global tender</a> · <a href="https://industrydecarbonization.com/news/why-no-one-wanted-to-buy-the-green-shipping-fuel.html" target="_blank" rel="noopener">Industry Decarbonization, FlagshipONE</a>. Summaries are ours.</p></section>
+    <section class="wrap close"><p>Ready for a first conversation?</p><a class="btn" href="contact.html">Contact us</a></section>
   </main>
   <div id="site-footer"></div>
 </body>

@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
 <style>
-  /* Page shell: shared menu, title and intro, and placeholder slots for the sections the page will hold. */
+  /* Section page: shared menu, title and intro, then numbered sections. */
   :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E; --c: #F0C877; }
   * { box-sizing: border-box; }
   html, body { margin: 0; }
@@ -36,6 +36,50 @@
   .slot h2 { margin: 0; font-size: 28px; line-height: 1.1; }
   .slot p { margin: 0; font-size: 13px; color: var(--faint); }
   footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 22px 30px; border-top: 1px solid var(--line); font-size: 10.5px; letter-spacing: 0.06em; color: var(--faint); }
+
+  /* Section pages: numbered glass panels, lists, case cards */
+  .svc { display: grid; gap: 10px; padding-bottom: 40px; }
+  .sec { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 34px; padding: 30px 32px; animation: enter 800ms 150ms ease both; }
+  .sec .lab { display: flex; flex-direction: column; gap: 10px; }
+  .sec .n { font-size: 11px; color: var(--c); font-variant-numeric: tabular-nums; }
+  .sec h2 { margin: 0; font-size: 32px; line-height: 1.08; }
+  .sec .body p { margin: 0 0 14px; font-size: 15px; line-height: 1.8; color: var(--soft); max-width: 720px; }
+  .sec .body p.lead { font-family: 'Instrument Serif', Georgia, serif; font-size: 23px; line-height: 1.4; color: var(--text); }
+  .sec ul { margin: 4px 0 16px; padding: 0; list-style: none; max-width: 760px; }
+  .sec li { position: relative; padding: 9px 0 9px 22px; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.7; color: var(--soft); }
+  .sec li:last-child { border-bottom: 1px solid var(--line); }
+  .sec li::before { content: ""; position: absolute; left: 2px; top: 18px; width: 6px; height: 6px; border-radius: 50%; background: var(--c); box-shadow: 0 0 6px var(--c); }
+  .sec li b { color: var(--text); font-weight: 600; }
+  .sec .case { margin: 18px 0 4px; padding: 14px 16px; border-left: 2px solid var(--accent); background: rgba(216,182,110,0.06); font-size: 13.5px; line-height: 1.7; color: var(--soft); max-width: 720px; }
+  .sec .case b { color: var(--accent); font-weight: 600; letter-spacing: 0.06em; font-size: 10.5px; text-transform: uppercase; display: block; margin-bottom: 4px; }
+  .cases-h { margin: 40px 0 14px; font-size: 34px; line-height: 1.1; }
+  .cases-intro { margin: 0 0 18px; max-width: 680px; font-size: 15px; line-height: 1.8; color: var(--soft); }
+  .cases { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding-bottom: 30px; }
+  .cs { padding: 24px 24px 22px; display: flex; flex-direction: column; gap: 10px; }
+  .cs .tag { display: flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cc); }
+  .cs .tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--cc); box-shadow: 0 0 6px var(--cc); }
+  .cs h3 { margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: 26px; line-height: 1.15; }
+  .cs p { margin: 0; font-size: 14px; line-height: 1.75; color: var(--soft); }
+  .cs .why { margin-top: auto; padding-top: 10px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--text); }
+  .cs .why span { color: var(--accent); font-weight: 600; }
+  .srcs { padding-bottom: 20px; font-size: 11.5px; line-height: 1.8; color: var(--faint); max-width: 900px; }
+  .srcs a { color: var(--muted); }
+  .faq { padding-bottom: 40px; max-width: 900px; }
+  .faq details { border-top: 1px solid var(--line); }
+  .faq details:last-of-type { border-bottom: 1px solid var(--line); }
+  .faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px 4px; font-family: 'Instrument Serif', Georgia, serif; font-size: 24px; line-height: 1.25; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; flex: none; font: 400 22px Manrope, sans-serif; color: var(--c); transition: transform 240ms ease; }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .faq .a { padding: 0 4px 22px; max-width: 760px; }
+  .faq .a p { margin: 0 0 12px; font-size: 15px; line-height: 1.8; color: var(--soft); }
+  .faq .a a { color: var(--accent); }
+  .close { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 30px; padding-bottom: 100px; }
+  .close p { margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-size: 26px; line-height: 1.3; max-width: 640px; }
+  .close .btn { display: inline-flex; align-items: center; min-height: 46px; padding: 0 22px; border-radius: 2px; background: var(--accent); color: var(--ink); font-size: 13px; font-weight: 600; text-decoration: none; }
+  .close .btn:hover { background: #E8C987; }
+  @media (max-width: 860px) { .sec { grid-template-columns: 1fr; gap: 16px; padding: 24px 22px; } .sec .body p.lead { font-size: 21px; } .cases { grid-template-columns: 1fr; } .faq summary { font-size: 21px; } }
   @keyframes enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @media (max-width: 700px) { .wrap { width: calc(100% - 40px); } .head { padding-block: 56px 32px; } .slots { grid-template-columns: 1fr; } }
 </style>
@@ -49,11 +93,19 @@
       <h1 class="serif">Purpose, mission <em>&amp; values</em></h1>
       <p class="intro">Why we do this work, and the principles behind how we do it.</p>
     </header>
-    <section class="wrap slots" aria-label="Sections">
-        <div class="slot glass"><span class="n">01</span><h2 class="serif">Our purpose</h2><p>Content for this section is on its way.</p></div>
-        <div class="slot glass"><span class="n">02</span><h2 class="serif">Our mission</h2><p>Content for this section is on its way.</p></div>
-        <div class="slot glass"><span class="n">03</span><h2 class="serif">Our values</h2><p>Content for this section is on its way.</p></div>
+    <section class="wrap svc" aria-label="Sections">
+      <div class="sec glass"><div class="lab"><span class="n">01</span><h2 class="serif">Our purpose</h2></div><div class="body"><p class="lead">Low-carbon fuels only get built when someone signs to buy them. We exist to get those contracts written.</p>
+<p>The technology for e-fuels, green methanol, SAF, renewable diesel and renewable natural gas largely exists. What holds most projects back is commercial: a buyer who will commit, at a price the plant can live on, for long enough to repay the debt. That is the gap we work in.</p></div></div>
+      <div class="sec glass"><div class="lab"><span class="n">02</span><h2 class="serif">Our mission</h2></div><div class="body"><p class="lead">To structure long-term supply agreements that take low-carbon fuel projects to final investment decision, and keep working for both sides once they do.</p>
+<p>A deal that only one side can live with rarely survives ten years. We aim for structures the producer can finance, the buyer can afford and the lender can rely on.</p></div></div>
+      <div class="sec glass"><div class="lab"><span class="n">03</span><h2 class="serif">Our values</h2></div><div class="body"><ul>
+<li><b>Both sides of the table.</b> Tom has been the analyst, the originator, the broker, the developer and the buyer. We use that to find terms each side can actually sign.</li>
+<li><b>Bankable, not just signable.</b> A contract is only useful if a lender will lend against it. We test every structure against what financing will need.</li>
+<li><b>Rigour.</b> Deals are modelled, stress-tested and grounded in the regulation that drives demand, not in hope about where prices go.</li>
+<li><b>Straight answers.</b> If a deal will not finance, it is better to know early. We say so.</li>
+</ul></div></div>
     </section>
+    <section class="wrap close"><p>Have a project heading for FID?</p><a class="btn" href="contact.html">Contact us</a></section>
   </main>
   <div id="site-footer"></div>
 </body>
