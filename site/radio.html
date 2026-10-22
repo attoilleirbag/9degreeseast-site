@@ -239,12 +239,12 @@
       { n: 'CAMBRIDGE, MA', v: vec(42.37, -71.11) },           // 18 Harvard and MIT
       { n: 'BOSTON', v: vec(42.36, -71.06) },                  // 19
       { n: 'TORONTO', v: vec(43.65, -79.38) },                 // 20
-      { n: 'SALTEND', v: vec(53.74, -0.24) }                   // 21 Calpine's power station
+      { n: 'SALTEND', v: vec(53.74, -0.24) }                   // 21
     ];
     // Tom's career, in order: [hub, year, what]
-    var ROUTE = [[18, '1994', 'Harvard and MIT'], [4, '1998', 'Reliant Energy'], [19, '2000', 'Calpine'], [0, '2003', 'Calpine, international'], [21, '2003', 'Saltend power station'], [20, '2004', 'Calpine, Canada'],
-      [0, '2006', 'BP, biofuels origination'], [5, '2013', 'BP, global biofuels'], [0, '2018', '9 Degrees East is founded'], [0, '2021', 'OTX, an Xpansiv company'], [4, '2022', 'HIF Global'], [10, '2022', 'Haru Oni e-fuels'],
-      [2, '2024', 'Maersk Tankers'], [12, '2024', 'Green methanol from China'], [0, 'Today', '9 Degrees East']];
+    var ROUTE = [[18, '1994', 'Harvard and MIT'], [4, '1998', 'Power analyst'], [19, '2000', 'Power markets'], [0, '2003', 'Power, international'], [21, '2003', 'UK power'], [20, '2004', 'Canada'],
+      [0, '2006', 'Biofuels origination'], [5, '2013', 'Global biofuels'], [0, '2018', '9 Degrees East is founded'], [0, '2021', 'Biofuels brokerage'], [4, '2022', 'eFuels'], [10, '2022', 'Patagonia'],
+      [2, '2024', 'Copenhagen'], [12, '2024', 'Green methanol'], [0, 'Today', '9 Degrees East']];
     window.__route = { start: function () { tour(0); }, stop: function () { touring = false; clearTimeout(tourT); } };
     var touring = false, tourT, rotT = null;
     function tour(i) {
