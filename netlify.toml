@@ -10,3 +10,32 @@
   to = "/"
   status = 301
   force = true
+
+# ---- HOLDING PAGE (temporary) ----
+# While the site is being fixed, every address shows the holding page.
+# The full site is untouched. To bring it back, delete everything from
+# the HOLDING PAGE line down to END HOLDING PAGE, and commit.
+[[redirects]]
+  from = "/favicon.svg"
+  to = "/favicon.svg"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/favicon.ico"
+  to = "/favicon.ico"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/apple-touch-icon.png"
+  to = "/apple-touch-icon.png"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/holding.html"
+  status = 200
+  force = true
+# ---- END HOLDING PAGE ----
