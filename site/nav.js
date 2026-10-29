@@ -105,7 +105,7 @@
   @media (max-width: 420px) { .sn-logo span { display: none; } .sn { width: calc(100% - 24px); margin-top: 12px; } }';
 
   function a(href, text, cls) { return href ? '<a class="' + (cls || '') + '" href="' + href + '">' + text + '</a>' : '<span class="soon ' + (cls || '') + '">' + text + '<span class="tag">Soon</span></span>'; }
-  var logo = '<a class="sn-logo" href="./" aria-label="9 Degrees East home"><svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" aria-hidden="true"><circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="2.6" stroke-dasharray="196.5 80" transform="rotate(120 50 50)"/><circle cx="46" cy="43" r="16" stroke="currentColor" stroke-width="8"/><path d="M60.5 49.8 L46.8 79" stroke="currentColor" stroke-width="8"/><circle cx="71" cy="25" r="5" stroke="#D8B66E" stroke-width="3.4"/></svg><span>9 DEGREES EAST</span></a>';
+  var logo = '<a class="sn-logo" href="./" aria-label="9 Degrees East home"><svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" aria-hidden="true"><circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="2.6" stroke-dasharray="196.5 80" transform="rotate(120 50 50)"/><circle cx="46" cy="43" r="16" stroke="currentColor" stroke-width="3.6"/><path d="M61.4 47.5 L46.8 79" stroke="currentColor" stroke-width="3.6"/><circle cx="66.4" cy="22.6" r="5" stroke="#D8B66E" stroke-width="3.4"/></svg><span>9 DEGREES EAST</span></a>';
   var main = MENU.map(function (m) {
     var cur = (m.href === here || m.items.some(function (i) { return i.href === here; })) ? ' current' : '';
     return '<li><button class="sn-top' + cur + '" type="button" aria-expanded="false" aria-controls="sn-' + m.id + '" data-sec="' + m.id + '">' + m.label + '<i class="chev" aria-hidden="true"></i></button></li>';
@@ -232,7 +232,7 @@
   @media (max-width: 860px), (pointer: coarse) { .sf-brand a { min-height: 44px; } .sf-col a { display: flex; align-items: center; min-height: 44px; padding: 0; } .sf-col h2 { margin-bottom: 4px; } .sf-links { gap: 0 20px; } .sf-links a, .sf-links button { display: inline-flex; align-items: center; min-height: 44px; } }\
   @media (max-width: 520px) { .sf-in { width: calc(100% - 40px); } .sf-top { grid-template-columns: 1fr 1fr; gap: 24px; } }';
 
-  var logo = '<svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" aria-hidden="true"><circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="2.6" stroke-dasharray="196.5 80" transform="rotate(120 50 50)"/><circle cx="46" cy="43" r="16" stroke="currentColor" stroke-width="8"/><path d="M60.5 49.8 L46.8 79" stroke="currentColor" stroke-width="8"/><circle cx="71" cy="25" r="5" stroke="#D8B66E" stroke-width="3.4"/></svg>';
+  var logo = '<svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" aria-hidden="true"><circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="2.6" stroke-dasharray="196.5 80" transform="rotate(120 50 50)"/><circle cx="46" cy="43" r="16" stroke="currentColor" stroke-width="3.6"/><path d="M61.4 47.5 L46.8 79" stroke="currentColor" stroke-width="3.6"/><circle cx="66.4" cy="22.6" r="5" stroke="#D8B66E" stroke-width="3.4"/></svg>';
   function col(title, links) { return '<div class="sf-col"><h2>' + title + '</h2><ul>' + links.map(function (l) { return '<li><a href="' + l[1] + '">' + l[0] + '</a></li>'; }).join('') + '</ul></div>'; }
   function reg() {
     var bits = [];
