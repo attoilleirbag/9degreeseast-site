@@ -33,6 +33,15 @@
   status = 200
   force = true
 
+# Anyone with the preview cookie (set by entering the password on the
+# holding page) sees the full site instead.
+[[redirects]]
+  from = "/*"
+  to = "/:splat"
+  status = 200
+  force = true
+  conditions = {Cookie = ["testedit"]}
+
 [[redirects]]
   from = "/*"
   to = "/holding.html"

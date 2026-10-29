@@ -67,6 +67,13 @@
   .intro-on .hero-copy > *, .intro-on .hero-art, .intro-on .wx { animation-play-state: paused; }
   @media (max-width: 560px) { .intro .lockup { flex-direction: column; gap: 22px; } .intro .word { align-items: center; } .intro .core { padding-block: 26px; } .intro .corner { display: none; } }
   @media (prefers-reduced-motion: reduce) { .intro *, .intro *::before { animation-duration: 1ms !important; animation-delay: 0ms !important; } }
+  .gate { position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); display: none; gap: 8px; z-index: 300; }
+  .gate.on { display: flex; }
+  .gate input { width: 190px; padding: 10px 12px; background: rgba(9,28,50,0.9); border: 1px solid rgba(160,190,220,0.25); border-radius: 2px; color: var(--text); font: 500 14px Manrope, sans-serif; outline: none; }
+  .gate input:focus { border-color: var(--accent); }
+  .gate button { padding: 10px 14px; background: var(--accent); color: var(--ink); border: 0; border-radius: 2px; font: 600 13px Manrope, sans-serif; cursor: pointer; }
+  .gate.no input { border-color: #E39A55; }
+  .intro .mark { cursor: default; }
 </style>
 </head>
 <body>
@@ -111,6 +118,27 @@
         if (t < 1) requestAnimationFrame(frame); else c.style.opacity = 0;
       });
     }, 1300);
+  })();
+</script>
+<form class="gate" id="gate" autocomplete="off"><input id="pw" type="password" aria-label="Preview password" placeholder="Preview password"><button>Enter</button></form>
+<script>
+  // Private preview: tap the logo three times, enter the password, and the full site opens in this browser for 30 days.
+  // The password is never stored on this page; Netlify checks it.
+  (function () {
+    var taps = 0, tt, gate = document.getElementById('gate'), pw = document.getElementById('pw');
+    document.querySelector('.intro .mark').addEventListener('click', function () {
+      taps++; clearTimeout(tt); tt = setTimeout(function () { taps = 0; }, 900);
+      if (taps >= 3) { gate.classList.add('on'); pw.focus(); }
+    });
+    gate.addEventListener('submit', function (e) {
+      e.preventDefault(); var v = pw.value.trim().replace(/[^A-Za-z0-9_-]/g, '');
+      if (!v) return;
+      document.cookie = v + '=1; path=/; max-age=2592000; secure; samesite=lax';
+      fetch('/?check=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.text(); }).then(function (t) {
+        if (t.indexOf('id="gate"') === -1) { location.href = '/'; }
+        else { document.cookie = v + '=; path=/; max-age=0'; gate.classList.add('no'); pw.value = ''; setTimeout(function () { gate.classList.remove('no'); }, 1200); }
+      });
+    });
   })();
 </script>
 </body>
