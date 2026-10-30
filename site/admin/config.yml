@@ -11,6 +11,9 @@ backend:
     uploadMedia: "Journal: add image {{path}}"
     deleteMedia: "Journal: remove image {{path}}"
 
+# Drafts: "Save" keeps an article private; it only goes on the website when he clicks Publish
+publish_mode: editorial_workflow
+
 site_url: https://9degreeseast.com
 display_url: https://9degreeseast.com/journal
 logo_url: /admin/logo.svg
@@ -38,13 +41,11 @@ collections:
       - { label: Author, name: author, widget: string, default: Tom Fox }
       - label: Series
         name: series
-        widget: select
+        widget: string
         required: false
-        hint: Leave empty for a stand-alone article.
-        options: ["Fuels"]
+        hint: "Type the series name, e.g. Fuels. Use exactly the same name on every part so they link together. Leave empty for a stand-alone article."
       - { label: Part, name: part, widget: number, required: false, value_type: int, min: 1, hint: "For a series: which part this is (1, 2, 3…)." }
       - { label: Parts in the series, name: parts, widget: number, required: false, value_type: int, min: 1, hint: "For a series: how many parts in total, e.g. 4." }
       - { label: Cover image, name: cover, widget: image, required: false }
       - { label: Cover image description, name: cover_alt, widget: string, required: false, hint: "A few words describing the image, for screen readers." }
       - { label: Article, name: body, widget: markdown, buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list], editor_components: [image] }
-      - { label: Hide from the website (draft), name: draft, widget: boolean, default: false, required: false }

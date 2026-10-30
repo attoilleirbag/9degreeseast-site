@@ -62,7 +62,7 @@ function parse(file) {
 }
 
 function page(p, series) {
-  const inSeries = p.series ? series.filter(s => s.series === p.series) : [];
+  const inSeries = p.series ? series.filter(s => String(s.series).trim().toLowerCase() === String(p.series).trim().toLowerCase()) : [];
   const idx = inSeries.findIndex(s => s.slug === p.slug);
   const prev = idx > 0 ? inSeries[idx - 1] : null, next = idx >= 0 && idx < inSeries.length - 1 ? inSeries[idx + 1] : null;
   const label = p.series ? esc(p.series) + (p.part ? ' · Part ' + esc(p.part) + (p.parts ? ' of ' + esc(p.parts) : '') : '') : 'The 9DE Journal';
