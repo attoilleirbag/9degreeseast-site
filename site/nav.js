@@ -5,22 +5,22 @@
 
   // Every item links to a page. Pages without content yet are blank shells, ready to fill in.
   var MENU = [
-    { id: 'about', label: 'About', title: 'About 9 Degrees East', intro: 'A commercial advisory for low-carbon fuels, built on 28 years in energy and 20 structuring long-term supply deals.', href: 'about.html', c: '#F0C877',
+    { id: 'about', label: 'About', title: 'About 9 Degrees East', intro: 'Commercial advisory for low-carbon fuels, in the business since 2008.', href: 'about.html', c: '#F0C877',
       items: [
-        { label: 'Who we are', href: 'about.html', blurb: 'The firm, the founder and the experience behind every deal.' },
+        { label: 'About', href: 'about.html', blurb: 'The founder and the experience behind every deal.' },
         { label: 'Our history', href: 'our-history.html', blurb: 'How 9 Degrees East came to be, from power in Houston to eFuels in Chile.' },
         { label: 'Purpose, mission & values', href: 'purpose.html', blurb: 'Why we do this work, and the principles behind how we do it.' },
         { label: 'How we work', href: 'how-we-work.html', blurb: 'How an engagement runs, from first conversation to signed agreement.' },
         { label: 'Locations', href: 'locations.html', blurb: 'Based in London, working across Europe, the Americas and Asia.' }
       ] },
-    { id: 'insights', label: 'Insights', title: 'Insights', intro: 'Market data, regulation and our own analysis.', href: 'insights.html', c: '#5EC8D8',
+    { id: 'insights', label: 'Insights', title: 'Insights', intro: 'Market data, regulation and analysis.', href: 'insights.html', c: '#5EC8D8',
       items: [
-        { label: 'Fuel Weather', href: 'fuel-weather.html', blurb: 'Price pressure and turbulence across five fuels, from public market data. Updated every Monday.', live: true },
+        { label: 'Fuel Weather', href: 'fuel-weather.html', blurb: 'Tailwind or headwind for each fuel against its fossil rival. Conditions, not forecasts.', live: true },
         { label: 'Policy Tracker', href: 'policy-tracker.html', blurb: 'New rules and announcements from the US, EU, UK, China and global shipping, checked every week.', live: true },
         { label: 'Market Conditions', href: 'market-conditions.html', blurb: 'Our read on supply, demand and pricing across low-carbon fuel markets.' },
         { label: 'The 9DE Journal', href: 'journal.html', blurb: 'Articles and commentary from 9 Degrees East, including posts from Substack and LinkedIn.' }
       ] },
-    { id: 'services', label: 'Products & Services', title: 'Products & Services', intro: 'Bankable supply agreements for eFuels, green methanol, SAF, renewable diesel and RNG.', href: 'services.html', c: '#A9A2F0',
+    { id: 'services', label: 'Products & Services', title: 'Products & Services', intro: 'A second opinion, in-depth studies, a part-time commercial lead, or a deal taken through to signature.', href: 'services.html', c: '#A9A2F0',
       items: [
         { label: 'Offtake strategy', href: 'offtake-strategy.html', blurb: 'Who to sell to, on what terms, and how to sequence it for financing.' },
         { label: 'Deal structuring', href: 'deal-structuring.html', blurb: 'Price, volume, credit and sustainability terms that work for both sides.' },
@@ -253,7 +253,7 @@
       var tail = v === 'B' ? copy + links + reg() : v === 'C' ? links + copy + reg() : copy + reg() + links;
       return '<footer class="sf sf-' + v + '"><div class="sf-in"><div class="sf-top">' +
         '<div class="sf-brand"><a href="./" aria-label="9 Degrees East home">' + logo + '<span>9 DEGREES EAST</span></a><p>Commercial advisory for low-carbon fuels.</p></div>' +
-        col('About', [['Who we are', 'about.html'], ['Our history', 'our-history.html'], ['Purpose, mission & values', 'purpose.html'], ['How we work', 'how-we-work.html'], ['Locations', 'locations.html'], ['FAQ', 'faq.html']]) +
+        col('About', [['About', 'about.html'], ['Our history', 'our-history.html'], ['Purpose, mission & values', 'purpose.html'], ['How we work', 'how-we-work.html'], ['Locations', 'locations.html'], ['FAQ', 'faq.html']]) +
         col('Insights', [['Fuel Weather', 'fuel-weather.html'], ['Policy Tracker', 'policy-tracker.html'], ['Market Conditions', 'market-conditions.html'], ['The 9DE Journal', 'journal.html']]) +
         col('Services', [['Offtake strategy', 'offtake-strategy.html'], ['Deal structuring', 'deal-structuring.html'], ['Supply agreements', 'supply-agreements.html'], ['Regulatory advisory', 'regulatory-advisory.html']]) +
         '</div><div class="sf-legal">' + tail + '</div></div></footer>';

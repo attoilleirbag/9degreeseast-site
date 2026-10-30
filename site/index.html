@@ -240,6 +240,24 @@
     .wx li .ch { text-align: right; }
   }
 
+  /* The whole board: how the firm thinks, directly under the hero */
+  .board { padding-block: 10px 70px; }
+  .board-in { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr); gap: 20px 60px; align-items: start; padding-top: 44px; border-top: 1px solid var(--line); }
+  .board h2 { grid-column: 1; margin: 0; font-size: clamp(40px, 4.6vw, 64px); line-height: 1; letter-spacing: -0.02em; }
+  .board h2 em { color: var(--accent); font-style: italic; }
+  .board-copy { grid-column: 2; grid-row: 1 / span 2; }
+  .board-copy p { margin: 0 0 16px; font-size: 15.5px; line-height: 1.85; color: var(--soft); max-width: 640px; }
+  .board-copy p.punch { font-family: 'Instrument Serif', Georgia, serif; font-size: clamp(21px, 1.9vw, 25px); line-height: 1.4; color: var(--text); margin-top: 22px; }
+  @media (max-width: 900px) { .board-in { grid-template-columns: 1fr; } .board-copy { grid-column: 1; grid-row: auto; } }
+  .wx li .nm small { display: block; margin-top: 2px; font-weight: 500; color: var(--faint); font-size: 10.5px; white-space: nowrap; }
+  .wx li .nm { line-height: 1.25; }
+  @media (min-width: 901px) { .wx ul { display: grid; grid-template-columns: repeat(3, max-content); justify-content: space-around; gap: 12px 36px; } }
+  .wx a.bar { min-width: 0; }
+  .wx .lab small:first-of-type { color: var(--soft); }
+  /* Closing line */
+  .closing { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 30px; padding-block: 50px 90px; border-top: 1px solid var(--line); }
+  .closing p { margin: 0; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.1; }
+  .closing p em { color: var(--accent); font-style: italic; }
   @keyframes enter { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: none; } }
 
   @media (max-width: 1000px) {
@@ -309,7 +327,7 @@
         <div class="hero-grid">
           <div class="hero-copy">
             <p class="eyebrow">Low-carbon fuels · Commercial advisory</p>
-            <h1 class="serif" id="hero-title">Our new website is approaching <em>final investment decision.</em></h1>
+            <h1 class="serif" id="hero-title">Commercial judgement for <em>low-carbon fuels</em>.</h1>
             <p class="claim">Turning low-carbon fuel projects into financeable businesses.</p>
             <p class="lede">Offtake strategy, deal structuring and bankable supply agreements for eFuels, green methanol, SAF, renewable diesel and renewable natural gas (RNG).</p>
             <div class="contact">
@@ -333,12 +351,17 @@
       </div>
     </section>
 
-    <section class="wrap wx" aria-label="Fuel Weather this week">
-      <a class="bar glass" href="fuel-weather.html" id="wx">
-        <span class="lab"><b>Fuel Weather</b><small id="wx-date"></small></span>
-        <ul id="wx-list"></ul>
-        <span class="go">Full forecast <span>→</span></span>
-      </a>
+
+
+    <section class="wrap board" aria-labelledby="board-title">
+      <div class="board-in">
+        <h2 class="serif" id="board-title">The whole <em>board</em></h2>
+        <div class="board-copy">
+          <p>Every low-carbon fuel draws on the same short list: waste oils, biomass, biogenic CO2, clean power and the hydrogen made with it. So the real question is never just “can we make it?” It’s which route, to which product, for which market, under whose rules, and who else is bidding for the same feedstock.</p>
+          <p>Tom has worked on almost every low-carbon fuel since 2008, across road, marine, aviation and chemicals. Mostly, that teaches humility. Mandates slip, credits get rewritten, and yesterday’s sure thing becomes today’s stranded plant.</p>
+          <p class="punch">So our advice usually starts in the same place: design and contract the project so it can sell into as many markets as possible. Nobody knows which one will win. The trick is not needing to.</p>
+        </div>
+      </div>
     </section>
 
     <section class="wrap fuels" aria-labelledby="fuels-label">
@@ -397,41 +420,26 @@
         </div>
     </section>
 
+    <section class="wrap wx" aria-label="Fuel Weather this week">
+      <a class="bar glass" href="fuel-weather.html" id="wx">
+        <span class="lab"><b>Fuel Weather</b><small>Conditions, not forecasts.</small><small id="wx-date"></small></span>
+        <ul id="wx-list"></ul>
+        <span class="go">See the conditions <span>→</span></span>
+      </a>
+    </section>
+
     <section class="wrap explore" aria-label="Explore">
       <p class="eyebrow">Explore</p>
       <div class="grid">
-        <a class="tile glass" href="fuel-weather.html" style="--c: var(--methanol)"><span class="k"><i class="dot"></i>Market conditions</span><h3 class="serif">Fuel Weather</h3><p>Price pressure and turbulence across the five fuels, from public market data. Updated every Monday.</p><span class="go">Open Fuel Weather <span>→</span></span></a>
-        <a class="tile glass" href="policy-tracker.html" style="--c: var(--rng)"><span class="k"><i class="dot"></i>Regulation</span><h3 class="serif">Policy Tracker</h3><p>New rules and announcements from the US, EU, UK, China and global shipping, checked every week.</p><span class="go">Open the tracker <span>→</span></span></a>
-        <a class="tile glass" href="about.html" style="--c: var(--saf)"><span class="k"><i class="dot"></i>About us</span><h3 class="serif">9 Degrees East</h3><p>28 years in energy, 20 of them structuring long-term supply deals, from oil major trading desks to eFuels and shipping.</p><span class="go">Meet the founder <span>→</span></span></a>
+        <a class="tile glass" href="fuel-weather.html" style="--c: var(--methanol)"><span class="k"><i class="dot"></i>Market conditions</span><h3 class="serif">Fuel Weather</h3><p>Tailwind or headwind for each fuel against its fossil rival, from public data. Conditions, not forecasts.</p><span class="go">See the conditions <span>→</span></span></a>
+        <a class="tile glass" href="policy-tracker.html" style="--c: var(--rng)"><span class="k"><i class="dot"></i>Regulation</span><h3 class="serif">Policy Tracker</h3><p>New rules and announcements from the US, EU, UK, China and the IMO, checked every week.</p><span class="go">Open the tracker <span>→</span></span></a>
+        <a class="tile glass" href="about.html" style="--c: var(--saf)"><span class="k"><i class="dot"></i>About</span><h3 class="serif">9 Degrees East</h3><p>28 years in energy, 20 of them structuring long-term supply deals, from oil major trading desks to eFuels and shipping.</p><span class="go">Meet the founder <span>→</span></span></a>
       </div>
     </section>
 
-    <section class="experience" aria-labelledby="exp-label">
-      <div class="wrap">
-        <div class="exp-head">
-          <p class="eyebrow" id="exp-label">Experience across</p>
-        </div>
-      </div>
-      <div class="marquee">
-        <div class="marquee-track">
-          <ul class="roles" aria-labelledby="exp-label">
-            <li><span class="co-item" style="--c: var(--rd)"><span class="logo"><img src="logos/bp.svg" class="tonal tall" alt="BP" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">BP Supply, Trading &amp; Shipping</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--efuels)"><span class="logo"><img src="logos/hif.svg" alt="HIF Global" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">HIF Global</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--methanol)"><span class="logo"><img src="logos/maersk-tankers.svg" class="raw" alt="Maersk Tankers" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Maersk Tankers</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--rng)"><span class="logo"><img src="logos/xpansiv.svg" class="xp" alt="Xpansiv" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Xpansiv</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--saf)"><span class="logo"><img src="logos/calpine.svg" class="wide" alt="Calpine" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Calpine</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--muted)"><span class="logo"><img src="logos/channoil.png" class="tall" alt="Channoil Consulting" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Channoil Consulting</span></span></span></li>
-          </ul>
-          <ul class="roles" aria-hidden="true">
-            <li><span class="co-item" style="--c: var(--rd)"><span class="logo"><img src="logos/bp.svg" class="tonal tall" alt="BP" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">BP Supply, Trading &amp; Shipping</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--efuels)"><span class="logo"><img src="logos/hif.svg" alt="HIF Global" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">HIF Global</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--methanol)"><span class="logo"><img src="logos/maersk-tankers.svg" class="raw" alt="Maersk Tankers" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Maersk Tankers</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--rng)"><span class="logo"><img src="logos/xpansiv.svg" class="xp" alt="Xpansiv" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Xpansiv</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--saf)"><span class="logo"><img src="logos/calpine.svg" class="wide" alt="Calpine" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Calpine</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--muted)"><span class="logo"><img src="logos/channoil.png" class="tall" alt="Channoil Consulting" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Channoil Consulting</span></span></span></li>
-          </ul>
-        </div>
-      </div>
+    <section class="wrap closing" aria-label="Get in touch">
+      <p class="serif">Approaching your own <em>final investment decision?</em></p>
+      <a class="btn btn-primary" href="mailto:tomfox@9degreeseast.com">Get in touch</a>
     </section>
   </main>
 
@@ -446,10 +454,12 @@
     var M = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], d = new Date(WXS.updated + 'T12:00:00Z');
     if (!isNaN(d)) date.textContent = 'Updated ' + d.getUTCDate() + ' ' + M[d.getUTCMonth()];
     var SHORT = { 'Renewable natural gas': 'RNG', 'Green methanol': 'Methanol' };
+    // Each figure is the fossil benchmark the fuel competes with, not a green fuel price
+    var BENCH = { efuels: 'power price benchmark', methanol: 'grey methanol benchmark', saf: 'jet fuel benchmark', rd: 'diesel benchmark', rng: 'Henry Hub gas benchmark' };
     list.innerHTML = WXS.items.map(function (f) {
       var ar = f.pressure === 'Rising' ? '↗' : f.pressure === 'Falling' ? '↘' : '→';
       var ch = (f.chg > 0 ? '+' : f.chg < 0 ? '−' : '') + Math.abs(Math.round(f.chg * 100)) + '%';
-      return '<li style="--c:' + f.c + '"><span class="nm">' + (SHORT[f.name] || f.name) + '</span><span class="p"><b aria-hidden="true">' + ar + '</b>' + f.pressure + '</span><span class="ch">' + ch + '</span></li>';
+      return '<li style="--c:' + f.c + '"><span class="nm">' + (SHORT[f.name] || f.name) + (BENCH[f.id] ? ' <small>(' + BENCH[f.id] + ')</small>' : '') + '</span><span class="p"><b aria-hidden="true">' + ar + '</b>' + f.pressure + '</span><span class="ch">' + ch + '</span></li>';
     }).join('');
   })();
   // Opening: the spark travels the orbit, then the meridian widens and the home page takes over. Click or any key skips.
@@ -587,6 +597,12 @@
       { n: 'CAPE TOWN', v: vec(-33.9, 18.4), major: true }     // 17 London to Cape Town: the 9°E line
     ];
     var ROUTES = [[0, 17, 'feature'], [17, 7], [17, 13],[0, 4], [0, 12], [1, 13], [4, 9], [7, 0], [2, 11], [5, 0], [14, 4], [13, 16], [9, 7], [12, 13], [15, 13], [6, 3], [8, 1], [10, 9], [11, 14]];
+
+    // Markers removed from the globe; routes to them go too (indices are remapped)
+    (function () { var DROP = { 'RIO DE JANEIRO': 1, 'SANTIAGO': 1, 'SINGAPORE': 1 }, keep = HUBS.map(function (h) { return !DROP[h.n]; }), map = [], k = 0;
+      keep.forEach(function (x, i) { map[i] = x ? k++ : -1; });
+      ROUTES = ROUTES.filter(function (r) { return keep[r[0]] && keep[r[1]]; }).map(function (r) { return [map[r[0]], map[r[1]]].concat(r.slice(2)); });
+      HUBS = HUBS.filter(function (h, i) { return keep[i]; }); })();
 
     function slerp(a, b, t) {
       var d = Math.acos(Math.min(1, a[0] * b[0] + a[1] * b[1] + a[2] * b[2]));
@@ -843,6 +859,12 @@
         { n: 'SYDNEY', lat: -33.9, lon: 151.2 }, { n: 'CAPE TOWN', lat: -33.9, lon: 18.4, major: true }
       ];
       var ROUTES = [[0, 17, 'feature'], [17, 7], [17, 13], [0, 4], [0, 12], [1, 13], [4, 9], [7, 0], [2, 11], [5, 0], [14, 4], [13, 16], [9, 7], [12, 13], [15, 13], [6, 3], [8, 1], [10, 9], [11, 14]];
+
+    // Markers removed from the globe; routes to them go too (indices are remapped)
+    (function () { var DROP = { 'RIO DE JANEIRO': 1, 'SANTIAGO': 1, 'SINGAPORE': 1 }, keep = HUBS.map(function (h) { return !DROP[h.n]; }), map = [], k = 0;
+      keep.forEach(function (x, i) { map[i] = x ? k++ : -1; });
+      ROUTES = ROUTES.filter(function (r) { return keep[r[0]] && keep[r[1]]; }).map(function (r) { return [map[r[0]], map[r[1]]].concat(r.slice(2)); });
+      HUBS = HUBS.filter(function (h, i) { return keep[i]; }); })();
       var dotTex = (function () { var c = document.createElement('canvas'); c.width = c.height = 64; var g = c.getContext('2d'), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
         gr.addColorStop(0, 'rgba(255,240,205,1)'); gr.addColorStop(0.25, 'rgba(240,207,133,0.9)'); gr.addColorStop(1, 'rgba(216,182,110,0)'); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
       var ringTex = (function () { var c = document.createElement('canvas'); c.width = c.height = 64; var g = c.getContext('2d'); g.strokeStyle = 'rgba(216,182,110,1)'; g.lineWidth = 3; g.beginPath(); g.arc(32, 32, 28, 0, 7); g.stroke(); return new THREE.CanvasTexture(c); })();

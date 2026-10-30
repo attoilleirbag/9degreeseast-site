@@ -35,7 +35,7 @@ export function md(src) {
   const out = []; let i = 0;
   while (i < lines.length) {
     const l = lines[i];
-    if (!l.trim()) { i++; continue; }
+    if (!l.trim() || /^\s*\\\s*$/.test(l)) { i++; continue; } // skip blank lines and the editor's stray "\" line breaks
     let m;
     if ((m = l.match(/^:::size\s+(\d{1,2})\s*$/))) { const sz = Math.max(8, Math.min(48, +m[1])), buf = []; i++; while (i < lines.length && !/^:::\s*$/.test(lines[i])) buf.push(lines[i++]); i++; out.push('<div class="fs" style="font-size:' + sz + 'px">' + md(buf.join('\n')) + '</div>'); continue; }
     if ((m = l.match(/^(#{1,4})\s+(.*)$/))) { const n = Math.min(4, Math.max(2, m[1].length)); out.push('<h' + n + '>' + inline(m[2]) + '</h' + n + '>'); i++; continue; }
@@ -50,7 +50,7 @@ export function md(src) {
     if ((m = l.match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)\s*$/))) { out.push('<figure><img src="' + esc(m[2]) + '" alt="' + esc(m[1]) + '" loading="lazy">' + (m[3] ? '<figcaption>' + esc(m[3]) + '</figcaption>' : '') + '</figure>'); i++; continue; }
     const buf = [];
     while (i < lines.length && lines[i].trim() && !/^(#{1,4}\s|>|```|\s*([-*+]|\d+[.)])\s+|(\*{3,}|-{3,})\s*$)/.test(lines[i])) buf.push(lines[i++]);
-    out.push('<p>' + inline(buf.join('\n')) + '</p>');
+    out.push('<p>' + inline(buf.join('\n').replace(/\s*\\\s*$/, '')) + '</p>');
   }
   return out.join('\n');
 }
