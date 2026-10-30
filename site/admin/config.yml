@@ -13,7 +13,7 @@ backend:
 
 site_url: https://9degreeseast.com
 display_url: https://9degreeseast.com/journal
-logo_url: /icon-512.png
+logo_url: /admin/logo.svg
 locale: en
 
 media_folder: site/media/journal
