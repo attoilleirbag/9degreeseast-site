@@ -69,6 +69,8 @@
   .head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; margin-bottom: 28px; }
   h2 { margin: 0; font-size: clamp(36px, 4.4vw, 60px); line-height: 1.02; letter-spacing: -0.02em; text-wrap: balance; }
   .head p { margin: 0; font-size: 14px; line-height: 1.8; color: var(--muted); max-width: 460px; }
+  /* Founder intro lines up with the stat cards below it */
+  @media (min-width: 981px) { .founder .head { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 10px; } }
   .exp { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .exp .glass { padding: 24px 24px 22px; transition: border-color 250ms ease, transform 250ms ease; }
   .exp .glass:hover { border-color: var(--c); transform: translateY(-2px); }
@@ -216,6 +218,9 @@
   @media (max-width: 700px) { .experience .co { font-size: 26px; } }
   .experience .exp-note { margin-top: 14px; text-align: center; font-size: 10.5px; letter-spacing: 0.06em; color: #6F87A3; }
   .experience .exp-note a { color: #8FA6BF; }
+  .edu-logos li { padding: 20px 0; } .edu-logos img { display: block; height: 56px; width: auto; max-width: 100%; }
+  .edu-logos li:last-child img { height: 46px; }
+  .edu-logos small { margin-top: 10px; }
 </style>
 <script src="nav.js" defer></script>
 </head>
@@ -310,7 +315,7 @@
 
     <section class="wrap block" aria-label="Education and markets" data-scene="markets" style="padding-top: 70px">
       <div class="duo">
-        <div class="glass"><p class="eyebrow">Education</p><ul class="edu serif"><li>Harvard University <small>BA Economics, cum laude</small></li><li>Massachusetts Institute of Technology</li></ul></div>
+        <div class="glass"><p class="eyebrow">Education</p><ul class="edu edu-logos"><li><img src="logos/harvard.svg" alt="Harvard University" height="56"><small>BA Economics, cum laude</small></li><li><img src="logos/mit.svg" alt="Massachusetts Institute of Technology" height="44"></li></ul></div>
         <div class="glass"><p class="eyebrow">Fuels and markets</p>
           <ul class="pills">
             <li style="--c: var(--efuels)"><i class="dot"></i>eFuels</li><li style="--c: var(--methanol)"><i class="dot"></i>Green methanol</li><li style="--c: var(--saf)"><i class="dot"></i>SAF</li><li style="--c: var(--rd)"><i class="dot"></i>Renewable diesel</li><li style="--c: var(--rng)"><i class="dot"></i>Renewable natural gas</li><li style="--c: var(--muted)"><i class="dot"></i>Advanced biofuels</li><li style="--c: var(--muted)"><i class="dot"></i>Green hydrogen</li><li style="--c: var(--muted)"><i class="dot"></i>CO2</li><li style="--c: var(--muted)"><i class="dot"></i>Feedstocks</li>
