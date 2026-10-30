@@ -11,24 +11,6 @@
 <body>
 <script src="https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js"></script>
 <script>
-  // Pasting from Word: Word's clipboard HTML wraps lines with plain line breaks, which the editor drops,
-  // gluing words together ("theunderlying"). Turn those line breaks into spaces before the editor sees the paste.
-  document.addEventListener('paste', function (e) {
-    if (e.__9deClean || !e.clipboardData) return;
-    var html = e.clipboardData.getData('text/html');
-    if (!html || !/[\r\n]/.test(html)) return;
-    var target = e.target;
-    e.preventDefault(); e.stopImmediatePropagation();
-    var clean = html.replace(/<!--[\s\S]*?-->/g, '').replace(/\r?\n/g, ' ');
-    var dt = new DataTransfer();
-    dt.setData('text/html', clean);
-    dt.setData('text/plain', (e.clipboardData.getData('text/plain') || '').replace(/\r\n/g, '\n'));
-    var again = new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true });
-    again.__9deClean = true;
-    target.dispatchEvent(again);
-  }, true);
-</script>
-<script>
   // The live preview uses the same styles as the published article pages
   CMS.registerPreviewStyle('/journal-article.css');
   CMS.registerPreviewStyle('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap');
