@@ -36,6 +36,13 @@
   force = true
 
 # The Journal editor works while the site is hidden
+# Journal images load for everyone, so the editor can show them
+[[redirects]]
+  from = "/media/*"
+  to = "/media/:splat"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "/admin/*"
   to = "/admin/:splat"
