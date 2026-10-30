@@ -1,11 +1,15 @@
 ~~~
-"author": "Tom Fox",
-  "series": "Liquid Fuels in the Transition",
-  "title": "Replacing Something (Thermodynamically) Beautiful",
+"parts": "",
+  "notes": [
+    "This multiple part essay has beeninformed by my commercial career in the low carbon liquid fuels space (fromfirst generation biofuels to synthetic electrofuels), and is an attempt togather my thinking in one place on where we are and where we’re going. Many ofthe same trends and analysis can be transferred to decarbonising fossil gas, andwhere the two markets interact, bio replacements for natural gas will also becovered.  It tends towards the macro bigpicture which I use to steer my own thinking on how to be most useful in theTransition. It is also part of a larger piece on the effectiveness and timelineof the total Energy Transition which I will release elsewhere in an essayseries over the coming months. Always happy to discuss in the comments ordirectly.\n",
+    "A quick note on numbers. I havetried sourcing the most un-controversial data and forecasts and then usingthese as sparingly and in as like-for-like units as best as possible. Thebiggest messages tend to emerge from wrangling many conflicting figures intouseable comparisons that can be held in a mind all at once. This won’t bewithout its own choices each worth their own major essay so my strongestconclusions can best be thought of as based on scales that can absorb materialdisagreements in conventional literature and still roughly hold the argument.The human energy system is vast, complicated, and encompasses different matter phases(solid, liquid and gas) and tech pathway conversions that are always ineconomic motion. There are though macro directions of travel and approximatescales that can usefully guide us to clearer sight of what is happening andlikely to happen. This is very much an effort to see the Transition forestthrough the Liquid Fuel trees."
+  ],
   "summary": "Net Zero means rebuilding fossil fuels' 100 million years of underground free manufacturing into thousands of real, steel-on-the-ground plants. Solar and electrification are working and booming. How are low carbon liquid fuels doing in the Transition? \nPart 1 of a multi-part essay on decarbonising liquid fuels from the commercial front lines.\n",
+  "author": "Tom Fox",
   "date": "2026-10-30",
   "part": 1,
-  "parts": ""
+  "series": "Liquid Fuels in the Transition",
+  "title": "Replacing Something (Thermodynamically) Beautiful"
 ~~~
 It’s worth a moment of reflection on theunderlying weirdness of the global human energy system. Life emerged andevolved to convert solar energy and gaseous carbon into solid carbon structuresthrough tiny single celled plankton’s discovered route to photosynthesis andlater further developed by land plants. Plankton and plants very much make airsolid. Then over deep time, the debris from this life became compacted under groundand sea at scorching heats and immense pressures, effectively refining thedebris into ever denser mixes of carbon based fuels; plankton mainly intoliquid oil and plants into solid coal. A smart ape evolved and harnessed thesedense energy reserves so thoroughly, at such scale, that their chemicalcombustion emitted quantities of waste Carbon Dioxide large enough to alter theplanet’s atmospheric gaseous concentrations noticeably. It’s simply bad chemicalluck that CO₂ vibrates at a frequency that traps Earth’s space-bound heat.
 
@@ -27,14 +31,4 @@ So here we are. The Liquid Fueldecarbonisation effort is looking to build a full
 
 This should help contextualise theoverwhelming effectiveness of electrification efforts and provide the scale intuitionwe need to understand the current state of low carbon liquid fuelsinfiltration, as they battle against nature’s perfect, dense and cheap fossilfuels. To be fair, the competition has had a few hundred million years headstart. 
 
-Part 2 of this essay will cover the layoutof technical choices we have in delivering these 2,000 plants. 
-
- 
-
-*Notes*
-
-*1.       This multiple part essay has beeninformed by my commercial career in the low carbon liquid fuels space (fromfirst generation biofuels to synthetic electrofuels), and is an attempt togather my thinking in one place on where we are and where we’re going. Many ofthe same trends and analysis can be transferred to decarbonising fossil gas, andwhere the two markets interact, bio replacements for natural gas will also becovered.  It tends towards the macro bigpicture which I use to steer my own thinking on how to be most useful in theTransition. It is also part of a larger piece on the effectiveness and timelineof the total Energy Transition which I will release elsewhere in an essayseries over the coming months. Always happy to discuss in the comments ordirectly.*
-
-
-
-*2.       A quick note on numbers. I havetried sourcing the most un-controversial data and forecasts and then usingthese as sparingly and in as like-for-like units as best as possible. Thebiggest messages tend to emerge from wrangling many conflicting figures intouseable comparisons that can be held in a mind all at once. This won’t bewithout its own choices each worth their own major essay so my strongestconclusions can best be thought of as based on scales that can absorb materialdisagreements in conventional literature and still roughly hold the argument.The human energy system is vast, complicated, and encompasses different matter phases(solid, liquid and gas) and tech pathway conversions that are always ineconomic motion. There are though macro directions of travel and approximatescales that can usefully guide us to clearer sight of what is happening andlikely to happen. This is very much an effort to see the Transition forestthrough the Liquid Fuel trees.*
+Part 2 of this essay will cover the layoutn of technical choices we have in delivering these 2,000 plants.
