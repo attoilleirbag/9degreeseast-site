@@ -31,8 +31,4 @@ So here we are. The Liquid Fuel decarbonisation effort is looking to build a ful
 
 This should help contextualise the overwhelming effectiveness of electrification efforts and provide the scale intuition we need to understand the current state of low carbon liquid fuels infiltration, as they battle against nature’s perfect, dense and cheap fossil fuels. To be fair, the competition has had a few hundred million years head start. 
 
-Part 2 of this essay will cover the layout of technical choices we have in delivering these 2,000 plants. 
-
- 
-
-\
+Part 2 of this essay will cover the layout of technical choices we have in delivering these 2,000 plants.
