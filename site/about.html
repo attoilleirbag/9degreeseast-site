@@ -177,6 +177,48 @@
     .stat strong { font-size: 38px; }
   }
   .sub.why9 { margin-top: 14px; color: var(--soft); }
+  /* Experience across: company logos, moved from the homepage */
+  /* Experience marquee */
+  .experience { padding-block: 30px 10px; }
+  .experience .exp-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 22px; }
+  .experience .exp-head .eyebrow { margin: 0; }
+  .experience .exp-link { font-size: 12px; color: var(--muted); text-decoration: none; } .exp-link:hover { color: var(--text); }
+  .experience .marquee { overflow: hidden; padding-block: 6px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+  .experience .marquee-track { display: flex; width: max-content; animation: xmarquee 60s linear infinite; }
+  .experience .marquee:hover .marquee-track { animation-play-state: paused; }
+  .experience .roles { display: flex; flex-wrap: nowrap; margin: 0; padding: 0; list-style: none; }
+  .experience .roles li { display: flex; align-items: center; }
+  .experience .roles li::after { content: ""; flex: none; width: 1px; height: 34px; margin: 0 44px; background: var(--line); }
+  .experience .co-item { display: flex; flex-direction: column; gap: 6px; transition: opacity 400ms ease, transform 400ms ease; }
+  .experience .co { font-family: 'Instrument Serif', Georgia, serif; font-size: 36px; line-height: 1.15; letter-spacing: -0.01em; white-space: nowrap; color: var(--text); }
+  .experience .sec { display: flex; align-items: center; gap: 8px; font-size: 9.5px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .experience .sec::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--c, var(--accent)); box-shadow: 0 0 6px var(--c, var(--accent)); }
+  .experience .marquee:hover .co-item { opacity: 0.35; }
+  .experience .marquee .co-item:hover { opacity: 1; transform: translateY(-2px); }
+  @keyframes xmarquee { to { transform: translateX(-50%); } }
+  /* Logos: faint grey on the dark page. If a logo file is missing, the name shows instead. */
+  .experience .logo { display: flex; align-items: center; height: 44px; }
+  .experience .logo img { height: 40px; width: auto; max-width: 200px; filter: grayscale(1) brightness(0) invert(1); opacity: 0.55; transition: opacity 300ms ease; }
+  .experience .logo img.tall { height: 56px; } .logo img.wide { height: 32px; }
+  .experience .logo img.tonal { filter: grayscale(1) brightness(2.1) contrast(0.9); opacity: 0.6; }
+  .experience .logo img.xp { height: 42px; }
+  .experience .logo img.raw { filter: none; height: 36px; }
+  .experience .logo .co { display: none; }
+  .experience .nologo .logo img { display: none; } .nologo .logo .co { display: inline; }
+  .experience .marquee .co-item:hover .logo img { opacity: 0.9; }
+  .experience .eyebrow { justify-content: center; }
+  .experience .exp-head { justify-content: center; }
+  .experience .roles li { align-items: center; }
+  .experience .roles li::after { display: none; }
+  .experience .co-item { width: 230px; height: 64px; align-items: center; justify-content: center; }
+  .experience .logo { justify-content: center; height: 64px; }
+  @media (max-width: 700px) { .experience .co-item { width: 170px; } .experience .logo img { max-width: 140px; }  }
+  @media (max-width: 700px) { .experience .co { font-size: 26px; } }
+  .experience .exp-note { margin-top: 14px; text-align: center; font-size: 10.5px; letter-spacing: 0.06em; color: #6F87A3; }
+  .experience .exp-note a { color: #8FA6BF; }
+  .edu-logos li { padding: 20px 0; } .edu-logos img { display: block; height: 56px; width: auto; max-width: 100%; }
+  .edu-logos li:last-child img { height: 46px; }
+  .edu-logos small { margin-top: 10px; }
 </style>
 <script src="nav.js" defer></script>
 </head>
@@ -240,9 +282,38 @@
       </div>
     </section>
 
-    <section class="wrap block" aria-label="Education and markets" data-scene="markets" style="padding-top: 120px">
+    <section class="experience" aria-labelledby="exp-label">
+      <div class="wrap">
+        <div class="exp-head">
+          <p class="eyebrow" id="exp-label">Experience across</p>
+        </div>
+      </div>
+      <div class="marquee">
+        <div class="marquee-track">
+          <ul class="roles" aria-labelledby="exp-label">
+            <li><span class="co-item" style="--c: var(--rd)"><span class="logo"><img src="logos/bp.svg" class="tonal tall" alt="BP" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">BP Supply, Trading &amp; Shipping</span></span></span></li>
+            <li><span class="co-item" style="--c: var(--efuels)"><span class="logo"><img src="logos/hif.svg" alt="HIF Global" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">HIF Global</span></span></span></li>
+            <li><span class="co-item" style="--c: var(--methanol)"><span class="logo"><img src="logos/maersk-tankers.svg" class="raw" alt="Maersk Tankers" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Maersk Tankers</span></span></span></li>
+            <li><span class="co-item" style="--c: var(--rng)"><span class="logo"><img src="logos/xpansiv.svg" class="xp" alt="Xpansiv" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Xpansiv</span></span></span></li>
+            <li><span class="co-item" style="--c: var(--saf)"><span class="logo"><img src="logos/calpine.svg" class="wide" alt="Calpine" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Calpine</span></span></span></li>
+            <li><span class="co-item" style="--c: var(--muted)"><span class="logo"><img src="logos/channoil.png" class="tall" alt="Channoil Consulting" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Channoil Consulting</span></span></span></li>
+          </ul>
+          <ul class="roles" aria-hidden="true">
+            <li><span class="co-item" style="--c: var(--rd)"><span class="logo"><img src="logos/bp.svg" class="tonal tall" alt="BP" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">BP Supply, Trading &amp; Shipping</span></span></span></li>
+            <li><span class="co-item" style="--c: var(--efuels)"><span class="logo"><img src="logos/hif.svg" alt="HIF Global" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">HIF Global</span></span></span></li>
+            <li><span class="co-item" style="--c: var(--methanol)"><span class="logo"><img src="logos/maersk-tankers.svg" class="raw" alt="Maersk Tankers" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Maersk Tankers</span></span></span></li>
+            <li><span class="co-item" style="--c: var(--rng)"><span class="logo"><img src="logos/xpansiv.svg" class="xp" alt="Xpansiv" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Xpansiv</span></span></span></li>
+            <li><span class="co-item" style="--c: var(--saf)"><span class="logo"><img src="logos/calpine.svg" class="wide" alt="Calpine" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Calpine</span></span></span></li>
+            <li><span class="co-item" style="--c: var(--muted)"><span class="logo"><img src="logos/channoil.png" class="tall" alt="Channoil Consulting" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Channoil Consulting</span></span></span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="wrap exp-note">Companies the founder has worked for or with. Logos are shown for identification only and do not imply endorsement. <a href="credits.html">Trademarks &amp; credits</a></p>
+    </section>
+
+    <section class="wrap block" aria-label="Education and markets" data-scene="markets" style="padding-top: 70px">
       <div class="duo">
-        <div class="glass"><p class="eyebrow">Education</p><ul class="edu serif"><li>Harvard University <small>BA Economics, cum laude</small></li><li>Massachusetts Institute of Technology</li></ul></div>
+        <div class="glass"><p class="eyebrow">Education</p><ul class="edu edu-logos"><li><img src="logos/harvard.svg" alt="Harvard University" height="56"><small>BA Economics, cum laude</small></li><li><img src="logos/mit.svg" alt="Massachusetts Institute of Technology" height="44"></li></ul></div>
         <div class="glass"><p class="eyebrow">Fuels and markets</p>
           <ul class="pills">
             <li style="--c: var(--efuels)"><i class="dot"></i>eFuels</li><li style="--c: var(--methanol)"><i class="dot"></i>Green methanol</li><li style="--c: var(--saf)"><i class="dot"></i>SAF</li><li style="--c: var(--rd)"><i class="dot"></i>Renewable diesel</li><li style="--c: var(--rng)"><i class="dot"></i>Renewable natural gas</li><li style="--c: var(--muted)"><i class="dot"></i>Advanced biofuels</li><li style="--c: var(--muted)"><i class="dot"></i>Green hydrogen</li><li style="--c: var(--muted)"><i class="dot"></i>CO2</li><li style="--c: var(--muted)"><i class="dot"></i>Feedstocks</li>
