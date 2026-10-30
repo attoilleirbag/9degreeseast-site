@@ -26,6 +26,8 @@ function inline(s) {
   s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/__([^_]+)__/g, '<strong>$1</strong>');
   s = s.replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>').replace(/(^|[^\w])_([^_]+)_(?=[^\w]|$)/g, '$1<em>$2</em>');
   s = s.replace(/ {2,}\n|\\\n/g, '<br>');
+  s = s.replace(/\\?\[(\d{1,3})\\?\](?!\()/g, '<sup class="fn"><a href="#note-$1" id="ref-$1" aria-label="Note $1">$1</a></sup>');
+  s = s.replace(/\\([\\`*_{}\[\]()#+\-.!>|~])/g, '$1'); // the editor escapes some characters with a backslash
   return s;
 }
 export function md(src) {
@@ -35,6 +37,7 @@ export function md(src) {
     const l = lines[i];
     if (!l.trim()) { i++; continue; }
     let m;
+    if ((m = l.match(/^:::size\s+(\d{1,2})\s*$/))) { const sz = Math.max(8, Math.min(48, +m[1])), buf = []; i++; while (i < lines.length && !/^:::\s*$/.test(lines[i])) buf.push(lines[i++]); i++; out.push('<div class="fs" style="font-size:' + sz + 'px">' + md(buf.join('\n')) + '</div>'); continue; }
     if ((m = l.match(/^(#{1,4})\s+(.*)$/))) { const n = Math.min(4, Math.max(2, m[1].length)); out.push('<h' + n + '>' + inline(m[2]) + '</h' + n + '>'); i++; continue; }
     if (/^(\*{3,}|-{3,}|_{3,})\s*$/.test(l)) { out.push('<hr>'); i++; continue; }
     if (/^```/.test(l)) { const buf = []; i++; while (i < lines.length && !/^```/.test(lines[i])) buf.push(esc(lines[i++])); i++; out.push('<pre><code>' + buf.join('\n') + '</code></pre>'); continue; }
@@ -59,6 +62,12 @@ function parse(file) {
   const data = JSON.parse(m[1]);
   data.body = m[2];
   return data;
+}
+
+function notesHtml(notes) {
+  const list = (notes || []).map(n => typeof n === 'string' ? n : (n && n.note) || '').filter(n => n.trim());
+  if (!list.length) return '';
+  return '<section class="notes" aria-label="Notes"><h2>Notes</h2><ol>' + list.map((n, i) => '<li id="note-' + (i + 1) + '">' + inline(n).replace(/<sup class="fn">.*?>(\d+)<\/a><\/sup>/g, '[$1]') + ' <a class="up" href="#ref-' + (i + 1) + '" aria-label="Back to the text">↑</a></li>').join('') + '</ol></section>';
 }
 
 function page(p, series) {
@@ -110,6 +119,7 @@ ${p.cover ? '<meta property="og:image" content="https://9degreeseast.com' + esc(
       <div class="body">
 ${md(p.body)}
       </div>
+      ${notesHtml(p.notes)}
       ${nav}
       <p class="end"><a href="journal.html">More from the 9DE Journal →</a> · <a href="contact.html">Talk to us about a project →</a></p>
     </article>

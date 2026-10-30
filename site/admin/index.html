@@ -14,6 +14,18 @@
   // The live preview uses the same styles as the published article pages
   CMS.registerPreviewStyle('/journal-article.css');
   CMS.registerPreviewStyle('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap');
+  // Text size: a block of text at a chosen size, saved as  :::size 18 … :::
+  CMS.registerEditorComponent({
+    id: 'textsize', label: 'Text size',
+    fields: [
+      { name: 'size', label: 'Size (px)', widget: 'select', default: '16', options: ['8','10','12','14','16','18','20','24','28','32','40'] },
+      { name: 'text', label: 'Text', widget: 'markdown', buttons: ['bold', 'italic', 'link'] }
+    ],
+    pattern: /^:::size\s+(\d{1,2})\s*\n([\s\S]*?)\n:::\s*$/m,
+    fromBlock: function (m) { return { size: m[1], text: m[2] }; },
+    toBlock: function (d) { return ':::size ' + (d.size || 16) + '\n' + (d.text || '') + '\n:::'; },
+    toPreview: function (d) { return '<div class="fs" style="font-size:' + (d.size || 16) + 'px">' + String(d.text || '').replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }).replace(/\n/g, '<br>') + '</div>'; }
+  });
   var h = window.h || React.createElement;
   CMS.registerPreviewTemplate('journal', createClass({
     render: function () {
@@ -27,7 +39,9 @@
           g('summary') ? h('p', { className: 'dek' }, g('summary')) : null,
           h('p', { className: 'by' }, (g('author') || 'Tom Fox'))),
         cover ? h('figure', { className: 'cover' }, h('img', { src: cover.toString() })) : null,
-        h('div', { className: 'body' }, this.props.widgetFor('body')));
+        h('div', { className: 'body' }, this.props.widgetFor('body')),
+        (function (notes) { var arr = notes && notes.toJS ? notes.toJS() : (notes || []); arr = arr.map(function (n) { return typeof n === 'string' ? n : (n && n.note) || ''; }).filter(Boolean);
+          return arr.length ? h('section', { className: 'notes' }, h('h2', {}, 'Notes'), h('ol', {}, arr.map(function (n, i) { return h('li', { key: i }, n); }))) : null; })(g('notes')));
     }
   }));
 </script>

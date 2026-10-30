@@ -48,4 +48,11 @@ collections:
       - { label: Parts in the series, name: parts, widget: number, required: false, value_type: int, min: 1, hint: "For a series: how many parts in total, e.g. 4." }
       - { label: Cover image, name: cover, widget: image, required: false }
       - { label: Cover image description, name: cover_alt, widget: string, required: false, hint: "A few words describing the image, for screen readers." }
-      - { label: Article, name: body, widget: markdown, buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list], editor_components: [image] }
+      - { label: Article, name: body, widget: markdown, buttons: [bold, italic, link, heading-two, heading-three, quote, bulleted-list, numbered-list], editor_components: [image, textsize], hint: "To add a footnote, type [1], [2] and so on where it applies, then write the note under Notes below. For a different text size, use the + button and choose Text size." }
+      - label: Notes
+        name: notes
+        widget: list
+        required: false
+        summary: "{{fields.note}}"
+        hint: "Footnotes, shown in a numbered list at the end. Note 1 matches [1] in the text, note 2 matches [2], and so on."
+        field: { label: Note, name: note, widget: text }
