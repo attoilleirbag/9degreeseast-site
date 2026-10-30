@@ -59,7 +59,9 @@ function parse(file) {
   const raw = readFileSync(file, 'utf8').replace(/^\uFEFF/, '');
   const m = raw.match(/^~~~\s*\n([\s\S]*?)\n~~~\s*\n?([\s\S]*)$/);
   if (!m) throw new Error('No front matter in ' + file);
-  const data = JSON.parse(m[1]);
+  // The editor saves the front matter as JSON without its outer braces; accept both forms
+  const fm = m[1].trim();
+  const data = JSON.parse(fm.startsWith('{') ? fm : '{' + fm + '}');
   data.body = m[2];
   return data;
 }
@@ -132,8 +134,8 @@ ${md(p.body)}
 
 export function build(srcDir = SRC_DIR, outDir = OUT_DIR) {
   const files = existsSync(srcDir) ? readdirSync(srcDir).filter(f => f.endsWith('.md') && f !== 'README.md') : [];
-  const posts = files.map(f => { const p = parse(join(srcDir, f)); p.slug = p.slug ? slugify(p.slug) : slugify(f.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '')); return p; })
-    .filter(p => !p.draft && p.title)
+  const posts = files.map(f => { let p; try { p = parse(join(srcDir, f)); } catch (e) { console.error('Journal: skipped ' + f + ' (' + e.message + ')'); return null; } p.slug = p.slug ? slugify(p.slug) : slugify(f.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '')); return p; })
+    .filter(p => p && !p.draft && p.title)
     .sort((a, b) => String(b.date).localeCompare(String(a.date)));
   const series = posts.filter(p => p.series).slice().sort((a, b) => (+a.part || 0) - (+b.part || 0));
   if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });
