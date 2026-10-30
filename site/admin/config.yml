@@ -20,6 +20,12 @@ logo_url: /admin/logo.svg
 locale: en
 
 media_folder: site/media/journal
+# File names for uploaded images: plain letters and numbers only, so every image loads
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
 public_folder: /media/journal
 
 collections:
