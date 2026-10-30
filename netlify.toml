@@ -1,8 +1,10 @@
 # Netlify settings for 9degreeseast.com
 [build]
   publish = "site"
+  # Builds the Journal articles Tom writes in the editor (content/journal -> site/journal-*.html)
+  command = "node scripts/build-journal.mjs"
   # Skip the deploy when a commit doesn't change anything in site/ (saves build credits)
-  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- site/ netlify.toml"
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- site/ netlify.toml content/ scripts/build-journal.mjs"
 
 # The old home page address now goes to the front page
 [[redirects]]
@@ -30,6 +32,25 @@
 [[redirects]]
   from = "/apple-touch-icon.png"
   to = "/apple-touch-icon.png"
+  status = 200
+  force = true
+
+# The Journal editor works while the site is hidden
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/journal-article.css"
+  to = "/journal-article.css"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/icon-512.png"
+  to = "/icon-512.png"
   status = 200
   force = true
 

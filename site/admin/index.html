@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>9DE Journal editor</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<script src="https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js"></script>
+<script>
+  // The live preview uses the same styles as the published article pages
+  CMS.registerPreviewStyle('/journal-article.css');
+  CMS.registerPreviewStyle('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap');
+  var h = window.h || React.createElement;
+  CMS.registerPreviewTemplate('journal', createClass({
+    render: function () {
+      var e = this.props.entry, g = function (k) { return e.getIn(['data', k]); };
+      var label = g('series') ? g('series') + (g('part') ? ' · Part ' + g('part') + (g('parts') ? ' of ' + g('parts') : '') : '') : 'The 9DE Journal';
+      var cover = g('cover') ? this.props.getAsset(g('cover')) : null;
+      return h('article', { className: 'wrap post', style: { paddingTop: '30px' } },
+        h('header', {},
+          h('p', { className: 'k' }, label),
+          h('h1', { className: 'serif' }, g('title') || 'Untitled'),
+          g('summary') ? h('p', { className: 'dek' }, g('summary')) : null,
+          h('p', { className: 'by' }, (g('author') || 'Tom Fox'))),
+        cover ? h('figure', { className: 'cover' }, h('img', { src: cover.toString() })) : null,
+        h('div', { className: 'body' }, this.props.widgetFor('body')));
+    }
+  }));
+</script>
+</body>
+</html>
