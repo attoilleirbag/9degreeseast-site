@@ -8,7 +8,7 @@
   "date": "2026-10-30",
   "part": 1,
   "series": "Liquid Fuels in the Transition",
-  "cover": "/media/journal/image.png",
+  "cover": "/media/journal/image2.png",
   "title": "Replacing Something (Thermodynamically) Beautiful"
 ~~~
 It’s worth a moment of reflection on the underlying weirdness of the global human energy system. Life emerged and evolved to convert solar energy and gaseous carbon into solid carbon structures through tiny single celled plankton’s discovered route to photosynthesis and later further developed by land plants. Plankton and plants very much make air solid. Then over deep time, the debris from this life became compacted under ground and sea at scorching heats and immense pressures, effectively refining the debris into ever denser mixes of carbon based fuels; plankton mainly into liquid oil and plants into solid coal. A smart ape evolved and harnessed these dense energy reserves so thoroughly, at such scale, that their chemical combustion emitted quantities of waste Carbon Dioxide large enough to alter the planet’s atmospheric gaseous concentrations noticeably. It’s simply bad chemical luck that CO₂ vibrates at a frequency that traps Earth’s space-bound heat.
