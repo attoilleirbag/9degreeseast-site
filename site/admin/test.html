@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>9DE Journal editor (test)</title>
+</head>
+<body>
+<script>window.CMS_MANUAL_INIT = true; window.repoFiles = {};</script>
+<script src="/admin/paste-fix.js"></script>
+<script src="https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js"></script>
+<script>
+  CMS.registerPreviewStyle('/journal-article.css');
+  CMS.init({ config: { load_config_file: false, backend: { name: 'test-repo' }, media_folder: 'media', public_folder: 'media', logo_url: '/admin/logo.svg',
+    collections: [ {"name": "journal", "label": "9DE Journal (test)", "label_singular": "Article", "folder": "content/journal", "create": true, "format": "json-frontmatter", "frontmatter_delimiter": "~~~", "fields": [{"label": "Title", "name": "title", "widget": "string"}, {"label": "Article", "name": "body", "widget": "markdown"}]} ] } });
+</script>
+</body>
+</html>
