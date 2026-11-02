@@ -278,7 +278,7 @@
     if (!veil) {
       veil = document.createElement('div'); veil.className = 'cp-veil';
       veil.innerHTML = '<div class="cp" role="dialog" aria-modal="true" aria-labelledby="cp-title"><h2 id="cp-title">Cookie preferences</h2>' +
-        '<p>This site has no advertising or tracking cookies and no analytics. It keeps a few small notes in your browser, which are never shared with anyone.</p>' +
+        '<p>This site has no advertising or tracking cookies. We use cookie-free analytics to count visits, which stores nothing on your device. The site keeps a few small notes in your browser, which are never shared with anyone.</p>' +
         '<div class="cp-row"><div><b>Essential</b><span>Remembers that you have seen the opening animation (until you close your browser) and the choices you make here. Needed for the site to work as designed.</span></div><em>Always on</em></div>' +
         '<div class="cp-row"><div><b>Preferences</b><span>Remembers choices you make, such as the region you picked on the Policy Tracker, for your next visit.</span></div><label class="tg"><input type="checkbox" id="cp-prefs"><span class="sw" aria-hidden="true"></span><span style="position:absolute;width:1px;height:1px;overflow:hidden">Remember my preferences</span></label></div>' +
         '<div class="cp-btns"><a href="cookies.html">Read the cookie notice</a><button type="button" id="cp-save">Save choices</button></div></div>';
