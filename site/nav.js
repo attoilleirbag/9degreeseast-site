@@ -49,6 +49,7 @@
   .sn-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }\
   .sn-contact { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 8px; background: #D8B66E; color: #061527; font: 600 13px Manrope, system-ui, sans-serif; text-decoration: none; transition: background 180ms ease, transform 180ms ease; }\
   .sn-contact:hover { background: #E8C987; }\
+  @media (max-width: 960px) { .sn-right .sn-book { display: none; } }\
   .sn-burger { display: none; width: 44px; height: 40px; border: 0; border-radius: 8px; background: none; cursor: pointer; position: relative; }\
   .sn-burger i, .sn-burger i::before, .sn-burger i::after { position: absolute; left: 13px; width: 18px; height: 1.5px; background: #EEF2F5; content: ""; transition: transform 250ms ease, opacity 200ms ease; }\
   .sn-burger i { top: 19px; } .sn-burger i::before { left: 0; top: -6px; } .sn-burger i::after { left: 0; top: 6px; }\
@@ -125,11 +126,11 @@
     if (m.direct) return '<a class="sn-mobl" href="' + m.href + '">' + m.label + '</a>';
     return '<details><summary>' + m.label + '</summary><ul>' + (m.href ? '<li><a class="ov" href="' + m.href + '">' + 'Overview' + ' →</a></li>' : '') +
       m.items.map(function (i) { return '<li>' + (i.href ? '<a href="' + i.href + '">' + i.label + '</a>' : '<span>' + i.label + ' <small>Soon</small></span>') + '</li>'; }).join('') + '</ul></details>';
-  }).join('') + '<a class="sn-mobl" href="faq.html">FAQ</a>';
+  }).join('') + '<a class="sn-mobl" href="faq.html">FAQ</a><a class="sn-mobl" href="https://book.titan.email/9degreeseast/intro" target="_blank" rel="noopener">Schedule a video call</a>';
 
   var root = document.getElementById('site-nav'); if (!root) return;
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
-  root.innerHTML = '<nav class="sn" aria-label="Main"><div class="sn-bar"><div class="sn-row">' + logo + '<ul class="sn-main">' + main + '</ul><div class="sn-right"><a class="sn-contact" href="contact.html">Contact</a><button class="sn-burger" type="button" aria-label="Menu" aria-expanded="false"><i></i></button></div></div>' +
+  root.innerHTML = '<nav class="sn" aria-label="Main"><div class="sn-bar"><div class="sn-row">' + logo + '<ul class="sn-main">' + main + '</ul><div class="sn-right"><a class="sn-contact sn-book" href="https://book.titan.email/9degreeseast/intro" target="_blank" rel="noopener">Schedule a video call</a><a class="sn-contact" href="contact.html">Contact</a><button class="sn-burger" type="button" aria-label="Menu" aria-expanded="false"><i></i></button></div></div>' +
     '<div class="sn-panel"><div>' + secs + '</div></div><div class="sn-mob">' + mob + '</div></div></nav><div class="sn-veil"></div>';
 
   var nav = root.querySelector('.sn'), tops = [].slice.call(root.querySelectorAll('.sn-top[data-sec]')), veil = root.querySelector('.sn-veil');
