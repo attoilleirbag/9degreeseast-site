@@ -267,5 +267,6 @@ var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (e
 }, { rootMargin: '0px 0px -8% 0px' }) : null;
 list.querySelectorAll('.item').forEach(function (li, i) { li.style.transitionDelay = Math.min(i, 6) * 60 + 'ms'; io ? io.observe(li) : li.classList.add('in'); });
 </script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "bdb89935402140bd8cbd88633ab1af84"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

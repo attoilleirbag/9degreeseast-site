@@ -127,6 +127,7 @@ ${md(p.body)}
     </article>
   </main>
   <div id="site-footer"></div>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "bdb89935402140bd8cbd88633ab1af84"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
 `;
