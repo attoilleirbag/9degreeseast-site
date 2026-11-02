@@ -175,7 +175,7 @@
     name: '9 Degrees East Limited',  // registered name, as on Companies House
     number: '11587380',              // Companies House number
     registeredIn: 'England and Wales',
-    office: '61 Grange Road, London SE1 3BD, United Kingdom', // registered office. Companies House shows the full address incl. flat number; Tom to decide on a service address
+    office: '', // registered office: removed until Tom's new registered office service address is ready
     vat: '',                         // VAT number, if any (none supplied yet)
     ico: 'ZC279510',                 // ICO data protection registration number (registered 20 October 2026)
     incorporated: '25 September 2018',
