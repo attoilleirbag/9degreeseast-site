@@ -13,9 +13,9 @@
 <style>
   :root { --ink: #061527; --text: #EEF2F5; --muted: #A8B7C6; --line: rgba(160,190,220,0.18); --accent: #D8B66E; --up: #F0B27A; --down: #8FC7E8; }
   * { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; background: var(--ink); color: var(--text); font-family: Manrope, system-ui, sans-serif; overflow: hidden; -webkit-font-smoothing: antialiased; }
+  html, body { margin: 0; min-height: 100%; background: var(--ink); color: var(--text); font-family: Manrope, system-ui, sans-serif; overflow-x: hidden; overflow-y: auto; -webkit-font-smoothing: antialiased; }
   #c { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
-  .ui { position: fixed; inset: 0; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 32px 40px 26px; }
+  .ui { position: relative; box-sizing: border-box; min-height: 100vh; min-height: 100dvh; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 32px 40px 26px; }
   .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
   .title { position: relative; }
   .title::before { content: ""; position: absolute; z-index: -1; left: -40px; top: -32px; width: min(760px, 120vw); height: 360px; background: radial-gradient(ellipse at 20% 35%, rgba(6,21,39,0.92) 0%, rgba(6,21,39,0.55) 45%, rgba(6,21,39,0) 75%); }
@@ -125,7 +125,7 @@
       <div class="title">
         <p class="eyebrow">Market conditions</p>
         <h1>Fuel <em>Weather</em></h1>
-        <p class="sub">The motion follows real public market data. <b style="color:#EEF2F5;font-weight:600">Pressure</b> is the three-month price trend of each fuel's benchmark; <b style="color:#EEF2F5;font-weight:600">turbulence</b> is how volatile it has been. Select a fuel for the numbers behind it.</p>
+        <p class="sub">The motion follows real public market data. <b style="color:#EEF2F5;font-weight:600">Pressure</b> is the three-month price trend of the fossil fuel each low-carbon fuel competes with (for eFuels, the power that makes them); <b style="color:#EEF2F5;font-weight:600">turbulence</b> is how volatile it has been. Select a fuel for the numbers behind it.</p>
         <p class="sub cond"><b>Conditions, not forecasts.</b> <button type="button" class="howbtn" id="howbtn" aria-haspopup="dialog">How to read it →</button></p>
       </div>
       <div class="right">
@@ -338,7 +338,9 @@ function read(f) {
     speed: pressure === 'Rising' ? 1.45 : pressure === 'Falling' ? 0.6 : 1,
     chaos: turbulence === 'High' ? 1.9 : turbulence === 'Moderate' ? 1.25 : 0.7 };
 }
-WEATHER.fuels.forEach(function (f) { f.w = read(f); f.on = true; });
+// Names shown in the fuel panel, compare menu and charts, so it's clear these are fossil (or power) benchmarks, not low-carbon fuel prices.
+var FOSSIL = { methanol: 'Green methanol fossil benchmark', saf: 'SAF fossil benchmark', efuels: 'eFuels power benchmark', rd: 'Renewable diesel fossil benchmark', rng: 'Renewable natural gas fossil benchmark' };
+WEATHER.fuels.forEach(function (f) { f.w = read(f); f.on = true; f.fossil = FOSSIL[f.id] || f.name; });
 
 /* ===== UI ===== */
 (function () {
@@ -362,7 +364,7 @@ WEATHER.fuels.forEach(function (f) { f.w = read(f); f.on = true; });
   function list(a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
   function detail(f) {
     var w = f.w, html = '<button class="close" type="button" aria-label="Close">×</button><div>';
-    html += '<h2>' + f.name + '</h2><p class="bench">Benchmark · ' + f.bench + '</p>';
+    html += '<h2>' + f.fossil + '</h2><p class="bench">' + f.bench + '</p>';
     var meaning;
     if (f.regions) {
       var ups = f.regions.filter(function (g) { return g.now > g.prev; }).map(function (g) { return g.r; });
@@ -377,8 +379,8 @@ WEATHER.fuels.forEach(function (f) { f.w = read(f); f.on = true; });
     html += '<div class="nums"><div><span>Pressure</span><strong>' + arrow(w.pressure) + ' ' + w.pressure + '</strong></div><div><span>Turbulence</span><strong>' + w.turbulence + '</strong></div><div><span>' + (f.regions ? 'Avg monthly move' : '3-month change') + '</span><strong>' + pct(w.chg) + '</strong></div></div>';
     var others = WEATHER.fuels.filter(function (o) { return o.series && o.id !== f.id; });
     if (window.Chart) {
-      html += '<div class="tools">' + (f.series ? '<label for="cmp">Compare<select id="cmp"><option value="">None</option>' + others.map(function (o) { return '<option value="' + o.id + '">' + o.name + '</option>'; }).join('') + '</select></label>' : '') +
-        '<button type="button" id="dl">Download chart</button></div><div class="chartbox"><canvas id="chart" role="img" aria-label="' + f.name + ' price chart"></canvas></div><details><summary>Show the numbers</summary>';
+      html += '<div class="tools">' + (f.series ? '<label for="cmp">Compare<select id="cmp"><option value="">None</option>' + others.map(function (o) { return '<option value="' + o.id + '">' + o.fossil + '</option>'; }).join('') + '</select></label>' : '') +
+        '<button type="button" id="dl">Download chart</button></div><div class="chartbox"><canvas id="chart" role="img" aria-label="' + f.fossil + ' price chart"></canvas></div><details><summary>Show the numbers</summary>';
     }
     html += '<table>';
     if (f.regions) f.regions.forEach(function (g) { html += '<tr><td>' + g.r + '</td><td>' + g.price + ' (' + pct((g.now - g.prev) / g.prev) + ')</td></tr>'; });
@@ -465,12 +467,12 @@ var FWCharts = (function () {
     var o = cmpId && WEATHER.fuels.filter(function (x) { return x.id === cmpId; })[0];
     if (o) {
       var d = indexed(f, o);
-      base.data = { labels: d.labels, datasets: [line(f.name, d.a, f.c), line(o.name, d.b, o.c)] };
+      base.data = { labels: d.labels, datasets: [line(f.fossil, d.a, f.c), line(o.fossil, d.b, o.c)] };
       base.options.plugins.legend.display = true;
       base.options.plugins.tooltip.callbacks = { label: function (c) { return ' ' + c.dataset.label + ': ' + c.raw.toFixed(1); } };
       base.options.scales.y.title = { display: true, text: 'Index, ' + d.labels[0] + ' = 100', color: MUTED, font: { size: big ? 15 : 10 } };
     } else {
-      base.data = { labels: f.months, datasets: [line(f.name, f.series, f.c, true)] };
+      base.data = { labels: f.months, datasets: [line(f.fossil, f.series, f.c, true)] };
       base.options.plugins.tooltip.callbacks = { label: function (c) { return ' ' + fmt(c.raw, f); } };
       base.options.scales.y.title = { display: true, text: f.unit, color: MUTED, font: { size: big ? 15 : 10 } };
     }
@@ -485,7 +487,7 @@ var FWCharts = (function () {
     var c = new Chart(cv, cfg);
     var x = cv.getContext('2d'), o = cmpId && WEATHER.fuels.filter(function (z) { return z.id === cmpId; })[0];
     x.fillStyle = ACCENT; x.font = '600 15px Manrope, sans-serif'; x.fillText('FUEL WEATHER · ' + (WEATHER.updated || ''), 60, 62);
-    x.fillStyle = TEXT; x.font = '400 50px "Instrument Serif", Georgia, serif'; x.fillText(o ? f.name + ' vs ' + o.name : f.name, 60, 112);
+    x.fillStyle = TEXT; x.font = '400 ' + (o ? 34 : 50) + 'px "Instrument Serif", Georgia, serif'; x.fillText(o ? f.fossil + ' vs ' + o.fossil : f.fossil, 60, 112);
     x.fillStyle = MUTED; x.font = '500 17px Manrope, sans-serif';
     x.fillText(o ? 'Indexed to 100 at ' + c.data.labels[0] : 'Benchmark: ' + f.bench, 60, 144);
     x.font = '500 14px Manrope, sans-serif'; x.fillText('Source: ' + f.source + (o ? '; ' + o.source : ''), 60, H - 34);

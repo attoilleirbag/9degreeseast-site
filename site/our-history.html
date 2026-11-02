@@ -116,6 +116,11 @@
   .pills li { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: 12.5px; background: rgba(6,21,39,0.5); }
   .pills .dot { width: 6px; height: 6px; }
   .note { margin: 0; font-size: 13px; line-height: 1.75; color: var(--muted); }
+  .edu li small { display: block; margin-top: 4px; font-family: Manrope, sans-serif; font-size: 12px; color: var(--muted); }
+  .edu-logos li { padding: 20px 0; } .edu-logos img { display: block; height: 56px; width: auto; max-width: 100%; }
+  .edu-logos li:last-child img { height: 46px; }
+  .edu-logos small { margin-top: 10px; }
+  .work li { font-size: 22px; padding: 12px 0; }
 
   /* CTA */
   .cta { padding: 34px 32px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 24px; background: var(--glass-strong); }
@@ -167,7 +172,7 @@
         <p class="sub">9 Degrees East grew out of one career as an analyst, power marketer, oil major originator, consultant, broker, developer and buyer. Scroll to follow it.</p>
         <p class="scrollhint"><i></i>Scroll</p>
       </div>
-      <div class="stamp glass">Incorporated<br><b>September 2018</b><br>London · <b>9° East</b><br>Founder <b>Tom Fox</b></div>
+      <div class="stamp glass">Europe · <b>9° East</b><br>Founder <b>Tom Fox</b></div>
     </section>
 
 
@@ -189,8 +194,8 @@
               <article class="role" style="--c: var(--accent)" data-lat="51.51" data-lon="-0.13" data-city="London" data-short="9 Degrees East" data-span="2018–21"><p class="where">2018–21 · London · Europe · Africa</p><h3 class="serif">9 Degrees East is founded</h3><p class="t">Independent consultant in renewable energy</p><p class="d">Incorporated 9 Degrees East Limited in September 2018 and began consulting that October, advising on deal negotiations, offtake pricing, risk management, project finance and commercial agreements, for clients in renewable diesel, RNG, LPG, ethanol and biodiesel feedstocks. Alongside, wrote for Biofuels International on RED II, renewable diesel and the price effects of COVID-19.</p></article>
               <article class="role" style="--c: var(--saf)" data-lat="51.51" data-lon="-0.13" data-city="Europe" data-short="OTX · Xpansiv" data-span="2021–22"><p class="where">2021–22 · London · Europe</p><h3 class="serif">OTX, an Xpansiv company</h3><p class="t">Head of Renewable Fuels</p><p class="d">Brokerage in physical biofuels and feedstocks across Europe.</p></article>
               <article class="role" style="--c: var(--efuels)" data-lat="29.76" data-lon="-95.37" data-city="Houston" data-short="HIF Global" data-span="2022–24"><p class="where">2022–24 · Texas · Chile · Australia</p><h3 class="serif">HIF Global</h3><p class="t">Senior Vice President, Commercial</p><p class="d">Commercial work in eFuels across the Americas and Australia.</p></article>
-              <article class="role" style="--c: var(--methanol)" data-lat="31.23" data-lon="121.47" data-city="China" data-short="Maersk Tankers" data-span="2024–26"><p class="where">2024–26 · London · Copenhagen · China</p><h3 class="serif">Maersk Tankers</h3><p class="t">Senior Green Fuels Origination Lead</p><p class="d">Green methanol supply origination for shipping.</p></article>
-              <article class="role" style="--c: var(--accent)" data-lat="51.51" data-lon="9" data-city="9° East" data-coord="The name · a meridian through Europe" data-short="9 Degrees East" data-span="Today"><p class="where">Today · London</p><h3 class="serif">9 Degrees East, full time</h3><p class="t">Founder</p><p class="d">Tom now runs 9 Degrees East full time, structuring the agreements that take low-carbon fuel projects to final investment decision.</p></article>
+              <article class="role" style="--c: var(--methanol)" data-lat="31.23" data-lon="121.47" data-city="China" data-short="Maersk Tankers" data-span="2024–26"><p class="where">2024–26 · London · Copenhagen · China</p><h3 class="serif">Maersk Tankers</h3><p class="t">Senior Green Fuels Origination Lead</p><p class="d">Green methanol supply origination.</p></article>
+              <article class="role" style="--c: var(--accent)" data-lat="51.51" data-lon="9" data-city="9° East" data-coord="The name · a meridian through Europe" data-short="9 Degrees East" data-span="Today"><p class="where">Today · Europe</p><h3 class="serif">9 Degrees East, full time</h3><p class="t">Founder</p><p class="d">Tom now runs 9 Degrees East full time, providing commercial and analytical support to the low-carbon fuel industry.</p></article>
             </div>
             <div class="locator" aria-hidden="true"><div class="city serif" id="city">Cambridge, MA</div><div class="coord" id="coord">42.37° N · 71.11° W</div></div>
           </div>
@@ -200,8 +205,23 @@
       </div>
     </section>
 
+    <section class="wrap" aria-label="Previous work experience and education" style="padding-top:110px">
+      <div class="duo">
+        <div class="glass"><p class="eyebrow">Previous work experience</p>
+          <ul class="edu work serif">
+            <li>BP Supply, Trading &amp; Shipping</li>
+            <li>HIF Global</li>
+            <li>Maersk Tankers</li>
+            <li>Xpansiv</li>
+            <li>Calpine</li>
+            <li>Channoil Consulting</li>
+          </ul>
+        </div>
+        <div class="glass"><p class="eyebrow">Education</p><ul class="edu edu-logos"><li><img src="logos/harvard.svg" alt="Harvard University" height="56"><small>BA Economics, cum laude</small></li><li><img src="logos/mit.svg" alt="Massachusetts Institute of Technology" height="44"></li></ul></div>
+      </div>
+    </section>
 
-    <section class="wrap" aria-labelledby="cta-title" data-scene="cta" style="padding-top:120px">
+    <section class="wrap" aria-labelledby="cta-title" data-scene="cta" style="padding-top:110px">
       <div class="cta glass">
         <h2 class="serif" id="cta-title">Working on a project? <em>Let’s talk.</em></h2>
         <div class="btns"><a class="btn btn-primary" href="contact.html">Contact us</a><a class="btn btn-ghost" href="locations.html">Where we work</a></div>

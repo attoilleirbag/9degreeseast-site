@@ -11,21 +11,21 @@
         { label: 'Our history', href: 'our-history.html', blurb: 'How 9 Degrees East came to be, from power in Houston to eFuels in Chile.' },
         { label: 'Purpose, mission & values', href: 'purpose.html', blurb: 'Why we do this work, and the principles behind how we do it.' },
         { label: 'How we work', href: 'how-we-work.html', blurb: 'How an engagement runs, from first conversation to signed agreement.' },
-        { label: 'Locations', href: 'locations.html', blurb: 'Based in London, working across Europe, the Americas and Asia.' }
+        { label: 'Locations', href: 'locations.html', blurb: 'Based in Europe, working across the EU, the UK, the US and Asia.' }
       ] },
     { id: 'insights', label: 'Insights', title: 'Insights', intro: 'Market data, regulation and analysis.', href: 'insights.html', c: '#5EC8D8',
       items: [
+        { label: 'The 9DE Journal', href: 'journal.html', blurb: 'Articles and commentary from 9 Degrees East, including posts from Substack and LinkedIn.' },
         { label: 'Fuel Weather', href: 'fuel-weather.html', blurb: 'Tailwind or headwind for each fuel against its fossil rival. Conditions, not forecasts.', live: true },
         { label: 'Policy Tracker', href: 'policy-tracker.html', blurb: 'New rules and announcements from the US, EU, UK, China and global shipping, checked every week.', live: true },
-        { label: 'Market Conditions', href: 'market-conditions.html', blurb: 'Our read on supply, demand and pricing across low-carbon fuel markets.' },
-        { label: 'The 9DE Journal', href: 'journal.html', blurb: 'Articles and commentary from 9 Degrees East, including posts from Substack and LinkedIn.' }
+        { label: 'Market Conditions', href: 'market-conditions.html', blurb: 'Our read on supply, demand and pricing across low-carbon fuel markets.' }
       ] },
-    { id: 'services', label: 'Products & Services', title: 'Products & Services', intro: 'A second opinion, in-depth studies, a part-time commercial lead, or a deal taken through to signature.', href: 'services.html', c: '#A9A2F0',
+    { id: 'services', label: 'Products & Services', title: 'Products & Services', intro: 'A second opinion, in-depth studies, a part-time commercial lead, or a deal taken through to signature.', href: 'services.html', direct: true, c: '#A9A2F0',
       items: [
         { label: 'Offtake strategy', href: 'offtake-strategy.html', blurb: 'Who to sell to, on what terms, and how to sequence it for financing.' },
         { label: 'Deal structuring', href: 'deal-structuring.html', blurb: 'Price, volume, credit and sustainability terms that work for both sides.' },
         { label: 'Supply agreements', href: 'supply-agreements.html', blurb: 'Long-term, bankable contracts that hold up over the life of the project.' },
-        { label: 'Regulatory advisory', href: 'regulatory-advisory.html', blurb: 'What RED, ReFuelEU, FuelEU, the RFS and LCFS mean for your contracts.' }
+        { label: 'Regulations', href: 'regulatory-advisory.html', blurb: 'What RED, ReFuelEU, FuelEU, the RFS and LCFS mean for your contracts.' }
       ] }
   ];
   var here = location.pathname.split('/').pop() || 'index.html'; if (here.indexOf('.') < 0) here += '.html'; // pretty URLs drop .html
@@ -108,9 +108,10 @@
   var logo = '<a class="sn-logo" href="./" aria-label="9 Degrees East home"><svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" aria-hidden="true"><circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="2.6" stroke-dasharray="196.5 80" transform="rotate(120 50 50)"/><circle cx="46" cy="43" r="16" stroke="currentColor" stroke-width="3.6"/><path d="M61.4 47.5 L46.8 79" stroke="currentColor" stroke-width="3.6"/><circle cx="66.4" cy="22.6" r="5" stroke="#D8B66E" stroke-width="3.4"/></svg><span>9 DEGREES EAST</span></a>';
   var main = MENU.map(function (m) {
     var cur = (m.href === here || m.items.some(function (i) { return i.href === here; })) ? ' current' : '';
+    if (m.direct) return '<li><a class="sn-top' + cur + '" href="' + m.href + '">' + m.label + '</a></li>';
     return '<li><button class="sn-top' + cur + '" type="button" aria-expanded="false" aria-controls="sn-' + m.id + '" data-sec="' + m.id + '">' + m.label + '<i class="chev" aria-hidden="true"></i></button></li>';
   }).join('') + '<li><a class="sn-top' + (here === 'faq.html' ? ' current' : '') + '" href="faq.html">FAQ</a></li>';
-  var secs = MENU.map(function (m) {
+  var secs = MENU.filter(function (m) { return !m.direct; }).map(function (m) {
     var first = m.items[0];
     return '<div class="sn-sec" id="sn-' + m.id + '" style="--c:' + m.c + '" role="region" aria-label="' + m.label + '">' +
       '<div class="sn-intro"><p class="k">' + m.label + '</p><h2>' + m.title + '</h2><p>' + m.intro + '</p>' + (m.href ? '<a href="' + m.href + '">' + 'Overview' + ' →</a>' : '<p style="font-size:12px;color:#6F87A3;margin:0">Pages coming soon</p>') + '</div>' +
@@ -121,6 +122,7 @@
       '<div class="sn-prev" aria-live="polite"><span class="pk">' + (first.live ? 'Live · updated weekly' : m.label) + '</span><h3>' + first.label + '</h3><p>' + first.blurb + '</p><span class="st"></span></div></div>';
   }).join('');
   var mob = MENU.map(function (m) {
+    if (m.direct) return '<a class="sn-mobl" href="' + m.href + '">' + m.label + '</a>';
     return '<details><summary>' + m.label + '</summary><ul>' + (m.href ? '<li><a class="ov" href="' + m.href + '">' + 'Overview' + ' →</a></li>' : '') +
       m.items.map(function (i) { return '<li>' + (i.href ? '<a href="' + i.href + '">' + i.label + '</a>' : '<span>' + i.label + ' <small>Soon</small></span>') + '</li>'; }).join('') + '</ul></details>';
   }).join('') + '<a class="sn-mobl" href="faq.html">FAQ</a>';
@@ -148,6 +150,7 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && (openId || nav.classList.contains('mob-open'))) { var was = openId; hide(); nav.classList.remove('mob-open'); var t = tops.filter(function (x) { return x.dataset.sec === was; })[0]; if (t) t.focus(); } });
   // Preview follows whichever item is hovered or focused
   MENU.forEach(function (m) {
+    if (m.direct) return;
     var sec = root.querySelector('#sn-' + m.id), prev = sec.querySelector('.sn-prev'), lis = sec.querySelectorAll('.sn-list li');
     lis.forEach(function (li) {
       function pick() {
@@ -174,7 +177,7 @@
     registeredIn: 'England and Wales',
     office: '61 Grange Road, London SE1 3BD, United Kingdom', // registered office. Companies House shows the full address incl. flat number; Tom to decide on a service address
     vat: '',                         // VAT number, if any (none supplied yet)
-    ico: '',                         // ICO data protection registration number, if any (none supplied yet)
+    ico: 'ZC279510',                 // ICO data protection registration number (registered 20 October 2026)
     incorporated: '25 September 2018',
     email: 'tomfox@9degreeseast.com'
   };
@@ -239,6 +242,7 @@
     if (COMPANY.number) bits.push(COMPANY.name + ' is registered in ' + (COMPANY.registeredIn || 'England and Wales') + ', company number ' + COMPANY.number + '.');
     if (COMPANY.office) bits.push('Registered office: ' + COMPANY.office + '.');
     if (COMPANY.vat) bits.push('VAT number ' + COMPANY.vat + '.');
+    if (COMPANY.ico) bits.push('ICO registration number ' + COMPANY.ico + '.');
     return bits.length ? '<p class="sf-reg">' + bits.join(' ') + '</p>' : '';
   }
 
@@ -254,8 +258,8 @@
       return '<footer class="sf sf-' + v + '"><div class="sf-in"><div class="sf-top">' +
         '<div class="sf-brand"><a href="./" aria-label="9 Degrees East home">' + logo + '<span>9 DEGREES EAST</span></a><p>Commercial advisory for low-carbon fuels.</p></div>' +
         col('About', [['About', 'about.html'], ['Our history', 'our-history.html'], ['Purpose, mission & values', 'purpose.html'], ['How we work', 'how-we-work.html'], ['Locations', 'locations.html'], ['FAQ', 'faq.html']]) +
-        col('Insights', [['Fuel Weather', 'fuel-weather.html'], ['Policy Tracker', 'policy-tracker.html'], ['Market Conditions', 'market-conditions.html'], ['The 9DE Journal', 'journal.html']]) +
-        col('Services', [['Offtake strategy', 'offtake-strategy.html'], ['Deal structuring', 'deal-structuring.html'], ['Supply agreements', 'supply-agreements.html'], ['Regulatory advisory', 'regulatory-advisory.html']]) +
+        col('Insights', [['The 9DE Journal', 'journal.html'], ['Fuel Weather', 'fuel-weather.html'], ['Policy Tracker', 'policy-tracker.html'], ['Market Conditions', 'market-conditions.html']]) +
+        col('Services', [['Offtake strategy', 'offtake-strategy.html'], ['Deal structuring', 'deal-structuring.html'], ['Supply agreements', 'supply-agreements.html'], ['Regulations', 'regulatory-advisory.html']]) +
         '</div><div class="sf-legal">' + tail + '</div></div></footer>';
     }
     var root = document.getElementById('site-footer');

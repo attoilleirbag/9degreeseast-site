@@ -136,6 +136,8 @@
   /* Education and markets */
   .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .duo .glass { padding: 24px 26px; }
+  .duo.solo { grid-template-columns: 1fr; }
+  .duo.solo .pills { margin: 0; }
   .edu { margin: 0; padding: 0; list-style: none; }
   .edu li { padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 26px; }
   .edu li:last-child { border: 0; }
@@ -234,17 +236,17 @@
       <div class="title">
         <p class="eyebrow">About</p>
         <h1 class="serif">9 Degrees <em>East</em></h1>
-        <p class="lede serif">We structure the long-term supply agreements that turn low-carbon fuel projects into financeable businesses.</p>
+        <p class="lede serif">We provide commercial and analytical support to the low-carbon fuel industry.</p>
         <p class="sub">We've done this work at an oil major's trading desk, an eFuels developer, a shipping company and a renewable fuels brokerage. The deals we build have to work for the producer and the buyer, on price, volume, credit and sustainability terms, so the project reaches final investment decision and the contract still holds years later.</p>
         <p class="sub why9">9° East is the longitude halfway between London and Cape Town, the two cities Tom calls home. Halfway is also where most good deals get done.</p>
         <p class="scrollhint"><i></i>Scroll</p>
       </div>
-      <div class="stamp glass">Commercial advisory<br>for <b>low-carbon fuels</b><br>Established <b>2018</b><br>London · <b>9° East</b> · Cape Town</div>
+      <div class="stamp glass">Commercial advisory<br>for <b>low-carbon fuels</b><br>Europe · <b>9° East</b> · Cape Town</div>
     </section>
 
     <section class="wrap stats" aria-label="At a glance" data-scene="stats">
       <div class="stat glass" style="--c: var(--saf)"><div class="nm"><i class="dot"></i>Experience</div><strong class="serif" data-count="20">20</strong><span class="d">years originating and structuring long-term supply deals, since 2006. 28 years in energy overall.</span></div>
-      <div class="stat glass" style="--c: var(--methanol)"><div class="nm"><i class="dot"></i>Reach</div><strong class="serif" data-count="4">4</strong><span class="d">regions: Europe, the Americas, Asia and Australia</span></div>
+      <div class="stat glass" style="--c: var(--methanol)"><div class="nm"><i class="dot"></i>Reach</div><strong class="serif" data-count="4">4</strong><span class="d">markets: the European Union, the UK, the US and Asia</span></div>
       <div class="stat glass" style="--c: var(--rd)"><div class="nm"><i class="dot"></i>Tenor</div><strong class="serif" data-count="5">5+ yr</strong><span class="d">bankable offtake structures for project finance</span></div>
       <div class="stat glass" style="--c: var(--rng)"><div class="nm"><i class="dot"></i>Perspective</div><strong class="serif" data-count="4">4</strong><span class="d">sides of the table: oil major, developer, shipping and brokerage</span></div>
     </section>
@@ -252,11 +254,10 @@
     <section class="wrap block" aria-labelledby="exp-title" data-scene="expertise">
       <div class="head">
         <div><p class="eyebrow">Expertise</p><h2 class="serif" id="exp-title">Where we <em>add value</em></h2></div>
-        <p>Built in trading, project development and shipping.</p>
       </div>
       <div class="exp">
         <div class="glass" style="--c: var(--saf)"><h3 class="serif"><i class="dot"></i>Long-term deal origination</h3><p>Bankable structures of five years and more, integrating price, credit, sustainability, delivery and optionality terms suitable for project financing.</p></div>
-        <div class="glass" style="--c: var(--methanol)"><h3 class="serif"><i class="dot"></i>Global reach</h3><p>Deals and contacts across Europe, the Americas, Asia and Australia, from shipping, oil major and developer roles.</p></div>
+        <div class="glass" style="--c: var(--methanol)"><h3 class="serif"><i class="dot"></i>Global reach</h3><p>Deals and contacts across the European Union, the UK, the US and Asia, from shipping, oil major and developer roles.</p></div>
         <div class="glass" style="--c: var(--rd)"><h3 class="serif"><i class="dot"></i>Trading perspective</h3><p>Knows how a long-term position becomes a short-term trading book, and what that does to desk P&amp;L and risk.</p></div>
         <div class="glass" style="--c: var(--rng)"><h3 class="serif"><i class="dot"></i>Regulation</h3><p>Pricing that reflects the rules: RED, FuelEU Maritime and ReFuelEU Aviation in the EU, the IRA, RFS and LCFS in the US, and sourcing from Asia.</p></div>
       </div>
@@ -271,63 +272,33 @@
         <div class="glass bio">
           <figure class="portrait"><img src="tom-fox.jpg" alt="Tom Fox, founder of 9 Degrees East" width="640" height="640" loading="lazy" onerror="this.parentNode.classList.add('empty')"><span class="ph serif" aria-hidden="true">TF</span></figure>
           <p class="serif big">Tom has been an analyst, power marketer, oil major originator, consultant, broker, developer and buyer.</p>
-          <p>His career runs from power trading in the US and UK, through oil major biofuels origination, to eFuels and green methanol for shipping, across the Americas, Europe, Asia and Australia. He founded 9 Degrees East in 2018 and now leads it full time.</p>
-          <p>He builds deal structures that lenders will accept and that both producer and buyer can live with for ten years.</p>
+          <p>His career runs from power trading in the US and UK, through oil major biofuels origination, to eFuels and green methanol for shipping, across the European Union, the UK, the US and Asia. He founded 9 Degrees East and now leads it full time.</p>
+          <p>He builds deal structures that lenders will accept and that both producer and buyer can live with for five years and more.</p>
           <div class="links"><a href="our-history.html">Read the full story <span>→</span></a><a href="locations.html">Where he has worked <span>→</span></a></div>
         </div>
         <div class="deals">
           <div class="deal glass" style="--c: var(--methanol)"><span class="nm"><i class="dot"></i>Energy</span><strong class="serif">28 yrs</strong><span class="d">in energy markets since 1998</span></div>
           <div class="deal glass" style="--c: var(--efuels)"><span class="nm"><i class="dot"></i>Structuring</span><strong class="serif">20 yrs</strong><span class="d">structuring long-term supply agreements</span></div>
           <div class="deal glass" style="--c: var(--saf)"><span class="nm"><i class="dot"></i>Markets</span><strong class="serif">5</strong><span class="d">continents of origination experience</span></div>
-          <div class="deal glass" style="--c: var(--rd)"><span class="nm"><i class="dot"></i>Tenor</span><strong class="serif">10+ yr</strong><span class="d">contracts built for project finance</span></div>
+          <div class="deal glass" style="--c: var(--rd)"><span class="nm"><i class="dot"></i>Tenor</span><strong class="serif">5+ yr</strong><span class="d">contracts built for project finance</span></div>
         </div>
       </div>
     </section>
 
-    <section class="experience" aria-labelledby="exp-label">
-      <div class="wrap">
-        <div class="exp-head">
-          <p class="eyebrow" id="exp-label">Experience across</p>
-        </div>
-      </div>
-      <div class="marquee">
-        <div class="marquee-track">
-          <ul class="roles" aria-labelledby="exp-label">
-            <li><span class="co-item" style="--c: var(--rd)"><span class="logo"><img src="logos/bp.svg" class="tonal tall" alt="BP" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">BP Supply, Trading &amp; Shipping</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--efuels)"><span class="logo"><img src="logos/hif.svg" alt="HIF Global" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">HIF Global</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--methanol)"><span class="logo"><img src="logos/maersk-tankers.svg" class="raw" alt="Maersk Tankers" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Maersk Tankers</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--rng)"><span class="logo"><img src="logos/xpansiv.svg" class="xp" alt="Xpansiv" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Xpansiv</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--saf)"><span class="logo"><img src="logos/calpine.svg" class="wide" alt="Calpine" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Calpine</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--muted)"><span class="logo"><img src="logos/channoil.png" class="tall" alt="Channoil Consulting" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Channoil Consulting</span></span></span></li>
-          </ul>
-          <ul class="roles" aria-hidden="true">
-            <li><span class="co-item" style="--c: var(--rd)"><span class="logo"><img src="logos/bp.svg" class="tonal tall" alt="BP" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">BP Supply, Trading &amp; Shipping</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--efuels)"><span class="logo"><img src="logos/hif.svg" alt="HIF Global" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">HIF Global</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--methanol)"><span class="logo"><img src="logos/maersk-tankers.svg" class="raw" alt="Maersk Tankers" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Maersk Tankers</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--rng)"><span class="logo"><img src="logos/xpansiv.svg" class="xp" alt="Xpansiv" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Xpansiv</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--saf)"><span class="logo"><img src="logos/calpine.svg" class="wide" alt="Calpine" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Calpine</span></span></span></li>
-            <li><span class="co-item" style="--c: var(--muted)"><span class="logo"><img src="logos/channoil.png" class="tall" alt="Channoil Consulting" loading="lazy" onerror="this.closest('.co-item').classList.add('nologo')"><span class="co">Channoil Consulting</span></span></span></li>
-          </ul>
-        </div>
-      </div>
-      <p class="wrap exp-note">Companies the founder has worked for or with. Logos are shown for identification only and do not imply endorsement. <a href="credits.html">Trademarks &amp; credits</a></p>
-    </section>
 
-    <section class="wrap block" aria-label="Education and markets" data-scene="markets" style="padding-top: 70px">
-      <div class="duo">
-        <div class="glass"><p class="eyebrow">Education</p><ul class="edu edu-logos"><li><img src="logos/harvard.svg" alt="Harvard University" height="56"><small>BA Economics, cum laude</small></li><li><img src="logos/mit.svg" alt="Massachusetts Institute of Technology" height="44"></li></ul></div>
+    <section class="wrap block" aria-label="Fuels and markets" data-scene="markets" style="padding-top: 10px">
+      <div class="duo solo">
         <div class="glass"><p class="eyebrow">Fuels and markets</p>
           <ul class="pills">
-            <li style="--c: var(--efuels)"><i class="dot"></i>eFuels</li><li style="--c: var(--methanol)"><i class="dot"></i>Green methanol</li><li style="--c: var(--saf)"><i class="dot"></i>SAF</li><li style="--c: var(--rd)"><i class="dot"></i>Renewable diesel</li><li style="--c: var(--rng)"><i class="dot"></i>Renewable natural gas</li><li style="--c: var(--muted)"><i class="dot"></i>Advanced biofuels</li><li style="--c: var(--muted)"><i class="dot"></i>Green hydrogen</li><li style="--c: var(--muted)"><i class="dot"></i>CO2</li><li style="--c: var(--muted)"><i class="dot"></i>Feedstocks</li>
+            <li style="--c: var(--efuels)"><i class="dot"></i>eFuels</li><li style="--c: var(--methanol)"><i class="dot"></i>Green methanol</li><li style="--c: var(--saf)"><i class="dot"></i>SAF</li><li style="--c: var(--rd)"><i class="dot"></i>Renewable diesel</li><li style="--c: var(--rng)"><i class="dot"></i>Renewable natural gas</li><li style="--c: var(--muted)"><i class="dot"></i>Advanced biofuels</li><li style="--c: var(--muted)"><i class="dot"></i>Green hydrogen</li><li style="--c: var(--muted)"><i class="dot"></i>CO<sub>2</sub></li><li style="--c: var(--muted)"><i class="dot"></i>Feedstocks</li>
           </ul>
-          <p class="note">Based in London, working with clients across Europe, the Americas and Asia.</p>
         </div>
       </div>
     </section>
 
     <section class="wrap" aria-labelledby="cta-title" data-scene="cta">
       <div class="cta glass">
-        <h2 class="serif" id="cta-title">Have a project heading for <em>FID</em>? We'd be glad to hear about it.</h2>
+        <h2 class="serif" id="cta-title">Have a question about <em>low-carbon fuels</em>? We'd be glad to hear from you.</h2>
         <div class="btns"><a class="btn btn-primary" href="contact.html">Contact us</a><a class="btn btn-ghost" href="https://uk.linkedin.com/in/tom-fox-energy" target="_blank" rel="noopener noreferrer">LinkedIn</a></div>
       </div>
     </section>
