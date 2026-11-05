@@ -105,6 +105,7 @@ ${p.cover ? '<meta property="og:image" content="https://9degreeseast.com' + esc(
 <link rel="stylesheet" href="journal-article.css">
 <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Article', headline: p.title, description: p.summary || '', datePublished: p.date, author: { '@type': 'Person', name: p.author || 'Tom Fox' }, publisher: { '@type': 'Organization', name: '9 Degrees East' }, mainEntityOfPage: url }).replace(/</g, '\\u003c')}</script>
 <script src="nav.js" defer></script>
+<style id="cls-fix">#site-nav{min-height:82px}@media (max-width:420px){#site-nav{min-height:74px}}</style>
 </head>
 <body>
   <div id="site-nav"></div>
