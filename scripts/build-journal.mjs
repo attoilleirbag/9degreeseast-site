@@ -115,6 +115,9 @@ function page(p, series) {
 <link rel="stylesheet" href="journal-article.css">
 <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Article', headline: p.title, description: p.summary || '', datePublished: p.date, author: { '@type': 'Person', name: p.author || 'Tom Fox' }, publisher: { '@type': 'Organization', name: '9 Degrees East' }, mainEntityOfPage: url }).replace(/</g, '\\u003c')}</script>
 <script src="nav.js" defer></script>
+${p.audio ? `<script>(function () { var a = document.getElementById('narration'); if (!a || !('mediaSession' in navigator)) return;
+  a.addEventListener('play', function () { try { navigator.mediaSession.metadata = new MediaMetadata({ title: a.dataset.title, artist: '9 Degrees East', album: a.dataset.series, artwork: [{ src: '/icon-512.png', sizes: '512x512', type: 'image/png' }] }); } catch (e) {} });
+})();</script>` : ''}
 <style id="cls-fix">#site-nav{min-height:82px}@media (max-width:420px){#site-nav{min-height:74px}}</style>
 </head>
 <body>
@@ -127,6 +130,10 @@ function page(p, series) {
         <h1 class="serif">${esc(p.title)}</h1>
         ${p.summary ? '<p class="dek">' + esc(p.summary) + '</p>' : ''}
         <p class="by">${esc(p.author || 'Tom Fox')} · <time datetime="${esc(p.date)}">${nice(p.date)}</time> · ${readMinutes(p.body)} min read</p>
+        ${p.audio ? `<div class="listen">
+          <p><b>Listen to this article</b> · ${p.audio.minutes} min · Narrated by an AI voice</p>
+          <audio id="narration" controls preload="none" src="/media/audio/${p.slug}.mp3?v=${esc(p.audio.hash)}" data-title="${esc(p.title)}" data-series="${esc(p.series || 'The 9DE Journal')}"></audio>
+        </div>` : ''}
       </header>
       ${p.cover ? '<figure class="cover"><img src="' + esc(p.cover) + '" alt="' + esc(p.cover_alt || '') + '"></figure>' : ''}
       <div class="body">
@@ -149,10 +156,12 @@ export function build(srcDir = SRC_DIR, outDir = OUT_DIR) {
   const posts = files.map(f => { let p; try { p = parse(join(srcDir, f)); } catch (e) { console.error('Journal: skipped ' + f + ' (' + e.message + ')'); return null; } p.slug = p.slug ? slugify(p.slug) : slugify(f.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '')); return p; })
     .filter(p => p && !p.draft && p.title)
     .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  // A recording made by scripts/journal-audio.mjs (site/media/audio/<slug>.mp3 + .json) adds a player to the article
+  posts.forEach(p => { try { const dir = join(OUT, 'media', 'audio'); if (existsSync(join(dir, p.slug + '.mp3'))) { const m = JSON.parse(readFileSync(join(dir, p.slug + '.json'), 'utf8')); p.audio = { hash: m.hash, minutes: Math.max(1, Math.round((m.seconds || 0) / 60)) }; } } catch (e) {} });
   const series = posts.filter(p => p.series).slice().sort((a, b) => (+a.part || 0) - (+b.part || 0));
   if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });
   posts.forEach(p => writeFileSync(join(outDir, 'journal-' + p.slug + '.html'), page(p, series)));
-  const list = posts.map(p => ({ source: 'journal', date: String(p.date).slice(0, 10), title: p.title, summary: p.summary || '', series: p.series || '', part: p.part || '', minutes: readMinutes(p.body), url: 'journal-' + p.slug + '.html' }));
+  const list = posts.map(p => ({ source: 'journal', date: String(p.date).slice(0, 10), title: p.title, summary: p.summary || '', series: p.series || '', part: p.part || '', minutes: readMinutes(p.body), audio: !!p.audio, url: 'journal-' + p.slug + '.html' }));
   writeFileSync(join(outDir, 'journal-posts.json'), JSON.stringify({ updated: new Date().toISOString().slice(0, 10), items: list }, null, 2));
   console.log('Journal: built ' + posts.length + ' article(s)');
   return posts;

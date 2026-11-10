@@ -114,7 +114,7 @@ var JOURNAL = /*DATA:START*/{
       var s = SOURCES[i.source] || SOURCES.journal, tag = i.url ? 'a' : 'article';
       var href = i.url ? ' href="' + esc(i.url) + '"' + (/^https?:/.test(i.url) ? ' target="_blank" rel="noopener noreferrer"' : '') : '';
       var outlet = i.outlet ? ' · ' + esc(i.outlet) : '';
-      return '<' + tag + ' class="card glass" style="--sc:' + s[1] + '"' + href + '><div class="meta">' + (ICON[i.source] ? '<span class="src ic"><img src="' + ICON[i.source] + '" alt="" width="14" height="14">' : '<span class="src">') + (i.series ? esc(i.series) + (i.part ? ' · Part ' + esc(i.part) : '') : s[0]) + '</span><span>' + when(i.date) + outlet + (i.reposted ? ' · Reposted' : '') + (i.minutes ? ' · ' + esc(i.minutes) + ' min read' : '') + '</span></div>' +
+      return '<' + tag + ' class="card glass" style="--sc:' + s[1] + '"' + href + '><div class="meta">' + (ICON[i.source] ? '<span class="src ic"><img src="' + ICON[i.source] + '" alt="" width="14" height="14">' : '<span class="src">') + (i.series ? esc(i.series) + (i.part ? ' · Part ' + esc(i.part) : '') : s[0]) + '</span><span>' + when(i.date) + outlet + (i.reposted ? ' · Reposted' : '') + (i.minutes ? ' · ' + esc(i.minutes) + ' min read' : '') + (i.audio ? ' · Audio' : '') + '</span></div>' +
         '<h2 class="serif">' + esc(i.title) + '</h2>' + (i.summary ? '<p>' + esc(i.summary) + '</p>' : '') + (i.url ? '<span class="go">' + (i.source === 'journal' ? 'Read the article' : 'Read on ' + (i.source === 'press' ? esc(i.outlet || 'the publisher') : s[0])) + ' →</span>' : '') + '</' + tag + '>';
     };
     var own = list.filter(function (i) { return i.source === 'journal'; }).map(card).join('');

@@ -1,0 +1,46 @@
+name: Record Journal audio
+
+# Runs when an article is published or edited in the editor. Records the narration and saves it to the site.
+on:
+  push:
+    branches: [main]
+    paths: ['content/journal/**', 'scripts/journal-audio.mjs']
+  workflow_dispatch:        # adds a "Run workflow" button for testing
+
+permissions:
+  contents: write
+
+concurrency:
+  group: journal-audio
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install the audio tool
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Record new or changed articles
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node scripts/journal-audio.mjs
+      - name: Save the recordings
+        env:
+          HEAD_MSG: ${{ github.event.head_commit.message }}
+        run: |
+          git config user.name "journal-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add site/media/audio
+          if git diff --cached --quiet; then
+            echo "Nothing new to save."
+          else
+            # If the commit that started this asked Netlify to wait, the recording waits too (used for reviews)
+            TAG=""; case "$HEAD_MSG" in *"[skip netlify]"*) TAG=" [skip netlify]";; esac
+            git commit -m "Journal: audio narration${TAG}"
+            git pull --rebase origin main
+            git push
+          fi
