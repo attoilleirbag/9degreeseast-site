@@ -131,7 +131,7 @@ ${p.audio ? `<script>(function () { var a = document.getElementById('narration')
         ${p.summary ? '<p class="dek">' + esc(p.summary) + '</p>' : ''}
         <p class="by">${esc(p.author || 'Tom Fox')} · <time datetime="${esc(p.date)}">${nice(p.date)}</time> · ${readMinutes(p.body)} min read</p>
         ${p.audio ? `<div class="listen">
-          <p><b>Listen to this article</b> · ${p.audio.minutes} min · Narrated by an AI voice</p>
+          <p><b>Listen to this article</b> · ${p.audio.minutes} min · Narrated by AI using OpenAI’s <a href="https://developers.openai.com/api/docs/models/gpt-4o-mini-tts" target="_blank" rel="noopener noreferrer">GPT-4o mini TTS</a> (text-to-speech)</p>
           <audio id="narration" controls preload="none" src="/media/audio/${p.slug}.mp3?v=${esc(p.audio.hash)}" data-title="${esc(p.title)}" data-series="${esc(p.series || 'The 9DE Journal')}"></audio>
         </div>` : ''}
       </header>
