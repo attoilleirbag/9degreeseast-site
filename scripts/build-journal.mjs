@@ -94,7 +94,9 @@ function page(p, series) {
 <meta property="og:title" content="${esc(p.title)}">
 <meta property="og:description" content="${desc}">
 <meta property="og:url" content="${url}">
-${p.cover ? '<meta property="og:image" content="https://9degreeseast.com' + esc(p.cover) + '">' : ''}
+<meta property="og:site_name" content="9 Degrees East">
+<meta property="og:image" content="https://9degreeseast.com${p.cover ? esc(p.cover) : '/og.png'}">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#061527">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -102,13 +104,14 @@ ${p.cover ? '<meta property="og:image" content="https://9degreeseast.com' + esc(
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="site.css">
 <link rel="stylesheet" href="journal-article.css">
 <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Article', headline: p.title, description: p.summary || '', datePublished: p.date, author: { '@type': 'Person', name: p.author || 'Tom Fox' }, publisher: { '@type': 'Organization', name: '9 Degrees East' }, mainEntityOfPage: url }).replace(/</g, '\\u003c')}</script>
 <script src="nav.js" defer></script>
 <style id="cls-fix">#site-nav{min-height:82px}@media (max-width:420px){#site-nav{min-height:74px}}</style>
 </head>
 <body>
-  <div id="site-nav"></div>
+  <div id="site-nav"><noscript><nav class="ns-nav" aria-label="Main"><a href="./">9 Degrees East</a><a href="about.html">About</a><a href="our-history.html">Our history</a><a href="purpose.html">Purpose, mission &amp; values</a><a href="how-we-work.html">How we work</a><a href="locations.html">Locations</a><a href="insights.html">Insights</a><a href="journal.html">The 9DE Journal</a><a href="fuel-weather.html">Fuel Weather</a><a href="policy-tracker.html">Policy Tracker</a><a href="market-conditions.html">Market Conditions</a><a href="services.html">Products &amp; Services</a><a href="offtake-strategy.html">Offtake strategy</a><a href="deal-structuring.html">Deal structuring</a><a href="supply-agreements.html">Supply agreements</a><a href="regulatory-advisory.html">Regulations</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></nav></noscript></div>
   <main>
     <article class="wrap post">
       <a class="back" href="journal.html">← The 9DE Journal</a>
@@ -127,7 +130,7 @@ ${md(p.body)}
       <p class="end"><a href="journal.html">More from the 9DE Journal →</a> · <a href="contact.html">Talk to us about a project →</a></p>
     </article>
   </main>
-  <div id="site-footer"></div>
+  <div id="site-footer"><noscript><footer class="ns-nav ns-foot"><a href="legal-notice.html">Legal notice</a><a href="terms.html">Terms of use</a><a href="privacy.html">Privacy notice</a><a href="cookies.html">Cookies</a><a href="accessibility.html">Accessibility</a><a href="credits.html">Trademarks &amp; credits</a><a href="contact.html">Contact us</a><p>9 Degrees East Limited is registered in England and Wales, company number 11587380.</p></footer></noscript></div>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "bdb89935402140bd8cbd88633ab1af84"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

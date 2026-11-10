@@ -5,52 +5,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Policy Tracker | 9 Degrees East</title>
 <meta name="description" content="The rules shaping low-carbon fuels in the US, EU, UK, China and global shipping, checked every week.">
+<link rel="canonical" href="https://9degreeseast.com/policy-tracker">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="9 Degrees East">
+<meta property="og:title" content="Policy Tracker">
+<meta property="og:description" content="The rules shaping low-carbon fuels in the US, EU, UK, China and global shipping, checked every week.">
+<meta property="og:url" content="https://9degreeseast.com/policy-tracker">
+<meta property="og:image" content="https://9degreeseast.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="site.css">
 <style>
-  :root { --ink: #061527; --panel: rgba(9,28,50,0.72); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --line: rgba(160,190,220,0.18); --accent: #D8B66E;
-          --US: #8FC7E8; --EU: #9EB8F5; --UK: #F0B27A; --IMO: #7FD1C2; --China: #E89A9A; }
-  * { box-sizing: border-box; }
+  :root { --panel: rgba(9,28,50,0.72); --US: #8FC7E8; --EU: #9EB8F5; --UK: #F0B27A; --IMO: #7FD1C2; --China: #E89A9A; }
   html, body { margin: 0; background: var(--ink); color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
   body { min-height: 100vh; background:
     radial-gradient(1200px 600px at 85% -10%, rgba(216,182,110,0.08), transparent 60%),
     radial-gradient(900px 700px at -10% 30%, rgba(143,199,232,0.07), transparent 60%), var(--ink); }
   a { color: inherit; }
   .wrap { max-width: 1120px; margin: 0 auto; padding: 32px 40px 60px; }
-
   .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
   .home { display: inline-flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; }
   .home svg { width: 34px; height: 34px; }
-  .home span { font-size: 10px; font-weight: 600; letter-spacing: 0.24em; }
-  .sitenav { display: flex; gap: 22px; font-size: 13px; }
+  .home span { font-size: 11.5px; font-weight: 600; letter-spacing: 0.24em; }
+  .sitenav { display: flex; gap: 22px; font-size: 14px; }
   .sitenav a { color: var(--muted); text-decoration: none; padding: 10px 0; }
   .sitenav a:hover, .sitenav a[aria-current="page"] { color: var(--text); }
   .sitenav .cta { color: var(--accent); }
-
   header.intro { margin: 56px 0 40px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: end; }
-  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
   .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
   h1 { margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(44px, 6vw, 80px); line-height: 0.98; letter-spacing: -0.02em; }
   h1 em { color: var(--accent); }
-  .sub { margin: 16px 0 0; max-width: 520px; font-size: 14px; line-height: 1.75; color: var(--muted); }
-  .stamp { justify-self: end; text-align: right; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); line-height: 1.9; padding: 10px 14px; border: 1px solid var(--line); border-radius: 2px; }
+  .sub { margin: 16px 0 0; max-width: 520px; font-size: 15px; line-height: 1.75; color: var(--muted); }
+  .stamp { justify-self: end; text-align: right; font-size: 11.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); line-height: 1.9; padding: 10px 14px; border: 1px solid var(--line); border-radius: 2px; }
   .stamp b { color: var(--text); font-weight: 600; }
-
   /* Region strip: count per region, doubles as the filter */
   .regions { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin-bottom: 34px; }
   .reg { text-align: left; font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 3px; padding: 14px 14px 12px; cursor: pointer; transition: border-color 250ms ease, transform 250ms ease, opacity 250ms ease; }
   .reg:hover { border-color: rgba(160,190,220,0.45); transform: translateY(-2px); }
   .reg[aria-pressed="true"] { border-color: var(--c); box-shadow: 0 0 0 1px var(--c) inset; }
   .reg:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-  .reg .nm { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; }
+  .reg .nm { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
   .reg .nm i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
   .reg .n { margin-top: 10px; font-family: 'Instrument Serif', Georgia, serif; font-size: 30px; line-height: 1; }
-  .reg .n small { font-family: Manrope, sans-serif; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-left: 6px; }
-
+  .reg .n small { font-family: Manrope, sans-serif; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-left: 6px; }
   /* Timeline */
   .list { position: relative; margin: 0; padding: 0; list-style: none; }
   .list::before { content: ""; position: absolute; left: 118px; top: 6px; bottom: 6px; width: 1px; background: var(--line); }
@@ -58,21 +63,19 @@
   .item.in { opacity: 1; transform: none; }
   .item[hidden] { display: none; }
   .item::before { content: ""; position: absolute; left: 114px; top: 7px; width: 9px; height: 9px; border-radius: 50%; background: var(--ink); border: 1.5px solid var(--c); box-shadow: 0 0 10px var(--c); }
-  .date { padding-right: 22px; text-align: right; font-size: 11px; letter-spacing: 0.08em; color: var(--muted); line-height: 1.6; font-variant-numeric: tabular-nums; }
+  .date { padding-right: 22px; text-align: right; font-size: 12px; letter-spacing: 0.08em; color: var(--muted); line-height: 1.6; font-variant-numeric: tabular-nums; }
   .card { background: var(--panel); border: 1px solid var(--line); border-radius: 3px; padding: 18px 22px 16px; transition: border-color 250ms ease; }
   .card:hover { border-color: rgba(160,190,220,0.4); }
   .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-  .tag { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 8px; border-radius: 2px; border: 1px solid var(--line); color: var(--muted); }
+  .tag { font-size: 11.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 8px; border-radius: 2px; border: 1px solid var(--line); color: var(--muted); }
   .tag.r { color: var(--c); border-color: color-mix(in srgb, var(--c) 45%, transparent); }
   .card h2 { margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: 25px; line-height: 1.15; }
-  .card p { margin: 8px 0 0; font-size: 13.5px; line-height: 1.7; color: var(--soft); max-width: 720px; }
-  .card .src { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); }
+  .card p { margin: 8px 0 0; font-size: 15px; line-height: 1.7; color: var(--soft); max-width: 720px; }
+  .card .src { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
   .card .src a { color: var(--accent); font-weight: 600; text-decoration: none; }
   .card .src a:hover { text-decoration: underline; }
-  .empty { margin: 0 0 30px 152px; font-size: 13px; color: var(--muted); }
-
-  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 10.5px; letter-spacing: 0.04em; line-height: 1.7; color: #6F87A3; }
-
+  .empty { margin: 0 0 30px 152px; font-size: 14px; color: var(--muted); }
+  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 12px; letter-spacing: 0.04em; line-height: 1.7; color: #8A9FB8; }
   @media (max-width: 900px) {
     .wrap { padding: 24px 18px 48px; }
     .top { flex-direction: column; gap: 10px; }
@@ -91,7 +94,7 @@
 <style id="cls-fix">#site-nav{min-height:62px}</style>
 </head>
 <body>
-<div id="site-nav"></div>
+<div id="site-nav"><noscript><nav class="ns-nav" aria-label="Main"><a href="./">9 Degrees East</a><a href="about.html">About</a><a href="our-history.html">Our history</a><a href="purpose.html">Purpose, mission &amp; values</a><a href="how-we-work.html">How we work</a><a href="locations.html">Locations</a><a href="insights.html">Insights</a><a href="journal.html">The 9DE Journal</a><a href="fuel-weather.html">Fuel Weather</a><a href="policy-tracker.html">Policy Tracker</a><a href="market-conditions.html">Market Conditions</a><a href="services.html">Products &amp; Services</a><a href="offtake-strategy.html">Offtake strategy</a><a href="deal-structuring.html">Deal structuring</a><a href="supply-agreements.html">Supply agreements</a><a href="regulatory-advisory.html">Regulations</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></nav></noscript></div>
 <div class="wrap">
 
   <header class="intro">
@@ -112,23 +115,13 @@
     <span>Sources: Federal Register, GOV.UK, European Commission, IMO, NDRC and NEA</span>
   </div>
 </div>
-<div id="site-footer"></div>
+<div id="site-footer"><noscript><footer class="ns-nav ns-foot"><a href="legal-notice.html">Legal notice</a><a href="terms.html">Terms of use</a><a href="privacy.html">Privacy notice</a><a href="cookies.html">Cookies</a><a href="accessibility.html">Accessibility</a><a href="credits.html">Trademarks &amp; credits</a><a href="contact.html">Contact us</a><p>9 Degrees East Limited is registered in England and Wales, company number 11587380.</p></footer></noscript></div>
 
 <script>
 /* ===== DATA ===== Written by scripts/update-policy.mjs each week and published automatically. */
 var POLICY = /*DATA:START*/{
   "updated": "2026-11-09",
   "items": [
-    {
-      "id": "uk-2026-11-09-0",
-      "region": "UK",
-      "date": "2026-11-09",
-      "status": "Residential property tribunal decision",
-      "title": "41 Piggottshill Lane, Harpenden, Hertfordshire, AL5 1LT: CAM/26UG/MRA/2026/0069",
-      "summary": "Leicester Region, Judge D Brandler and Patrick McGreal MRICS on 22 October 2026",
-      "source": "HM Courts & Tribunals Service, First-tier Tribunal (Property Chamber)",
-      "url": "https://www.gov.uk/residential-property-tribunal-decisions/41-piggottshill-lane-harpenden-hertfordshire-al5-1lt-cam-slash-26ug-slash-mra-slash-2026-slash-0069"
-    },
     {
       "id": "eu-2026-10-26-0",
       "region": "EU",

@@ -6,78 +6,76 @@
 <title>Locations | 9 Degrees East</title>
 <meta name="description" content="Based in Europe, with deals and working experience across the US, the EU, the UK and Asia: where 9 Degrees East and its founder have worked.">
 <meta name="theme-color" content="#061527">
+<link rel="canonical" href="https://9degreeseast.com/locations">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="9 Degrees East">
+<meta property="og:title" content="Locations">
+<meta property="og:description" content="Based in Europe, with deals and working experience across the US, the EU, the UK and Asia: where 9 Degrees East and its founder have worked.">
+<meta property="og:url" content="https://9degreeseast.com/locations">
+<meta property="og:image" content="https://9degreeseast.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="site.css">
 <style>
   /* A sticky 3D globe on the left turns to each region as its panel scrolls past on the right. */
-  :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --glass-strong: rgba(9,28,50,0.86); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E;
-          --methanol: #5EC8D8; --saf: #F0C877; --efuels: #E9F3FF; --rd: #E39A55; --rng: #A9A2F0; }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; }
   body { min-height: 100vh; display: flex; flex-direction: column; color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
          background: radial-gradient(1000px 700px at 25% 40%, rgba(31,74,122,0.28), transparent 65%), var(--ink); background-attachment: fixed; }
-  ::selection { background: var(--accent); color: var(--ink); }
-  a { color: inherit; } a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  a { color: inherit; } 
   .wrap { width: min(100% - 80px, 1180px); margin-inline: auto; }
-  .serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
-  .glass { background: var(--glass); border: 1px solid var(--line); border-radius: 3px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
   .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); flex: none; display: inline-block; }
-  main { flex: 1; }
   .head { padding-block: 80px 30px; }
-  .k { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .k { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
   .k::before { content: ""; width: 22px; height: 1px; background: currentColor; }
   h1 { margin: 0 0 18px; font-size: clamp(52px, 7vw, 96px); line-height: 0.96; letter-spacing: -0.025em; }
   h1 em { font-style: italic; color: var(--accent); }
   .intro { margin: 0; max-width: 640px; font-family: 'Instrument Serif', Georgia, serif; font-size: clamp(20px, 2vw, 26px); line-height: 1.4; color: var(--soft); }
-  .base { display: inline-flex; align-items: center; gap: 10px; margin-top: 26px; padding: 10px 14px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .base { display: inline-flex; align-items: center; gap: 10px; margin-top: 26px; padding: 10px 14px; font-size: 11.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
   .base b { color: var(--text); font-weight: 600; }
-
   .stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; padding-bottom: 60px; }
   .globe-col { position: sticky; top: 90px; height: calc(100vh - 110px); max-height: 640px; display: flex; flex-direction: column; justify-content: center; }
   .globe { position: relative; width: 100%; aspect-ratio: 1; max-height: 100%; cursor: grab; touch-action: pan-y; }
   .globe:active { cursor: grabbing; }
   .globe canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
   .globe .labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-  .globe .labels span { position: absolute; left: 0; top: 0; font: 600 9.5px Manrope, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #EEF2F5; white-space: nowrap; text-shadow: 0 0 6px #061527, 0 0 2px #061527; transition: opacity .35s; }
-  .globe-cap { display: flex; justify-content: space-between; gap: 10px; margin-top: 8px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--faint); }
+  .globe .labels span { position: absolute; left: 0; top: 0; font: 600 11px Manrope, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #EEF2F5; white-space: nowrap; text-shadow: 0 0 6px #061527, 0 0 2px #061527; transition: opacity .35s; }
+  .globe-cap { display: flex; justify-content: space-between; gap: 10px; margin-top: 8px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--faint); }
   .globe-cap b { color: var(--accent); font-weight: 600; }
   .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-  .tab { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; font: 600 11px Manrope, sans-serif; color: var(--soft); background: rgba(9,28,50,0.6); border: 1px solid var(--line); border-radius: 999px; cursor: pointer; transition: border-color .2s, color .2s; }
+  .tab { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; font: 600 12px Manrope, sans-serif; color: var(--soft); background: rgba(9,28,50,0.6); border: 1px solid var(--line); border-radius: 999px; cursor: pointer; transition: border-color .2s, color .2s; }
   .tab[aria-current="true"] { border-color: var(--c); color: var(--text); }
-
   .regions { display: flex; flex-direction: column; gap: 22vh; padding-block: 8vh 45vh; }
   .region { padding: 26px 26px 18px; transition: border-color .4s, opacity .4s; opacity: 0.55; }
   .region.on { border-color: var(--c); opacity: 1; }
-  .region .rk { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; font-size: 10px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--c); }
+  .region .rk { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; font-size: 11.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--c); }
   .region h2 { margin: 0 0 10px; font-size: 40px; line-height: 1.02; }
-  .region > p { margin: 0 0 16px; font-size: 14px; line-height: 1.75; color: var(--soft); }
+  .region > p { margin: 0 0 16px; font-size: 15px; line-height: 1.75; color: var(--soft); }
   .places { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
   .places li { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--line); cursor: default; }
   .places li:last-child { border-bottom: 0; }
   .places .pl { font-family: 'Instrument Serif', Georgia, serif; font-size: 21px; line-height: 1.1; }
-  .places .pl small { display: block; margin-top: 4px; font-family: Manrope, sans-serif; font-size: 10px; letter-spacing: .1em; color: var(--faint); font-variant-numeric: tabular-nums; }
-  .places .wd { font-size: 13px; line-height: 1.65; color: var(--soft); }
+  .places .pl small { display: block; margin-top: 4px; font-family: Manrope, sans-serif; font-size: 11.5px; letter-spacing: .1em; color: var(--faint); font-variant-numeric: tabular-nums; }
+  .places .wd { font-size: 14px; line-height: 1.65; color: var(--soft); }
   .places .wd b { color: var(--text); font-weight: 600; }
   .places li:hover .pl { color: var(--accent); }
-  .reg-note { margin: 14px 0 0; font-size: 11.5px; color: var(--faint); }
-
+  .reg-note { margin: 14px 0 0; font-size: 12.5px; color: var(--faint); }
   .cta { margin-bottom: 90px; padding: 30px 32px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; background: var(--glass-strong); }
   .cta h2 { margin: 0; font-size: clamp(28px, 3.4vw, 44px); max-width: 620px; }
   .cta h2 em { font-style: italic; color: var(--accent); }
-  .btn { display: inline-flex; align-items: center; min-height: 46px; padding: 13px 20px; border-radius: 2px; font-size: 13px; font-weight: 600; text-decoration: none; background: var(--accent); color: var(--ink); transition: background .18s, transform .18s; }
+  .btn { display: inline-flex; align-items: center; min-height: 46px; padding: 13px 20px; border-radius: 2px; font-size: 14px; font-weight: 600; text-decoration: none; background: var(--accent); color: var(--ink); transition: background .18s, transform .18s; }
   .btn:hover { background: #E8C987; transform: translateY(-2px); }
-  footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 22px 30px; border-top: 1px solid var(--line); font-size: 10.5px; letter-spacing: 0.06em; color: var(--faint); }
-
+  footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 22px 30px; border-top: 1px solid var(--line); font-size: 12px; letter-spacing: 0.06em; color: var(--faint); }
   /* No globe (old browser, blocked libraries): the regions simply stack */
   .no-globe .stage { grid-template-columns: 1fr; }
   .no-globe .globe-col { display: none; }
   .no-globe .regions { gap: 12px; padding-block: 0; }
   .no-globe .region { opacity: 1; }
-
   @media (max-width: 900px) {
     .wrap { width: calc(100% - 40px); }
     .stage { grid-template-columns: 1fr; gap: 0; }
@@ -95,7 +93,7 @@
 <style id="cls-fix">#site-nav{min-height:82px}@media (max-width:420px){#site-nav{min-height:74px}}</style>
 </head>
 <body>
-  <div id="site-nav"></div>
+  <div id="site-nav"><noscript><nav class="ns-nav" aria-label="Main"><a href="./">9 Degrees East</a><a href="about.html">About</a><a href="our-history.html">Our history</a><a href="purpose.html">Purpose, mission &amp; values</a><a href="how-we-work.html">How we work</a><a href="locations.html">Locations</a><a href="insights.html">Insights</a><a href="journal.html">The 9DE Journal</a><a href="fuel-weather.html">Fuel Weather</a><a href="policy-tracker.html">Policy Tracker</a><a href="market-conditions.html">Market Conditions</a><a href="services.html">Products &amp; Services</a><a href="offtake-strategy.html">Offtake strategy</a><a href="deal-structuring.html">Deal structuring</a><a href="supply-agreements.html">Supply agreements</a><a href="regulatory-advisory.html">Regulations</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></nav></noscript></div>
   <main>
     <header class="wrap head">
       <p class="k">About · Locations</p>
@@ -161,7 +159,7 @@
       </div>
     </section>
   </main>
-  <div id="site-footer"></div>
+  <div id="site-footer"><noscript><footer class="ns-nav ns-foot"><a href="legal-notice.html">Legal notice</a><a href="terms.html">Terms of use</a><a href="privacy.html">Privacy notice</a><a href="cookies.html">Cookies</a><a href="accessibility.html">Accessibility</a><a href="credits.html">Trademarks &amp; credits</a><a href="contact.html">Contact us</a><p>9 Degrees East Limited is registered in England and Wales, company number 11587380.</p></footer></noscript></div>
 
 <script>
 (function () {

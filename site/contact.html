@@ -6,30 +6,32 @@
 <title>Contact | 9 Degrees East</title>
 <meta name="description" content="Contact 9 Degrees East about offtake strategy, deal structuring and supply agreements for low-carbon fuels.">
 <meta name="theme-color" content="#061527">
+<link rel="canonical" href="https://9degreeseast.com/contact">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="9 Degrees East">
+<meta property="og:title" content="Contact">
+<meta property="og:description" content="Contact 9 Degrees East about offtake strategy, deal structuring and supply agreements for low-carbon fuels.">
+<meta property="og:url" content="https://9degreeseast.com/contact">
+<meta property="og:image" content="https://9degreeseast.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="site.css">
 <style>
   /* Contact: the direct routes on the left, the form in a glass panel on the right. Messages go through Netlify Forms to Tom's inbox. */
-  :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --glass-strong: rgba(9,28,50,0.86); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E;
-          --methanol: #5EC8D8; --saf: #F0C877; --efuels: #E9F3FF; --rd: #E39A55; --rng: #A9A2F0; --bad: #F08A7A; }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; }
+  :root { --bad: #F08A7A; }
   body { min-height: 100vh; display: flex; flex-direction: column; color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
          background: radial-gradient(900px 600px at 85% 10%, rgba(31,74,122,0.28), transparent 65%), radial-gradient(700px 500px at 0% 100%, rgba(216,182,110,0.06), transparent 60%), var(--ink); background-attachment: fixed; }
-  ::selection { background: var(--accent); color: var(--ink); }
   a { color: inherit; }
-  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   .wrap { width: min(100% - 80px, 1180px); margin-inline: auto; }
-  .serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
-  .glass { background: var(--glass); border: 1px solid var(--line); border-radius: 3px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-  main { flex: 1; }
   .grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 56px; align-items: start; padding-block: 80px 110px; }
-
-  .k { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .k { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
   .k::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
   h1 { margin: 0 0 18px; font-size: clamp(52px, 7vw, 96px); line-height: 0.96; letter-spacing: -0.025em; }
   h1 em { font-style: italic; color: var(--accent); }
@@ -37,28 +39,27 @@
   .routes { display: flex; flex-direction: column; gap: 10px; max-width: 460px; }
   .route { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 16px 18px; }
   .route .l { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-  .route .lab { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); }
+  .route .lab { font-size: 11.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); }
   .route .val { font-size: 16px; color: var(--text); text-decoration: none; overflow-wrap: anywhere; user-select: all; }
   .route a.val:hover { color: var(--accent); }
-  .mini { flex: none; font: 600 11px Manrope, sans-serif; color: var(--accent); background: none; border: 1px solid var(--line); border-radius: 2px; padding: 8px 12px; cursor: pointer; text-decoration: none; transition: border-color 180ms ease; }
+  .mini { flex: none; font: 600 12px Manrope, sans-serif; color: var(--accent); background: none; border: 1px solid var(--line); border-radius: 2px; padding: 8px 12px; cursor: pointer; text-decoration: none; transition: border-color 180ms ease; }
   .mini:hover { border-color: var(--accent); }
   .route.book { padding: 22px 22px; margin-bottom: 8px; border-color: rgba(216,182,110,0.55); background: linear-gradient(135deg, rgba(216,182,110,0.14), rgba(9,28,50,0.78) 60%); box-shadow: 0 0 0 1px rgba(216,182,110,0.08), 0 10px 30px rgba(0,0,0,0.25); }
   .route.book .lab { color: var(--accent); }
   .route.book .val { font-family: 'Instrument Serif', Georgia, serif; font-size: 24px; line-height: 1.15; user-select: auto; }
-  .route.book .sub { font-size: 12.5px; color: var(--muted); }
-  .route.book .go { flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 2px; background: var(--accent); color: var(--ink); font: 600 13px Manrope, sans-serif; text-decoration: none; transition: transform 180ms ease, background 180ms ease; }
+  .route.book .sub { font-size: 13.5px; color: var(--muted); }
+  .route.book .go { flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 2px; background: var(--accent); color: var(--ink); font: 600 14px Manrope, sans-serif; text-decoration: none; transition: transform 180ms ease, background 180ms ease; }
   .route.book .go:hover { background: #E6C98A; transform: translateY(-1px); }
   @media (max-width: 520px) { .route.book { flex-direction: column; align-items: flex-start; } }
-
   /* Form */
   form { padding: 28px 28px 26px; background: var(--glass-strong); }
   form h2 { margin: 0 0 4px; font-size: 32px; line-height: 1.1; }
-  form .lead { margin: 0 0 24px; font-size: 13px; color: var(--muted); }
+  form .lead { margin: 0 0 24px; font-size: 14px; color: var(--muted); }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .f { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
-  .f > label, fieldset legend { font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .f > label, fieldset legend { font-size: 11.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
   .f > label span { color: var(--faint); font-weight: 500; letter-spacing: 0.08em; text-transform: none; }
-  input[type=text], input[type=email], select, textarea { width: 100%; font: 400 15px Manrope, sans-serif; color: var(--text); background: rgba(6,21,39,0.6); border: 1px solid var(--line); border-radius: 2px; padding: 12px 14px; transition: border-color 180ms ease, box-shadow 180ms ease; }
+  input[type=text], input[type=email], select, textarea { width: 100%; font: 400 16px Manrope, sans-serif; color: var(--text); background: rgba(6,21,39,0.6); border: 1px solid var(--line); border-radius: 2px; padding: 12px 14px; transition: border-color 180ms ease, box-shadow 180ms ease; }
   input::placeholder, textarea::placeholder { color: #50677F; }
   input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(216,182,110,0.15); }
   select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%); background-position: calc(100% - 18px) 52%, calc(100% - 13px) 52%; background-size: 5px 5px; background-repeat: no-repeat; }
@@ -68,25 +69,24 @@
   fieldset legend { margin-bottom: 9px; padding: 0; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .chip input { position: absolute; opacity: 0; pointer-events: none; }
-  .chip span { display: inline-flex; align-items: center; gap: 8px; padding: 8px 13px; border: 1px solid var(--line); border-radius: 999px; font-size: 12.5px; color: var(--soft); cursor: pointer; background: rgba(6,21,39,0.5); transition: border-color 180ms ease, color 180ms ease, background 180ms ease; user-select: none; }
+  .chip span { display: inline-flex; align-items: center; gap: 8px; padding: 8px 13px; border: 1px solid var(--line); border-radius: 999px; font-size: 13.5px; color: var(--soft); cursor: pointer; background: rgba(6,21,39,0.5); transition: border-color 180ms ease, color 180ms ease, background 180ms ease; user-select: none; }
   .chip span::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--c); box-shadow: 0 0 6px var(--c); opacity: 0.55; transition: opacity 180ms ease; }
   .chip input:checked + span { border-color: var(--c); color: var(--text); background: rgba(9,28,50,0.9); }
   .chip input:checked + span::before { opacity: 1; }
   .chip input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
   .hp { position: absolute; left: -9999px; }
-  .err { min-height: 16px; font-size: 12px; color: var(--bad); }
+  .err { min-height: 16px; font-size: 13px; color: var(--bad); }
   .invalid { border-color: var(--bad) !important; }
   .send { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 6px; }
-  .send small { font-size: 11.5px; color: var(--faint); max-width: 300px; line-height: 1.6; }
-  button[type=submit] { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 24px; border: 0; border-radius: 2px; background: var(--accent); color: var(--ink); font: 600 13px Manrope, sans-serif; cursor: pointer; transition: background 180ms ease, transform 180ms ease; }
+  .send small { font-size: 12.5px; color: var(--faint); max-width: 300px; line-height: 1.6; }
+  button[type=submit] { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 24px; border: 0; border-radius: 2px; background: var(--accent); color: var(--ink); font: 600 14px Manrope, sans-serif; cursor: pointer; transition: background 180ms ease, transform 180ms ease; }
   button[type=submit]:hover { background: #E8C987; transform: translateY(-2px); }
   button[type=submit][disabled] { opacity: 0.6; cursor: progress; transform: none; }
   .done { display: none; padding: 34px 28px; text-align: left; }
   .done h2 { margin: 0 0 10px; font-size: 34px; }
-  .done p { margin: 0; font-size: 14px; line-height: 1.75; color: var(--soft); }
+  .done p { margin: 0; font-size: 15px; line-height: 1.75; color: var(--soft); }
   .sent form { display: none; } .sent .done { display: block; animation: enter 500ms ease both; }
-
-  footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 22px 30px; border-top: 1px solid var(--line); font-size: 10.5px; letter-spacing: 0.06em; color: var(--faint); }
+  footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 22px 30px; border-top: 1px solid var(--line); font-size: 12px; letter-spacing: 0.06em; color: var(--faint); }
   .head, .routes, .panel { animation: enter 800ms ease both; } .routes { animation-delay: 120ms; } .panel { animation-delay: 200ms; }
   @keyframes enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @media (max-width: 900px) { .grid { grid-template-columns: 1fr; gap: 36px; padding-block: 50px 80px; } }
@@ -96,7 +96,7 @@
 <style id="cls-fix">#site-nav{min-height:82px}@media (max-width:420px){#site-nav{min-height:74px}}</style>
 </head>
 <body>
-  <div id="site-nav"></div>
+  <div id="site-nav"><noscript><nav class="ns-nav" aria-label="Main"><a href="./">9 Degrees East</a><a href="about.html">About</a><a href="our-history.html">Our history</a><a href="purpose.html">Purpose, mission &amp; values</a><a href="how-we-work.html">How we work</a><a href="locations.html">Locations</a><a href="insights.html">Insights</a><a href="journal.html">The 9DE Journal</a><a href="fuel-weather.html">Fuel Weather</a><a href="policy-tracker.html">Policy Tracker</a><a href="market-conditions.html">Market Conditions</a><a href="services.html">Products &amp; Services</a><a href="offtake-strategy.html">Offtake strategy</a><a href="deal-structuring.html">Deal structuring</a><a href="supply-agreements.html">Supply agreements</a><a href="regulatory-advisory.html">Regulations</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></nav></noscript></div>
   <main class="wrap grid">
     <div>
       <div class="head">
@@ -150,11 +150,11 @@
         <p class="k">Message sent</p>
         <h2 class="serif">Thank you, <span id="who">we've got it</span>.</h2>
         <p>Your message is on its way to 9 Degrees East. We'll reply to <b id="where">your email</b>.</p>
-        <p class="pc" style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(160,190,220,0.18);font-size:14px;color:#C9D6E3">While you wait, a little something from us: <a href="postcard.html" style="color:#D8B66E;font-weight:600;text-decoration:none">a postcard from 9° East →</a></p>
+        <p class="pc" style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(160,190,220,0.18);font-size:15px;color:#C9D6E3">While you wait, a little something from us: <a href="postcard.html" style="color:#D8B66E;font-weight:600;text-decoration:none">a postcard from 9° East →</a></p>
       </div>
     </div>
   </main>
-  <div id="site-footer"></div>
+  <div id="site-footer"><noscript><footer class="ns-nav ns-foot"><a href="legal-notice.html">Legal notice</a><a href="terms.html">Terms of use</a><a href="privacy.html">Privacy notice</a><a href="cookies.html">Cookies</a><a href="accessibility.html">Accessibility</a><a href="credits.html">Trademarks &amp; credits</a><a href="contact.html">Contact us</a><p>9 Degrees East Limited is registered in England and Wales, company number 11587380.</p></footer></noscript></div>
 
 <script>
 (function () {

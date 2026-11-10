@@ -2,9 +2,9 @@
 [build]
   publish = "site"
   # Builds the Journal articles Tom writes in the editor (content/journal -> site/journal-*.html)
-  command = "node scripts/build-journal.mjs"
+  command = "node scripts/build-journal.mjs && node scripts/build-sitemap.mjs"
   # Skip the deploy when a commit doesn't change anything in site/ (saves build credits)
-  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- site/ netlify.toml content/ scripts/build-journal.mjs"
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- site/ netlify.toml content/ scripts/build-journal.mjs scripts/build-sitemap.mjs"
 
 # The old home page address now goes to the front page
 [[redirects]]
@@ -12,3 +12,23 @@
   to = "/"
   status = 301
   force = true
+
+# Security headers for every page
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+# Logos, photos and icons rarely change: let browsers keep them for a month
+[[headers]]
+  for = "/logos/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+[[headers]]
+  for = "/media/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"

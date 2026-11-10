@@ -23,7 +23,8 @@ const onPage = new Set(P.items.map((i) => i.url));
 const found = [];
 
 // Topic words. An item must match at least one to be proposed.
-const TOPIC = /sustainable aviation fuel|\bSAF\b|renewable fuel|biofuel|biodiesel|renewable diesel|biomass-based diesel|\bHVO\b|e-?fuel|synthetic fuel|methanol|ammonia|hydrogen|low[- ]carbon fuel|clean fuel|45Z|45V|RTFO|ReFuelEU|FuelEU|RED ?III|renewable energy directive|net-zero framework|greenhouse gas|GHG|carbon intensity|燃料|航空|生物|甲醇|氢|氨|绿色/i;
+// Short codes are matched as whole words only: an unanchored "RTFO" once matched "Hertfordshire".
+const TOPIC = /sustainable aviation fuel|\bSAF\b|renewable fuel|biofuel|biodiesel|renewable diesel|biomass-based diesel|\bHVO\b|\be-?fuels?\b|synthetic fuel|\bmethanol\b|\bammonia\b|\bhydrogen\b|low[- ]carbon fuel|clean fuel|\b45Z\b|\b45V\b|\bRTFO\b|ReFuelEU|FuelEU|\bRED ?III\b|renewable energy directive|net-zero framework|greenhouse gas|\bGHG\b|carbon intensity|燃料|航空|生物|甲醇|氢|氨|绿色/i;
 
 async function get(url, type = 'text') {
   const r = await fetch(url, { headers: UA, redirect: 'follow', signal: AbortSignal.timeout(25000) });
@@ -56,7 +57,10 @@ async function us() {
 
 // ---------- UK: GOV.UK search API (free, no key) ----------
 const UK_TERMS = ['sustainable aviation fuel', 'renewable transport fuel obligation', 'low carbon fuels', 'SAF mandate', 'maritime decarbonisation'];
-const UK_FORMATS = /news_story|press_release|policy_paper|guidance|statutory_guidance|consultation|decision|notice|impact_assessment/;
+// Whole format names only, so "residential_property_tribunal_decision" no longer passes as "decision".
+const UK_FORMATS = /^(news_story|press_release|policy_paper|guidance|statutory_guidance|detailed_guide|consultation|open_consultation|closed_consultation|consultation_outcome|decision|notice|impact_assessment)$/;
+// Only departments and regulators that actually set fuel policy. Courts, tribunals and local bodies are ignored.
+const UK_ORGS = /Department for Transport|Department for Energy Security|HM Treasury|HM Revenue|Maritime and Coastguard|Civil Aviation Authority|Environment Agency|Department for Environment|Department for Business and Trade|Ofgem|Office for Zero Emission|Climate Change Committee|Prime Minister/i;
 async function uk() {
   for (const term of UK_TERMS) {
     const q = new URLSearchParams({ q: term, order: '-public_timestamp', count: '15', fields: 'title,description,link,public_timestamp,format,organisations' });
@@ -65,6 +69,7 @@ async function uk() {
       const date = (r.public_timestamp || '').slice(0, 10);
       if (!date || date < since(14) || !UK_FORMATS.test(r.format || '')) continue;
       const org = (r.organisations || []).map((o) => o.title).filter(Boolean).join(', ');
+      if (!UK_ORGS.test(org)) continue;
       propose({ region: 'UK', date, status: (r.format || '').replace(/_/g, ' ').replace(/^\w/, (c) => c.toUpperCase()), title: r.title, summary: clip(r.description), source: org || 'GOV.UK', url: 'https://www.gov.uk' + r.link });
     }
   }

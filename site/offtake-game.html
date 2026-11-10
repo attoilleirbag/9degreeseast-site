@@ -7,34 +7,37 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="description" content="Get a low-carbon fuel plant to final investment decision before the financing window closes.">
 <meta name="theme-color" content="#061527">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="9 Degrees East">
+<meta property="og:title" content="Offtake: the game">
+<meta property="og:description" content="Get a low-carbon fuel plant to final investment decision before the financing window closes.">
+<meta property="og:url" content="https://9degreeseast.com/offtake-game">
+<meta property="og:image" content="https://9degreeseast.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="site.css">
 <style>
   /* Offtake: a hidden 9 Degrees East game. Balance the term sheet until buyer, lender and shareholders all sign. */
-  :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E; --good: #7FC7A4; --bad: #E58C7A; }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; }
+  :root { --good: #7FC7A4; --bad: #E58C7A; }
   body { min-height: 100vh; display: flex; flex-direction: column; color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
          background: radial-gradient(1000px 640px at 80% 0%, rgba(31,74,122,0.32), transparent 65%), var(--ink); background-attachment: fixed; }
-  ::selection { background: var(--accent); color: var(--ink); }
   a { color: var(--accent); }
-  main { flex: 1; }
   .wrap { width: min(100% - 80px, 1180px); margin: 0 auto; }
-  .serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
-  .glass { background: var(--glass); border: 1px solid var(--line); border-radius: 3px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
   .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
   button { font: inherit; cursor: pointer; }
   button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-  .btn { min-height: 48px; padding: 0 22px; border-radius: 2px; border: 0; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; transition: transform 180ms ease, background 180ms ease, opacity 180ms ease, border-color 180ms ease; }
+  .btn { min-height: 48px; padding: 0 22px; border-radius: 2px; border: 0; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; transition: transform 180ms ease, background 180ms ease, opacity 180ms ease, border-color 180ms ease; }
   .go { background: var(--accent); color: var(--ink); } .go:hover:not(:disabled) { background: #E8C987; transform: translateY(-2px); }
   .go:disabled { opacity: 0.35; cursor: default; }
   .ghost { background: transparent; color: var(--text); border: 1px solid rgba(160,190,220,0.35); } .ghost:hover { border-color: var(--muted); }
-
   /* Level picker */
   .pick { padding-block: 64px 90px; }
   .pick h1 { margin: 0 0 16px; font-size: clamp(54px, 7vw, 96px); line-height: 0.98; letter-spacing: -0.025em; }
@@ -43,32 +46,31 @@
   .levels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
   .lvl { text-align: left; color: var(--text); padding: 22px 22px 20px; display: flex; flex-direction: column; gap: 10px; transition: border-color 250ms ease, transform 250ms ease; }
   .lvl:hover { border-color: var(--accent); transform: translateY(-3px); }
-  .lvl .k { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+  .lvl .k { font-size: 11.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
   .lvl h2 { margin: 0; font-size: 30px; line-height: 1.05; }
-  .lvl p { margin: 0; font-size: 13.5px; line-height: 1.65; color: var(--soft); }
-  .lvl .meta { margin-top: auto; padding-top: 8px; display: flex; justify-content: space-between; font-size: 11.5px; color: var(--faint); }
+  .lvl p { margin: 0; font-size: 15px; line-height: 1.65; color: var(--soft); }
+  .lvl .meta { margin-top: auto; padding-top: 8px; display: flex; justify-content: space-between; font-size: 12.5px; color: var(--faint); }
   .lvl .meta b { color: var(--accent); font-weight: 600; }
-  .practice { display: flex; align-items: center; gap: 12px; margin-top: 22px; font-size: 13.5px; color: var(--soft); cursor: pointer; width: fit-content; }
+  .practice { display: flex; align-items: center; gap: 12px; margin-top: 22px; font-size: 15px; color: var(--soft); cursor: pointer; width: fit-content; }
   .practice input { width: 18px; height: 18px; accent-color: var(--accent); }
-  .small { margin-top: 26px; font-size: 11.5px; line-height: 1.7; color: var(--faint); max-width: 720px; }
-
+  .small { margin-top: 26px; font-size: 12.5px; line-height: 1.7; color: var(--faint); max-width: 720px; }
   /* Game board */
   .game { padding-block: 44px 80px; }
   .game[hidden], .pick[hidden] { display: none; }
   .ghead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
   .ghead h1 { margin: 0; font-size: clamp(38px, 5vw, 60px); line-height: 1; }
   .ghead h1 em { color: var(--accent); font-style: italic; }
-  .ghead .brief { margin: 10px 0 0; max-width: 620px; font-size: 14px; line-height: 1.7; color: var(--muted); }
+  .ghead .brief { margin: 10px 0 0; max-width: 620px; font-size: 15px; line-height: 1.7; color: var(--muted); }
   .clock { text-align: right; }
-  .clock .lbl { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .clock .lbl { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
   .clock .t { font-family: 'Instrument Serif', Georgia, serif; font-size: 60px; line-height: 1; font-variant-numeric: tabular-nums; }
   .clock .t.low { color: var(--bad); }
   .board { display: grid; grid-template-columns: 1.15fr 1fr; gap: 44px; margin-top: 26px; }
-  h3.sec { margin: 0 0 6px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  h3.sec { margin: 0 0 6px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
   .term { padding: 15px 0 16px; border-bottom: 1px solid var(--line); }
   .term .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
-  .term label { font-size: 14px; font-weight: 500; }
-  .term .hint { display: block; margin-top: 3px; font-size: 11px; color: #8FA6BF; font-weight: 400; }
+  .term label { font-size: 15px; font-weight: 500; }
+  .term .hint { display: block; margin-top: 3px; font-size: 12px; color: #8FA6BF; font-weight: 400; }
   .term output { font-family: 'Instrument Serif', Georgia, serif; font-size: 26px; color: var(--accent); white-space: nowrap; }
   .term.nudge output { color: #F0D49A; text-shadow: 0 0 14px rgba(216,182,110,0.6); }
   input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 30px; background: transparent; cursor: pointer; }
@@ -81,35 +83,33 @@
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
   .meters { display: grid; gap: 22px; margin-top: 14px; }
   .meter .top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 9px; }
-  .meter .name { font-size: 14px; font-weight: 500; }
-  .meter .who { display: block; font-size: 11px; color: #8FA6BF; margin-top: 2px; }
+  .meter .name { font-size: 15px; font-weight: 500; }
+  .meter .who { display: block; font-size: 12px; color: #8FA6BF; margin-top: 2px; }
   .meter .val { font-family: 'Instrument Serif', Georgia, serif; font-size: 30px; font-variant-numeric: tabular-nums; }
   .bar { position: relative; height: 8px; background: #132E50; border-radius: 4px; }
   .fill { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 4px; background: linear-gradient(90deg, #3E6A9C, #8FB4DC); transition: width 260ms ease, background 300ms ease; }
   .fill.ok { background: linear-gradient(90deg, #B79652, #F0D49A); box-shadow: 0 0 14px rgba(216,182,110,0.45); }
   .tick { position: absolute; top: -5px; bottom: -5px; width: 2px; background: var(--text); opacity: 0.7; }
-  .tick::after { content: attr(data-l); position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 9px; color: var(--muted); letter-spacing: 0.08em; white-space: nowrap; }
-  .meter .want { margin-top: 8px; min-height: 18px; font-size: 12px; color: #F0D49A; }
+  .tick::after { content: attr(data-l); position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: 11px; color: var(--muted); letter-spacing: 0.08em; white-space: nowrap; }
+  .meter .want { margin-top: 8px; min-height: 18px; font-size: 13px; color: #F0D49A; }
   .feed { margin-top: 26px; border-top: 1px solid var(--line); padding-top: 12px; min-height: 140px; }
-  .msg { display: flex; gap: 12px; padding: 8px 0; font-size: 13px; line-height: 1.6; color: var(--soft); animation: in 380ms ease both; }
-  .msg b { flex: none; width: 84px; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); padding-top: 4px; font-weight: 600; }
+  .msg { display: flex; gap: 12px; padding: 8px 0; font-size: 14px; line-height: 1.6; color: var(--soft); animation: in 380ms ease both; }
+  .msg b { flex: none; width: 84px; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); padding-top: 4px; font-weight: 600; }
   .msg.event b { color: #8FB4DC; } .msg.event { color: var(--text); }
   @keyframes in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-
   /* Result */
   .overlay { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 20px; background: rgba(4,12,24,0.84); backdrop-filter: blur(6px); }
   .overlay[hidden] { display: none; }
   .card { width: min(100%, 580px); max-height: calc(100vh - 40px); overflow: auto; padding: 40px 38px 34px; background: linear-gradient(180deg, #0F2A4B, #0A1E37); border: 1px solid #2E4C74; animation: in 500ms ease both; }
   .card h2 { margin: 0 0 10px; font-size: 46px; line-height: 1.02; }
   .card h2 em { color: var(--accent); font-style: italic; }
-  .card p { margin: 0 0 20px; font-size: 14px; line-height: 1.75; color: var(--muted); }
-  .sheet { margin: 0 0 20px; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; font-size: 13px; }
+  .card p { margin: 0 0 20px; font-size: 15px; line-height: 1.75; color: var(--muted); }
+  .sheet { margin: 0 0 20px; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; font-size: 14px; }
   .sheet span { color: var(--muted); } .sheet strong { display: block; color: var(--text); font-weight: 600; margin-top: 2px; }
   .score { font-family: 'Instrument Serif', Georgia, serif; font-size: 22px; color: var(--accent); margin-bottom: 20px; }
   .card .btns { display: flex; flex-wrap: wrap; gap: 10px; }
-  .card .real { display: block; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 13px; color: var(--soft); }
+  .card .real { display: block; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 14px; color: var(--soft); }
   .card .real a { font-weight: 600; text-decoration: none; }
-
   @media (max-width: 900px) { .levels { grid-template-columns: 1fr; } .board { grid-template-columns: 1fr; gap: 24px; } .meters-wrap { order: -1; } }
   @media (max-width: 700px) { .wrap { width: calc(100% - 40px); } .pick { padding-block: 40px 70px; } .clock .t { font-size: 46px; } .card { padding: 30px 22px 24px; } .card h2 { font-size: 38px; } .sheet { grid-template-columns: 1fr; } }
 </style>
@@ -117,7 +117,7 @@
 <style id="cls-fix">#site-nav{min-height:82px}@media (max-width:420px){#site-nav{min-height:74px}}</style>
 </head>
 <body>
-  <div id="site-nav"></div>
+  <div id="site-nav"><noscript><nav class="ns-nav" aria-label="Main"><a href="./">9 Degrees East</a><a href="about.html">About</a><a href="our-history.html">Our history</a><a href="purpose.html">Purpose, mission &amp; values</a><a href="how-we-work.html">How we work</a><a href="locations.html">Locations</a><a href="insights.html">Insights</a><a href="journal.html">The 9DE Journal</a><a href="fuel-weather.html">Fuel Weather</a><a href="policy-tracker.html">Policy Tracker</a><a href="market-conditions.html">Market Conditions</a><a href="services.html">Products &amp; Services</a><a href="offtake-strategy.html">Offtake strategy</a><a href="deal-structuring.html">Deal structuring</a><a href="supply-agreements.html">Supply agreements</a><a href="regulatory-advisory.html">Regulations</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></nav></noscript></div>
   <main>
     <section class="wrap pick" id="pick" aria-labelledby="pick-title">
       <p class="eyebrow">You found it · A 9 Degrees East game</p>
@@ -174,7 +174,7 @@
     </div>
   </div>
 
-  <div id="site-footer"></div>
+  <div id="site-footer"><noscript><footer class="ns-nav ns-foot"><a href="legal-notice.html">Legal notice</a><a href="terms.html">Terms of use</a><a href="privacy.html">Privacy notice</a><a href="cookies.html">Cookies</a><a href="accessibility.html">Accessibility</a><a href="credits.html">Trademarks &amp; credits</a><a href="contact.html">Contact us</a><p>9 Degrees East Limited is registered in England and Wales, company number 11587380.</p></footer></noscript></div>
 
 <script>
 // Offtake game model: shared by the page and the balance test.
@@ -391,7 +391,7 @@ if (typeof module !== 'undefined') module.exports = OFFTAKE;
       g.fillStyle = '#8FA6BF'; g.font = '600 15px Manrope, sans-serif'; g.fillText(rw[0].toUpperCase(), x, y);
       g.fillStyle = '#EEF2F5'; g.font = '400 40px "Instrument Serif", Georgia, serif'; g.fillText(rw[1], x, y + 46); });
     g.fillStyle = '#D8B66E'; g.font = '600 18px Manrope, sans-serif'; g.fillText('9 DEGREES EAST', 80, H - 70);
-    g.fillStyle = '#6F87A3'; g.font = '400 16px Manrope, sans-serif'; g.fillText('9degreeseast.com', W - 240, H - 70);
+    g.fillStyle = '#8A9FB8'; g.font = '400 16px Manrope, sans-serif'; g.fillText('9degreeseast.com', W - 240, H - 70);
     c.toBlob(function (bl) { var a = document.createElement('a'); a.href = URL.createObjectURL(bl); a.download = '9DE-term-sheet-' + key + '.png'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000); });
   });
 

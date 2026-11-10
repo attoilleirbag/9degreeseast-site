@@ -6,51 +6,57 @@
 <title>One Molecule | 9 Degrees East</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#061527">
+<meta name="description" content="One Molecule: the life of a low-carbon fuel molecule, from a gust of wind to a signed deal.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="9 Degrees East">
+<meta property="og:title" content="One Molecule">
+<meta property="og:description" content="One Molecule: the life of a low-carbon fuel molecule, from a gust of wind to a signed deal.">
+<meta property="og:url" content="https://9degreeseast.com/one-molecule">
+<meta property="og:image" content="https://9degreeseast.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="site.css">
 <style>
-  :root { --ink: #061527; --surface: #0D2440; --text: #EEF2F5; --muted: #A8B7C6; --line: #22395A; --accent: #D8B66E; --o: #E58C7A; --c: #8FA8C6; --h: #F2F5F8; }
-  * { box-sizing: border-box; }
+  :root { --surface: #0D2440; --line: #22395A; --o: #E58C7A; --c: #8FA8C6; --h: #F2F5F8; }
   html { scroll-behavior: smooth; }
   body { margin: 0; background: var(--ink); color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
   .story { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); width: min(100% - 48px, 1240px); margin: 0 auto; }
   .steps { position: relative; z-index: 2; }
   .step { min-height: 92vh; display: flex; flex-direction: column; justify-content: center; padding: 0 40px 0 0; opacity: 0.25; transition: opacity 600ms ease; }
   .step.on { opacity: 1; }
-  .num { margin: 0 0 18px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 12px; }
+  .num { margin: 0 0 18px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 12px; }
   .num::before { content: ""; width: 22px; height: 1px; background: currentColor; }
   .step h2 { margin: 0 0 16px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(34px, 4vw, 54px); line-height: 1.05; letter-spacing: -0.02em; }
   .step h2 em { color: var(--accent); }
   .step p { margin: 0; max-width: 440px; font-size: 16px; line-height: 1.8; color: var(--muted); }
-  .step .fact { margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--line); max-width: 440px; font-size: 12px; letter-spacing: 0.04em; color: #8FA6BF; }
+  .step .fact { margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--line); max-width: 440px; font-size: 13px; letter-spacing: 0.04em; color: #8FA6BF; }
   .intro h1 { margin: 0 0 18px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(58px, 8vw, 110px); line-height: 0.95; letter-spacing: -0.03em; }
   .intro h1 em { color: var(--accent); }
-  .scroll-cue { margin-top: 34px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #6F87A3; animation: bob 2.4s ease-in-out infinite; }
+  .scroll-cue { margin-top: 34px; font-size: 11.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #8A9FB8; animation: bob 2.4s ease-in-out infinite; }
   @keyframes bob { 50% { transform: translateY(6px); } }
-
   .stage-wrap { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; }
   svg.stage { width: min(100%, 620px); height: auto; overflow: hidden; }
-
   /* scene groups fade in and out by step */
   .sc { opacity: 0; transition: opacity 260ms ease; }
   .sc.show { opacity: 1; transition: opacity 650ms 320ms ease; }
   .sc.dim { opacity: 0.18; transition: opacity 650ms 320ms ease; }
-
   /* atoms: positioned per step */
   .atom { transition: transform 1300ms 200ms cubic-bezier(.6,.05,.25,1), opacity 500ms 250ms ease; opacity: 0; }
   .atom circle { stroke-width: 1.2; }
-  .atom text { font-family: Manrope, sans-serif; font-size: 13px; font-weight: 600; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+  .atom text { font-family: Manrope, sans-serif; font-size: 14px; font-weight: 600; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
   .bond { opacity: 0; stroke: #9DB2CB; stroke-width: 3; stroke-linecap: round; transition: opacity 150ms ease; }
   [data-step="0"] .atom.mol, [data-step="4"] .atom.mol, [data-step="5"] .atom.mol { opacity: 1; }
   [data-step="0"] .bond, [data-step="4"] .bond, [data-step="5"] .bond { opacity: 1; transition: opacity 600ms 1300ms ease; }
   [data-step="2"] .atom.h { opacity: 1; }
   [data-step="3"] .atom.h, [data-step="3"] .atom.c, [data-step="3"] .atom.o, [data-step="3"] .atom.ox { opacity: 1; }
   [data-step="4"] .atom.ox, [data-step="5"] .atom.ox { opacity: 0; }
-
   /* step 2: hydrogens freshly split, floating at left */
   [data-step="2"] .h1 { transform: translate(-150px, -90px); }
   [data-step="2"] .h2 { transform: translate(-110px, -30px); }
@@ -71,7 +77,6 @@
   [data-step="6"] .mol-g { transform: translate(17px, 96px) scale(0.2); opacity: 0; }
   .mol-g { transition: transform 1400ms cubic-bezier(.6,.05,.25,1), opacity 900ms ease; }
   .mol-g { transition: transform 1400ms cubic-bezier(.6,.05,.25,1); transform-origin: 300px 280px; transform-box: view-box; }
-
   /* motion details */
   .rotor { transform-origin: 160px 210px; animation: spin 3.2s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -94,13 +99,11 @@
   .seal { opacity: 0; transform-origin: 396px 340px; transform-box: view-box; }
   [data-step="8"] .seal { animation: stamp 600ms 2.6s cubic-bezier(.2,1.6,.4,1) forwards; }
   @keyframes stamp { from { opacity: 0; transform: scale(1.8); } to { opacity: 1; transform: scale(1); } }
-
   .end { min-height: 70vh; display: grid; place-items: center; text-align: center; padding: 60px 24px 90px; border-top: 1px solid var(--line); }
   .end h2 { margin: 0 0 16px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(40px, 5.5vw, 76px); line-height: 1.02; letter-spacing: -0.02em; }
   .end h2 em { color: var(--accent); }
   .end p { margin: 0 auto; max-width: 520px; font-size: 16px; line-height: 1.8; color: var(--muted); }
-  .end .sign { margin-top: 34px; font-size: 11px; letter-spacing: 0.24em; color: var(--accent); }
-
+  .end .sign { margin-top: 34px; font-size: 12px; letter-spacing: 0.24em; color: var(--accent); }
   @media (max-width: 860px) {
     .story { display: flex; flex-direction: column; width: 100%; }
     .stage-wrap { order: -1; position: sticky; top: 0; z-index: 5; height: 44vh; height: 44svh; padding: 10px 0; background: var(--ink); border-bottom: 1px solid var(--line); box-shadow: 0 18px 30px rgba(8,26,46,0.9); }
@@ -110,16 +113,15 @@
     .step p, .step .fact { max-width: none; }
     .intro h1 { font-size: 54px; }
   }
-
   /* Fuel switch, atom facts, new scenes */
   .fuels { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 26px; }
-  .fuels button { min-height: 40px; padding: 0 16px; border: 1px solid #2E4C74; border-radius: 999px; background: none; color: var(--muted); font: 500 13px Manrope, sans-serif; cursor: pointer; }
+  .fuels button { min-height: 40px; padding: 0 16px; border: 1px solid #2E4C74; border-radius: 999px; background: none; color: var(--muted); font: 500 14px Manrope, sans-serif; cursor: pointer; }
   .fuels button[aria-pressed="true"] { border-color: var(--accent); color: var(--text); }
   .fuels button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .atom { cursor: pointer; } .atom text { pointer-events: none; }
-  .tipbox { position: absolute; z-index: 6; max-width: 240px; padding: 10px 12px; background: rgba(9,28,50,0.95); border: 1px solid rgba(216,182,110,0.5); border-radius: 3px; font-size: 12.5px; line-height: 1.55; color: var(--text); pointer-events: none; opacity: 0; transition: opacity 200ms ease; }
+  .tipbox { position: absolute; z-index: 6; max-width: 240px; padding: 10px 12px; background: rgba(9,28,50,0.95); border: 1px solid rgba(216,182,110,0.5); border-radius: 3px; font-size: 13.5px; line-height: 1.55; color: var(--text); pointer-events: none; opacity: 0; transition: opacity 200ms ease; }
   .tipbox.on { opacity: 1; }
-  .tapnote { position: absolute; bottom: 14px; left: 0; right: 0; text-align: center; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #6F87A3; transition: opacity 300ms; }
+  .tapnote { position: absolute; bottom: 14px; left: 0; right: 0; text-align: center; font-size: 11.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #8A9FB8; transition: opacity 300ms; }
   .stage-wrap { position: sticky; }
   [data-fuel="saf"] .mol-g, [data-fuel="diesel"] .mol-g { display: none; }
   .chain { opacity: 0; transition: opacity 600ms 400ms ease; }
@@ -134,13 +136,13 @@
   .gapbar { transform-origin: 50% 100%; transform: scaleY(0); transform-box: fill-box; transition: transform 1100ms 300ms cubic-bezier(.2,.9,.3,1); }
   [data-step="7"] .gapbar { transform: scaleY(1); }
   [data-step="5"] .mol-g { transform: translate(-130px, 0) scale(0.85); }
-  .back { display: inline-block; margin-top: 26px; font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; }
+  .back { display: inline-block; margin-top: 26px; font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: none; }
 </style>
 <script src="nav.js" defer></script>
 <style id="cls-fix">#site-nav{min-height:62px}</style>
 </head>
 <body>
-  <div id="site-nav"></div>
+  <div id="site-nav"><noscript><nav class="ns-nav" aria-label="Main"><a href="./">9 Degrees East</a><a href="about.html">About</a><a href="our-history.html">Our history</a><a href="purpose.html">Purpose, mission &amp; values</a><a href="how-we-work.html">How we work</a><a href="locations.html">Locations</a><a href="insights.html">Insights</a><a href="journal.html">The 9DE Journal</a><a href="fuel-weather.html">Fuel Weather</a><a href="policy-tracker.html">Policy Tracker</a><a href="market-conditions.html">Market Conditions</a><a href="services.html">Products &amp; Services</a><a href="offtake-strategy.html">Offtake strategy</a><a href="deal-structuring.html">Deal structuring</a><a href="supply-agreements.html">Supply agreements</a><a href="regulatory-advisory.html">Regulations</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></nav></noscript></div>
   <main class="story">
     <div class="steps">
       <section class="step intro on" data-s="0">
@@ -358,7 +360,7 @@
       <a class="back" href="contact.html">Working on a molecule like this? Talk to us →</a>
     </div>
   </section>
-  <div id="site-footer"></div>
+  <div id="site-footer"><noscript><footer class="ns-nav ns-foot"><a href="legal-notice.html">Legal notice</a><a href="terms.html">Terms of use</a><a href="privacy.html">Privacy notice</a><a href="cookies.html">Cookies</a><a href="accessibility.html">Accessibility</a><a href="credits.html">Trademarks &amp; credits</a><a href="contact.html">Contact us</a><p>9 Degrees East Limited is registered in England and Wales, company number 11587380.</p></footer></noscript></div>
 
 <script>
 (function () {

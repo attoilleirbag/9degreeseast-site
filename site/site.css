@@ -1,0 +1,53 @@
+/* 9 Degrees East: shared base for every page. Colours and type live here; change them once. */
+:root {
+  --ink: #061527;
+  --glass: rgba(9,28,50,0.72);
+  --glass-strong: rgba(9,28,50,0.86);
+  --text: #EEF2F5;
+  --muted: #A8B7C6;
+  --soft: #C9D6E3;
+  --faint: #8A9FB8;
+  --line: rgba(160,190,220,0.18);
+  --accent: #D8B66E;
+  --methanol: #5EC8D8;
+  --saf: #F0C877;
+  --efuels: #E9F3FF;
+  --rd: #E39A55;
+  --rng: #A9A2F0;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+::selection { background: var(--accent); color: var(--ink); }
+main { flex: 1; }
+.serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+.glass { background: var(--glass); border: 1px solid var(--line); border-radius: 3px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Plain link list shown only when JavaScript is off (and read by crawlers); nav.js replaces it with the real menu and footer. */
+.ns-nav { display: flex; flex-wrap: wrap; gap: 6px 18px; width: min(100% - 40px, 1180px); margin: 0 auto; padding: 18px 0; font-size: 15px; }
+.ns-nav a { color: var(--soft); }
+.ns-foot { border-top: 1px solid var(--line); margin-top: 40px; color: var(--muted); }
+.ns-foot p { flex-basis: 100%; margin: 6px 0 0; font-size: 14px; }
+
+/* Visitors who ask their device for less motion get the finished state straight away. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; transition-delay: 0ms !important; }
+}
+
+/* Open sections. Reading content sits directly on the page, divided by a rule. Boxes (.glass) are kept for things you can click. */
+.sec.open { padding: 44px 0 34px; border-top: 1px solid var(--line); }
+.svc:has(.sec.open) { gap: 0; }
+.way.open { padding: 24px 0 26px; border-top: 1px solid var(--line); }
+.along.open { padding: 26px 0 8px; border-top: 1px solid var(--line); }
+.stat.open { padding: 4px 22px 4px 0; border-right: 1px solid var(--line); }
+.stat.open:last-child { border-right: 0; }
+.exp .open, .duo .open { padding: 24px 0 8px; border-top: 1px solid var(--line); }
+.fgrid.one { grid-template-columns: 1fr; }
+.fgrid.one .bio { padding: 36px 40px; }
+.fgrid.one .bio p { max-width: 760px; }
+@media (max-width: 860px) {
+  .sec.open { padding: 30px 0 22px; }
+  .stat.open { padding: 14px 0; border-right: 0; border-top: 1px solid var(--line); }
+  .fgrid.one .bio { padding: 24px 22px; }
+}

@@ -7,48 +7,54 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="description" content="How far is your city from the 9° East meridian? Make a postcard.">
 <meta name="theme-color" content="#061527">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="9 Degrees East">
+<meta property="og:title" content="A postcard from 9° East">
+<meta property="og:description" content="How far is your city from the 9° East meridian? Make a postcard.">
+<meta property="og:url" content="https://9degreeseast.com/postcard">
+<meta property="og:image" content="https://9degreeseast.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="site.css">
 <style>
   /* A postcard from 9° East: pick a city or tap the map, see how far it sits from the meridian, keep the card. */
-  :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E; }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; }
   body { min-height: 100vh; display: flex; flex-direction: column; color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
          background: radial-gradient(1000px 640px at 80% 0%, rgba(31,74,122,0.32), transparent 65%), var(--ink); background-attachment: fixed; }
   a { color: var(--accent); }
-  main { flex: 1; }
   .wrap { width: min(100% - 80px, 1180px); margin: 0 auto; }
-  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
   .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
   .head { padding-block: 60px 26px; }
   h1 { margin: 0 0 14px; font: 400 clamp(50px, 6.5vw, 88px)/0.98 'Instrument Serif', Georgia, serif; letter-spacing: -0.025em; }
   h1 em { color: var(--accent); }
   .lede { margin: 0; max-width: 640px; font: 400 clamp(19px, 1.9vw, 24px)/1.4 'Instrument Serif', Georgia, serif; color: var(--soft); }
   .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 36px; padding-bottom: 90px; align-items: start; }
-  .pickers label { display: block; margin: 0 0 8px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .pickers label { display: block; margin: 0 0 8px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
   .search { position: relative; }
-  .search input { width: 100%; min-height: 50px; padding: 0 16px; border: 1px solid var(--line); border-radius: 3px; background: rgba(9,28,50,0.72); color: var(--text); font: 500 15px Manrope, sans-serif; }
+  .search input { width: 100%; min-height: 50px; padding: 0 16px; border: 1px solid var(--line); border-radius: 3px; background: rgba(9,28,50,0.72); color: var(--text); font: 500 16px Manrope, sans-serif; }
   .search input:focus { outline: 2px solid var(--accent); outline-offset: 2px; border-color: transparent; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 26px; }
-  .chips button { min-height: 36px; padding: 0 13px; border: 1px solid var(--line); border-radius: 999px; background: none; color: var(--soft); font: 500 12px Manrope, sans-serif; cursor: pointer; }
+  .chips button { min-height: 36px; padding: 0 13px; border: 1px solid var(--line); border-radius: 999px; background: none; color: var(--soft); font: 500 13px Manrope, sans-serif; cursor: pointer; }
   .chips button:hover, .chips button[aria-pressed="true"] { border-color: var(--accent); color: var(--text); }
   .chips button:focus-visible, .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .map { position: relative; border: 1px solid var(--line); border-radius: 3px; background: rgba(9,28,50,0.55); cursor: crosshair; touch-action: manipulation; }
   .map canvas { display: block; width: 100%; height: auto; }
-  .map .tip { position: absolute; left: 12px; bottom: 10px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); pointer-events: none; }
+  .map .tip { position: absolute; left: 12px; bottom: 10px; font-size: 11.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); pointer-events: none; }
   .card-wrap { position: sticky; top: 24px; }
   .card { width: 100%; aspect-ratio: 1200 / 760; border-radius: 4px; overflow: hidden; box-shadow: 0 30px 70px rgba(0,0,0,0.45); border: 1px solid rgba(216,182,110,0.3); }
   .card canvas { display: block; width: 100%; height: 100%; }
   .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
-  .btn { min-height: 48px; padding: 0 22px; border-radius: 2px; border: 0; font: 600 13px Manrope, sans-serif; cursor: pointer; display: inline-flex; align-items: center; text-decoration: none; }
+  .btn { min-height: 48px; padding: 0 22px; border-radius: 2px; border: 0; font: 600 14px Manrope, sans-serif; cursor: pointer; display: inline-flex; align-items: center; text-decoration: none; }
   .go { background: var(--accent); color: var(--ink); } .go:hover { background: #E8C987; }
   .ghost { background: transparent; color: var(--text); border: 1px solid rgba(160,190,220,0.35); }
-  .note { margin-top: 14px; font-size: 11.5px; line-height: 1.7; color: var(--faint); }
+  .note { margin-top: 14px; font-size: 12.5px; line-height: 1.7; color: var(--faint); }
   @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } .card-wrap { position: static; order: -1; } }
   @media (max-width: 700px) { .wrap { width: calc(100% - 40px); } .head { padding-block: 40px 20px; } }
 </style>
@@ -57,7 +63,7 @@
 <style id="cls-fix">#site-nav{min-height:82px}@media (max-width:420px){#site-nav{min-height:74px}}</style>
 </head>
 <body>
-  <div id="site-nav"></div>
+  <div id="site-nav"><noscript><nav class="ns-nav" aria-label="Main"><a href="./">9 Degrees East</a><a href="about.html">About</a><a href="our-history.html">Our history</a><a href="purpose.html">Purpose, mission &amp; values</a><a href="how-we-work.html">How we work</a><a href="locations.html">Locations</a><a href="insights.html">Insights</a><a href="journal.html">The 9DE Journal</a><a href="fuel-weather.html">Fuel Weather</a><a href="policy-tracker.html">Policy Tracker</a><a href="market-conditions.html">Market Conditions</a><a href="services.html">Products &amp; Services</a><a href="offtake-strategy.html">Offtake strategy</a><a href="deal-structuring.html">Deal structuring</a><a href="supply-agreements.html">Supply agreements</a><a href="regulatory-advisory.html">Regulations</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></nav></noscript></div>
   <main>
     <header class="wrap head">
       <p class="eyebrow">You found it · A postcard from 9° East</p>
@@ -79,7 +85,7 @@
       </section>
     </div>
   </main>
-  <div id="site-footer"></div>
+  <div id="site-footer"><noscript><footer class="ns-nav ns-foot"><a href="legal-notice.html">Legal notice</a><a href="terms.html">Terms of use</a><a href="privacy.html">Privacy notice</a><a href="cookies.html">Cookies</a><a href="accessibility.html">Accessibility</a><a href="credits.html">Trademarks &amp; credits</a><a href="contact.html">Contact us</a><p>9 Degrees East Limited is registered in England and Wales, company number 11587380.</p></footer></noscript></div>
 
 <script>
 (function () {
@@ -171,7 +177,7 @@
     if (c.fact) { g.fillStyle = '#C9D6E3'; g.font = '400 23px Manrope, sans-serif'; wrapText(c.fact, 80, 450, 640, 36); }
     g.strokeStyle = 'rgba(160,190,220,0.25)'; g.lineWidth = 1; g.beginPath(); g.moveTo(80, CH - 120); g.lineTo(CW - 80, CH - 120); g.stroke();
     g.fillStyle = '#D8B66E'; g.font = '600 20px Manrope, sans-serif'; g.fillText('9 DEGREES EAST', 80, CH - 72);
-    g.fillStyle = '#6F87A3'; g.font = '500 19px Manrope, sans-serif'; var u = 'Commercial advisory for low-carbon fuels · 9degreeseast.com'; g.fillText(u, CW - 80 - g.measureText(u).width, CH - 72);
+    g.fillStyle = '#8A9FB8'; g.font = '500 19px Manrope, sans-serif'; var u = 'Commercial advisory for low-carbon fuels · 9degreeseast.com'; g.fillText(u, CW - 80 - g.measureText(u).width, CH - 72);
   }
 
   function choose(c, lat, lon) {

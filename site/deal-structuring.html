@@ -5,65 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Deal structuring | 9 Degrees East</title>
 <meta name="theme-color" content="#061527">
+<meta name="description" content="Deal structuring for low-carbon fuels: price, volume, credit and sustainability terms that the producer, the buyer and their lenders can all sign.">
+<link rel="canonical" href="https://9degreeseast.com/deal-structuring">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="9 Degrees East">
+<meta property="og:title" content="Deal structuring">
+<meta property="og:description" content="Deal structuring for low-carbon fuels: price, volume, credit and sustainability terms that the producer, the buyer and their lenders can all sign.">
+<meta property="og:url" content="https://9degreeseast.com/deal-structuring">
+<meta property="og:image" content="https://9degreeseast.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="page.css">
 <style>
   /* Service page: shared menu, title and intro, then three sections. */
-  :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --faint: #6F87A3; --line: rgba(160,190,220,0.18); --accent: #D8B66E; --c: #A9A2F0; }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; }
-  body { min-height: 100vh; display: flex; flex-direction: column; color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
-         background: radial-gradient(900px 600px at 85% 0%, rgba(31,74,122,0.28), transparent 65%), var(--ink); background-attachment: fixed; }
-  ::selection { background: var(--accent); color: var(--ink); }
-  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-  .wrap { width: min(100% - 80px, 1180px); margin-inline: auto; }
-  .serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
-  .glass { background: var(--glass); border: 1px solid var(--line); border-radius: 3px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-  main { flex: 1; }
-  .head { padding-block: 90px 50px; animation: enter 800ms ease both; }
-  .k { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--c); }
-  .k::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
-  h1 { margin: 0 0 18px; font-size: clamp(48px, 7vw, 96px); line-height: 0.98; letter-spacing: -0.025em; text-wrap: balance; }
-  h1 em { font-style: italic; color: var(--accent); }
-  .intro { margin: 0; max-width: 620px; font-family: 'Instrument Serif', Georgia, serif; font-size: clamp(20px, 2vw, 26px); line-height: 1.4; color: var(--soft); }
-  .slots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding-bottom: 100px; }
-  .slot { padding: 22px 24px; min-height: 150px; display: flex; flex-direction: column; gap: 8px; animation: enter 800ms 150ms ease both; }
-  .slot .n { font-size: 11px; color: var(--c); font-variant-numeric: tabular-nums; }
-  .slot h2 { margin: 0; font-size: 28px; line-height: 1.1; }
-  .slot p { margin: 0; font-size: 13px; color: var(--faint); }
-  footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 22px 30px; border-top: 1px solid var(--line); font-size: 10.5px; letter-spacing: 0.06em; color: var(--faint); }
-
+  :root { --c: #A9A2F0; }
   /* Service page body: three numbered sections in glass panels */
-  .svc { display: grid; gap: 10px; padding-bottom: 40px; }
-  .sec { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 34px; padding: 30px 32px; animation: enter 800ms 150ms ease both; }
-  .sec .lab { display: flex; flex-direction: column; gap: 10px; }
-  .sec .n { font-size: 11px; color: var(--c); font-variant-numeric: tabular-nums; }
-  .sec h2 { margin: 0; font-size: 32px; line-height: 1.08; }
-  .sec .body p { margin: 0 0 14px; font-size: 15px; line-height: 1.8; color: var(--soft); max-width: 720px; }
-  .sec .body p.lead { font-family: 'Instrument Serif', Georgia, serif; font-size: 23px; line-height: 1.4; color: var(--text); }
-  .sec ul { margin: 4px 0 16px; padding: 0; list-style: none; max-width: 760px; }
-  .sec li { position: relative; padding: 9px 0 9px 22px; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.7; color: var(--soft); }
-  .sec li:last-child { border-bottom: 1px solid var(--line); }
-  .sec li::before { content: ""; position: absolute; left: 2px; top: 18px; width: 6px; height: 6px; border-radius: 50%; background: var(--c); box-shadow: 0 0 6px var(--c); }
-  .sec li b { color: var(--text); font-weight: 600; }
-  .close { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 30px; padding-bottom: 100px; }
-  .close p { margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-size: 26px; line-height: 1.3; max-width: 640px; }
-  .close .btn { display: inline-flex; align-items: center; min-height: 46px; padding: 0 22px; border-radius: 2px; background: var(--accent); color: var(--ink); font-size: 13px; font-weight: 600; text-decoration: none; }
-  .close .btn:hover { background: #E8C987; }
-  .reviewed { flex-basis: 100%; margin-top: 4px !important; font: 400 11.5px Manrope, sans-serif !important; color: var(--faint); }
+  .sec .n { font-size: 12px; color: var(--c); font-variant-numeric: tabular-nums; }
+  .reviewed { flex-basis: 100%; margin-top: 4px !important; font: 400 12.5px Manrope, sans-serif !important; color: var(--faint); }
   @media (max-width: 860px) { .sec { grid-template-columns: 1fr; gap: 16px; padding: 24px 22px; } .sec .body p.lead { font-size: 21px; } }
-  @keyframes enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-  @media (max-width: 700px) { .wrap { width: calc(100% - 40px); } .head { padding-block: 56px 32px; } .slots { grid-template-columns: 1fr; } }
 </style>
 <script src="nav.js" defer></script>
 <style id="cls-fix">#site-nav{min-height:82px}@media (max-width:420px){#site-nav{min-height:74px}}</style>
 </head>
 <body>
-  <div id="site-nav"></div>
+  <div id="site-nav"><noscript><nav class="ns-nav" aria-label="Main"><a href="./">9 Degrees East</a><a href="about.html">About</a><a href="our-history.html">Our history</a><a href="purpose.html">Purpose, mission &amp; values</a><a href="how-we-work.html">How we work</a><a href="locations.html">Locations</a><a href="insights.html">Insights</a><a href="journal.html">The 9DE Journal</a><a href="fuel-weather.html">Fuel Weather</a><a href="policy-tracker.html">Policy Tracker</a><a href="market-conditions.html">Market Conditions</a><a href="services.html">Products &amp; Services</a><a href="offtake-strategy.html">Offtake strategy</a><a href="deal-structuring.html">Deal structuring</a><a href="supply-agreements.html">Supply agreements</a><a href="regulatory-advisory.html">Regulations</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></nav></noscript></div>
   <main>
     <header class="wrap head">
       <p class="k">Products &amp; Services</p>
@@ -71,7 +44,7 @@
       <p class="intro">Price, volume, credit and sustainability terms that work for both sides.</p>
     </header>
     <section class="wrap svc" aria-label="About this service">
-      <div class="sec glass"><div class="lab"><span class="n">01</span><h2 class="serif">What it is</h2></div><div class="body"><p class="lead">Deal structuring turns an agreed commercial intent into terms that the producer, the buyer and their lenders can all sign.</p>
+      <div class="sec open"><div class="lab"><span class="n">01</span><h2 class="serif">What it is</h2></div><div class="body"><p class="lead">Deal structuring turns an agreed commercial intent into terms that the producer, the buyer and their lenders can all sign.</p>
 <p>In low-carbon fuels the difficult parts are the same on almost every deal. There is no liquid forward market for green methanol or e-SAF to price against. New plants carry ramp-up risk. The seller is often a new project company while the buyer wants flexibility. And the value of the fuel depends on certification that has to hold for the life of the contract.</p>
 <ul>
 <li><b>Price.</b> Fixed with indexation, cost pass-through for hydrogen, power, CO<sub>2</sub> or feedstock, or a fossil index plus a premium, often with a floor and a cap.</li>
@@ -80,13 +53,13 @@
 <li><b>Sustainability.</b> Certification scheme (ISCC EU, RSB and others), carbon intensity thresholds, mass balance or book-and-claim, and who owns which certificates.</li>
 <li><b>Risk allocation.</b> Change in law, force majeure, construction delay and termination payments.</li>
 </ul></div></div>
-      <div class="sec glass"><div class="lab"><span class="n">02</span><h2 class="serif">When projects need it</h2></div><div class="body"><ul>
+      <div class="sec open"><div class="lab"><span class="n">02</span><h2 class="serif">When projects need it</h2></div><div class="body"><ul>
 <li><b>Once a buyer reaches term sheet stage</b> and the headline price has to become a formula that survives five years of market moves.</li>
 <li><b>When the two sides want different things,</b> for example lenders asking for minimum revenue while the buyer will only pay for compliant volumes.</li>
 <li><b>When public support has to fit around the contract.</b> The UK's revenue certainty contracts for SAF, set up under the Sustainable Aviation Fuel Act 2026, pay producers the difference to a strike price. The EU Hydrogen Bank pays a fixed premium. ETS allowances set aside for SAF cover part of the price gap. Each changes what the offtake contract needs to carry.</li>
 <li><b>When an existing agreement no longer works</b> because costs, rules or volumes have moved.</li>
 </ul></div></div>
-      <div class="sec glass"><div class="lab"><span class="n">03</span><h2 class="serif">How we help</h2></div><div class="body"><ul>
+      <div class="sec open"><div class="lab"><span class="n">03</span><h2 class="serif">How we help</h2></div><div class="body"><ul>
 <li><b>Model the deal from both sides,</b> drawing on Tom's time with developers and buyers: the producer's debt service against what the fuel is worth to the buyer. That value depends on where the fuel counts across overlapping regulations, and on its production pathway, since e-fuels carry sub-mandates and multipliers that biofuels do not.</li>
 <li><b>Design and stress-test the price formula</b> against power, feedstock, fossil fuel and credit price scenarios.</li>
 <li><b>Write the term sheet and negotiate it</b> alongside the client's lawyers, with lenders' requirements built in from the start.</li>
@@ -95,7 +68,7 @@
     </section>
     <section class="wrap close"><p>Got a term sheet that needs to work for both sides?</p><a class="btn" href="contact.html">Contact us</a><p class="reviewed">Last reviewed October 2026. Regulations change often; check the official texts before relying on any figure here.</p></section>
   </main>
-  <div id="site-footer"></div>
+  <div id="site-footer"><noscript><footer class="ns-nav ns-foot"><a href="legal-notice.html">Legal notice</a><a href="terms.html">Terms of use</a><a href="privacy.html">Privacy notice</a><a href="cookies.html">Cookies</a><a href="accessibility.html">Accessibility</a><a href="credits.html">Trademarks &amp; credits</a><a href="contact.html">Contact us</a><p>9 Degrees East Limited is registered in England and Wales, company number 11587380.</p></footer></noscript></div>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "bdb89935402140bd8cbd88633ab1af84"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

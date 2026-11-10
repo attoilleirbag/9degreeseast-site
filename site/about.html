@@ -6,77 +6,75 @@
 <title>About | 9 Degrees East</title>
 <meta name="description" content="9 Degrees East is a commercial advisory firm for low-carbon fuels, structuring long-term, bankable supply agreements for eFuels, green methanol, SAF, renewable diesel and RNG.">
 <meta name="theme-color" content="#061527">
+<link rel="canonical" href="https://9degreeseast.com/about">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="9 Degrees East">
+<meta property="og:title" content="About">
+<meta property="og:description" content="9 Degrees East is a commercial advisory firm for low-carbon fuels, structuring long-term, bankable supply agreements for eFuels, green methanol, SAF, renewable diesel and RNG.">
+<meta property="og:url" content="https://9degreeseast.com/about">
+<meta property="og:image" content="https://9degreeseast.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="site.css">
 <style>
   /* Same family as Fuel Weather (glass panels, fuel colours), with its own background: drifting contour lines. */
-  :root { --ink: #061527; --glass: rgba(9,28,50,0.72); --glass-strong: rgba(9,28,50,0.86); --text: #EEF2F5; --muted: #A8B7C6; --soft: #C9D6E3; --line: rgba(160,190,220,0.18); --accent: #D8B66E;
-          --methanol: #5EC8D8; --saf: #F0C877; --efuels: #E9F3FF; --rd: #E39A55; --rng: #A9A2F0; }
-  * { box-sizing: border-box; }
   html, body { margin: 0; background: var(--ink); color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
-  ::selection { background: var(--accent); color: var(--ink); }
   a { color: inherit; }
-  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   h1, h2, h3, p { margin-top: 0; }
   #c { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
   .page { position: relative; z-index: 1; overflow-x: clip; }
   .wrap { width: min(100% - 80px, 1180px); margin-inline: auto; }
-
   /* Top bar, as on Fuel Weather */
   .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; padding-top: 32px; }
   .home { display: inline-flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; }
   .home svg { width: 34px; height: 34px; }
-  .home span { font-size: 10px; font-weight: 600; letter-spacing: 0.24em; }
-  .sitenav { display: flex; gap: 22px; font-size: 13px; }
+  .home span { font-size: 11.5px; font-weight: 600; letter-spacing: 0.24em; }
+  .sitenav { display: flex; gap: 22px; font-size: 14px; }
   .sitenav a { color: var(--muted); text-decoration: none; padding: 10px 0; }
   .sitenav a:hover, .sitenav a[aria-current="page"] { color: var(--text); }
   .sitenav .navcta { color: var(--accent); }
-
-  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
   .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
-  .serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
   em { font-style: italic; color: var(--accent); }
-  .glass { background: var(--glass); border: 1px solid var(--line); border-radius: 3px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
   .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); flex: none; }
-
   /* Hero */
   .hero { min-height: 88vh; display: grid; grid-template-columns: 1.4fr 1fr; align-items: end; gap: 40px; padding-block: 60px 56px; }
   .hero .title { position: relative; }
   .hero .title::before { content: ""; position: absolute; z-index: -1; left: -60px; top: -60px; width: min(820px, 130vw); height: 120%; background: radial-gradient(ellipse at 25% 45%, rgba(6,21,39,0.9) 0%, rgba(6,21,39,0.5) 45%, rgba(6,21,39,0) 75%); }
   h1 { margin: 0; font-size: clamp(54px, 8vw, 116px); line-height: 0.95; letter-spacing: -0.025em; text-wrap: balance; }
   .lede { margin: 22px 0 0; max-width: 560px; font-size: clamp(20px, 2vw, 26px); line-height: 1.4; color: var(--text); }
-  .sub { margin: 14px 0 0; max-width: 520px; font-size: 14px; line-height: 1.8; color: var(--muted); }
-  .stamp { justify-self: end; text-align: right; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); line-height: 1.9; padding: 10px 14px; }
+  .sub { margin: 14px 0 0; max-width: 520px; font-size: 15px; line-height: 1.8; color: var(--muted); }
+  .stamp { justify-self: end; text-align: right; font-size: 11.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); line-height: 1.9; padding: 10px 14px; }
   .stamp b { color: var(--text); font-weight: 600; }
-  .scrollhint { display: inline-flex; align-items: center; gap: 10px; margin-top: 36px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .scrollhint { display: inline-flex; align-items: center; gap: 10px; margin-top: 36px; font-size: 11.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
   .scrollhint i { display: block; width: 1px; height: 34px; background: linear-gradient(var(--accent), transparent); animation: drip 2.2s ease-in-out infinite; transform-origin: top; }
   @keyframes drip { 0%, 100% { transform: scaleY(0.3); opacity: 0.4; } 50% { transform: scaleY(1); opacity: 1; } }
-
   /* Stats: the fuel-card row, reused */
   .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; padding-bottom: 120px; }
   .stat { padding: 16px 16px 14px; transition: border-color 250ms ease, transform 250ms ease; }
   .stat:hover { border-color: rgba(160,190,220,0.45); transform: translateY(-2px); }
-  .stat .nm { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; }
+  .stat .nm { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; }
   .stat strong { display: block; margin-top: 12px; font-size: 46px; line-height: 1; font-variant-numeric: tabular-nums; }
-  .stat span.d { display: block; margin-top: 8px; font-size: 12px; line-height: 1.55; color: var(--muted); }
-
+  .stat span.d { display: block; margin-top: 8px; font-size: 13px; line-height: 1.55; color: var(--muted); }
   /* Expertise */
   .block { padding-bottom: 140px; }
   .head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; margin-bottom: 28px; }
   h2 { margin: 0; font-size: clamp(36px, 4.4vw, 60px); line-height: 1.02; letter-spacing: -0.02em; text-wrap: balance; }
-  .head p { margin: 0; font-size: 14px; line-height: 1.8; color: var(--muted); max-width: 460px; }
+  .head p { margin: 0; font-size: 15px; line-height: 1.8; color: var(--muted); max-width: 460px; }
   /* Founder intro lines up with the stat cards below it */
   @media (min-width: 981px) { .founder .head { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 10px; } }
   .exp { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .exp .glass { padding: 24px 24px 22px; transition: border-color 250ms ease, transform 250ms ease; }
   .exp .glass:hover { border-color: var(--c); transform: translateY(-2px); }
   .exp h3 { display: flex; align-items: center; gap: 12px; margin: 0 0 10px; font-size: 27px; line-height: 1.15; }
-  .exp p { margin: 0; font-size: 13.5px; line-height: 1.75; color: var(--soft); }
-
+  .exp p { margin: 0; font-size: 15px; line-height: 1.75; color: var(--soft); }
   /* Career: pinned. The field gathers around each place; a glass panel tells the role; role cards mark progress. */
   .career { position: relative; }
   .career .stage { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-block: 40px; }
@@ -84,31 +82,28 @@
   .career .grid { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr); gap: 40px; align-items: center; }
   .panel { position: relative; padding: 24px 26px 22px; background: var(--glass-strong); min-height: 300px; }
   .role { position: absolute; inset: 24px 26px 22px; display: flex; flex-direction: column; }
-  .role .where { margin: 0 0 12px; font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--c); }
+  .role .where { margin: 0 0 12px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--c); }
   .role h3 { margin: 0 0 6px; font-size: 34px; line-height: 1.05; }
-  .role .t { margin: 0 0 14px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
-  .role p.d { margin: 0; font-size: 14px; line-height: 1.75; color: var(--soft); }
+  .role .t { margin: 0 0 14px; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .role p.d { margin: 0; font-size: 15px; line-height: 1.75; color: var(--soft); }
   .locator { justify-self: center; text-align: center; pointer-events: none; }
   .locator .city { font-size: clamp(40px, 5vw, 72px); line-height: 1; letter-spacing: -0.02em; text-shadow: 0 0 30px rgba(6,21,39,0.9); }
-  .locator .coord { margin-top: 10px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .locator .coord { margin-top: 10px; font-size: 11.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-variant-numeric: tabular-nums; }
   .rolecards { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
   .rc { text-align: left; font: inherit; color: var(--text); padding: 12px 12px 10px; cursor: pointer; transition: border-color 250ms ease, opacity 250ms ease, transform 250ms ease; }
   .rc:hover { transform: translateY(-2px); }
-  .rc .nm { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; }
-  .rc .yr { display: block; margin-top: 6px; font-size: 10px; letter-spacing: 0.08em; color: var(--muted); }
+  .rc .nm { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; }
+  .rc .yr { display: block; margin-top: 6px; font-size: 11.5px; letter-spacing: 0.08em; color: var(--muted); }
   .rc[aria-current="step"] { border-color: var(--c); box-shadow: 0 0 0 1px var(--c) inset; }
   .rc.dim { opacity: 0.5; }
   .bar { height: 2px; background: var(--line); }
   .bar b { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); }
-
   /* Static fallback: no GSAP means the roles simply stack */
   .career:not(.live) .panel { min-height: 0; }
   .career:not(.live) .role { position: static; padding: 0 0 22px; margin-bottom: 22px; border-bottom: 1px solid var(--line); }
   .career:not(.live) .role:last-child { border: 0; margin: 0; padding: 0; }
   .career:not(.live) .locator, .career:not(.live) .bar, .career:not(.live) .rolecards { display: none; }
   .career:not(.live) .grid { grid-template-columns: 1fr; }
-
-
   /* Founder */
   .fgrid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 10px; }
   .bio { padding: 28px 30px; }
@@ -118,21 +113,20 @@
   .portrait.empty img { display: none; } .portrait.empty .ph { display: flex; }
   .bio .links { clear: both; }
   @media (max-width: 560px) { .portrait { float: none; width: 132px; margin: 0 0 20px; } }
-  .bio p { margin: 0 0 14px; font-size: 14px; line-height: 1.8; color: var(--soft); }
+  .bio p { margin: 0 0 14px; font-size: 15px; line-height: 1.8; color: var(--soft); }
   .bio p.big { font-size: 25px; line-height: 1.35; color: var(--text); margin-bottom: 18px; }
   .bio .links { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 18px; }
-  .bio .links a { font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; }
+  .bio .links a { font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: none; }
   .bio .links a span { display: inline-block; transition: transform 250ms ease; } .bio .links a:hover span { transform: translateX(4px); }
   .deals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .deal { padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 10px; transition: border-color 250ms ease, transform 250ms ease; }
   .deal:hover { border-color: var(--c); transform: translateY(-2px); }
-  .deal .nm { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; }
+  .deal .nm { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; }
   .deal strong { font-size: 40px; line-height: 1; font-variant-numeric: tabular-nums; }
-  .deal .d { font-size: 12px; line-height: 1.55; color: var(--muted); }
-  .edu li small { display: block; margin-top: 4px; font-family: Manrope, sans-serif; font-size: 12px; color: var(--muted); }
+  .deal .d { font-size: 13px; line-height: 1.55; color: var(--muted); }
+  .edu li small { display: block; margin-top: 4px; font-family: Manrope, sans-serif; font-size: 13px; color: var(--muted); }
   @media (max-width: 980px) { .fgrid { grid-template-columns: 1fr; } }
   @media (max-width: 420px) { .deals { grid-template-columns: 1fr; } .bio { padding: 22px 20px; } .bio p.big { font-size: 22px; } }
-
   /* Education and markets */
   .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .duo .glass { padding: 24px 26px; }
@@ -142,22 +136,20 @@
   .edu li { padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 26px; }
   .edu li:last-child { border: 0; }
   .pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
-  .pills li { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: 12.5px; background: rgba(6,21,39,0.5); }
+  .pills li { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: 13.5px; background: rgba(6,21,39,0.5); }
   .pills .dot { width: 6px; height: 6px; }
-  .note { margin: 0; font-size: 13px; line-height: 1.75; color: var(--muted); }
-
+  .note { margin: 0; font-size: 14px; line-height: 1.75; color: var(--muted); }
   /* CTA */
   .cta { padding: 34px 32px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 24px; background: var(--glass-strong); }
   .cta h2 { max-width: 640px; font-size: clamp(30px, 3.6vw, 48px); }
   .btns { display: flex; flex-wrap: wrap; gap: 12px; }
-  .btn { display: inline-flex; align-items: center; min-height: 46px; padding: 13px 20px; border-radius: 2px; font-size: 13px; font-weight: 600; text-decoration: none; transition: transform 180ms ease, background 180ms ease, border-color 180ms ease; }
+  .btn { display: inline-flex; align-items: center; min-height: 46px; padding: 13px 20px; border-radius: 2px; font-size: 14px; font-weight: 600; text-decoration: none; transition: transform 180ms ease, background 180ms ease, border-color 180ms ease; }
   .btn-primary { background: var(--accent); color: var(--ink); }
   .btn-primary:hover { background: #E8C987; transform: translateY(-2px); }
   .btn-ghost { border: 1px solid var(--line); color: var(--text); }
   .btn-ghost:hover { border-color: var(--muted); transform: translateY(-2px); }
-  footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 26px 30px; font-size: 10.5px; letter-spacing: 0.06em; color: #6F87A3; }
+  footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 26px 30px; font-size: 12px; letter-spacing: 0.06em; color: #8A9FB8; }
   footer a { color: #8FA6BF; text-decoration: none; }
-
   @media (max-width: 980px) {
     .wrap { width: calc(100% - 40px); }
     .top { padding-top: 22px; flex-direction: column; gap: 6px; }
@@ -175,18 +167,17 @@
     .rc .yr { display: none; }
   }
   @media (max-width: 420px) {
-    .sitenav { gap: 16px; font-size: 12px; } .sitenav .navcta { display: none; }
+    .sitenav { gap: 16px; font-size: 13px; } .sitenav .navcta { display: none; }
     .role h3 { font-size: 28px; }
     .career.live .panel { min-height: 380px; }
     .stat strong { font-size: 38px; }
   }
   .sub.why9 { margin-top: 14px; color: var(--soft); }
-  /* Experience across: company logos, moved from the homepage */
   /* Experience marquee */
   .experience { padding-block: 30px 10px; }
   .experience .exp-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 22px; }
   .experience .exp-head .eyebrow { margin: 0; }
-  .experience .exp-link { font-size: 12px; color: var(--muted); text-decoration: none; } .exp-link:hover { color: var(--text); }
+  .experience .exp-link { font-size: 13px; color: var(--muted); text-decoration: none; } .exp-link:hover { color: var(--text); }
   .experience .marquee { overflow: hidden; padding-block: 6px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
   .experience .marquee-track { display: flex; width: max-content; animation: xmarquee 60s linear infinite; }
   .experience .marquee:hover .marquee-track { animation-play-state: paused; }
@@ -195,7 +186,7 @@
   .experience .roles li::after { content: ""; flex: none; width: 1px; height: 34px; margin: 0 44px; background: var(--line); }
   .experience .co-item { display: flex; flex-direction: column; gap: 6px; transition: opacity 400ms ease, transform 400ms ease; }
   .experience .co { font-family: 'Instrument Serif', Georgia, serif; font-size: 36px; line-height: 1.15; letter-spacing: -0.01em; white-space: nowrap; color: var(--text); }
-  .experience .sec { display: flex; align-items: center; gap: 8px; font-size: 9.5px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .experience .sec { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
   .experience .sec::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--c, var(--accent)); box-shadow: 0 0 6px var(--c, var(--accent)); }
   .experience .marquee:hover .co-item { opacity: 0.35; }
   .experience .marquee .co-item:hover { opacity: 1; transform: translateY(-2px); }
@@ -218,7 +209,7 @@
   .experience .logo { justify-content: center; height: 64px; }
   @media (max-width: 700px) { .experience .co-item { width: 170px; } .experience .logo img { max-width: 140px; }  }
   @media (max-width: 700px) { .experience .co { font-size: 26px; } }
-  .experience .exp-note { margin-top: 14px; text-align: center; font-size: 10.5px; letter-spacing: 0.06em; color: #6F87A3; }
+  .experience .exp-note { margin-top: 14px; text-align: center; font-size: 12px; letter-spacing: 0.06em; color: #8A9FB8; }
   .experience .exp-note a { color: #8FA6BF; }
   .edu-logos li { padding: 20px 0; } .edu-logos img { display: block; height: 56px; width: auto; max-width: 100%; }
   .edu-logos li:last-child img { height: 46px; }
@@ -230,7 +221,7 @@
 <body>
 <canvas id="c" aria-hidden="true"></canvas>
 <div class="page">
-  <div id="site-nav"></div>
+  <div id="site-nav"><noscript><nav class="ns-nav" aria-label="Main"><a href="./">9 Degrees East</a><a href="about.html">About</a><a href="our-history.html">Our history</a><a href="purpose.html">Purpose, mission &amp; values</a><a href="how-we-work.html">How we work</a><a href="locations.html">Locations</a><a href="insights.html">Insights</a><a href="journal.html">The 9DE Journal</a><a href="fuel-weather.html">Fuel Weather</a><a href="policy-tracker.html">Policy Tracker</a><a href="market-conditions.html">Market Conditions</a><a href="services.html">Products &amp; Services</a><a href="offtake-strategy.html">Offtake strategy</a><a href="deal-structuring.html">Deal structuring</a><a href="supply-agreements.html">Supply agreements</a><a href="regulatory-advisory.html">Regulations</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></nav></noscript></div>
 
   <main>
     <section class="wrap hero" data-scene="hero">
@@ -246,10 +237,10 @@
     </section>
 
     <section class="wrap stats" aria-label="At a glance" data-scene="stats">
-      <div class="stat glass" style="--c: var(--saf)"><div class="nm"><i class="dot"></i>Experience</div><strong class="serif" data-count="20">20</strong><span class="d">years originating and structuring long-term supply deals, since 2006. 28 years in energy overall.</span></div>
-      <div class="stat glass" style="--c: var(--methanol)"><div class="nm"><i class="dot"></i>Reach</div><strong class="serif" data-count="4">4</strong><span class="d">markets: the European Union, the UK, the US and Asia</span></div>
-      <div class="stat glass" style="--c: var(--rd)"><div class="nm"><i class="dot"></i>Tenor</div><strong class="serif" data-count="5">5+ yr</strong><span class="d">bankable offtake structures for project finance</span></div>
-      <div class="stat glass" style="--c: var(--rng)"><div class="nm"><i class="dot"></i>Perspective</div><strong class="serif" data-count="4">4</strong><span class="d">sides of the table: oil major, developer, shipping and brokerage</span></div>
+      <div class="stat open" style="--c: var(--saf)"><div class="nm"><i class="dot"></i>Experience</div><strong class="serif" data-count="20">20</strong><span class="d">years originating and structuring long-term supply deals, since 2006. 28 years in energy overall.</span></div>
+      <div class="stat open" style="--c: var(--methanol)"><div class="nm"><i class="dot"></i>Reach</div><strong class="serif" data-count="4">4</strong><span class="d">markets: the European Union, the UK, the US and Asia</span></div>
+      <div class="stat open" style="--c: var(--rd)"><div class="nm"><i class="dot"></i>Tenor</div><strong class="serif" data-count="5">5+ yr</strong><span class="d">bankable offtake structures for project finance</span></div>
+      <div class="stat open" style="--c: var(--rng)"><div class="nm"><i class="dot"></i>Perspective</div><strong class="serif" data-count="4">4</strong><span class="d">sides of the table: oil major, developer, shipping and brokerage</span></div>
     </section>
 
     <section class="wrap block" aria-labelledby="exp-title" data-scene="expertise">
@@ -257,10 +248,10 @@
         <div><p class="eyebrow">Expertise</p><h2 class="serif" id="exp-title">Where we <em>add value</em></h2></div>
       </div>
       <div class="exp">
-        <div class="glass" style="--c: var(--saf)"><h3 class="serif"><i class="dot"></i>Long-term deal origination</h3><p>Bankable structures of five years and more, integrating price, credit, sustainability, delivery and optionality terms suitable for project financing.</p></div>
-        <div class="glass" style="--c: var(--methanol)"><h3 class="serif"><i class="dot"></i>Global reach</h3><p>Deals and contacts across the European Union, the UK, the US and Asia, from shipping, oil major and developer roles.</p></div>
-        <div class="glass" style="--c: var(--rd)"><h3 class="serif"><i class="dot"></i>Trading perspective</h3><p>Knows how a long-term position becomes a short-term trading book, and what that does to desk P&amp;L and risk.</p></div>
-        <div class="glass" style="--c: var(--rng)"><h3 class="serif"><i class="dot"></i>Regulation</h3><p>Pricing that reflects the rules: RED, FuelEU Maritime and ReFuelEU Aviation in the EU, the IRA, RFS and LCFS in the US, and sourcing from Asia.</p></div>
+        <div class="open" style="--c: var(--saf)"><h3 class="serif"><i class="dot"></i>Long-term deal origination</h3><p>Bankable structures of five years and more, integrating price, credit, sustainability, delivery and optionality terms suitable for project financing.</p></div>
+        <div class="open" style="--c: var(--methanol)"><h3 class="serif"><i class="dot"></i>Global reach</h3><p>Deals and contacts across the European Union, the UK, the US and Asia, from shipping, oil major and developer roles.</p></div>
+        <div class="open" style="--c: var(--rd)"><h3 class="serif"><i class="dot"></i>Trading perspective</h3><p>Knows how a long-term position becomes a short-term trading book, and what that does to desk P&amp;L and risk.</p></div>
+        <div class="open" style="--c: var(--rng)"><h3 class="serif"><i class="dot"></i>Regulation</h3><p>Pricing that reflects the rules: RED, FuelEU Maritime and ReFuelEU Aviation in the EU, the IRA, RFS and LCFS in the US, and sourcing from Asia.</p></div>
       </div>
     </section>
 
@@ -269,7 +260,7 @@
         <div><p class="eyebrow">Leadership</p><h2 class="serif" id="founder-title">Tom Fox, <em>Founder</em></h2></div>
         <p>A low-carbon fuels originator with 20 years structuring complex, multi-year supply agreements, since 2006, and 28 years in energy since his first role in Houston in 1998.</p>
       </div>
-      <div class="fgrid">
+      <div class="fgrid one">
         <div class="glass bio">
           <figure class="portrait"><img src="tom-fox.jpg" alt="Tom Fox, founder of 9 Degrees East" width="640" height="640" loading="lazy" onerror="this.parentNode.classList.add('empty')"><span class="ph serif" aria-hidden="true">TF</span></figure>
           <p class="serif big">Tom has been an analyst, power marketer, oil major originator, consultant, broker, developer and buyer.</p>
@@ -277,19 +268,13 @@
           <p>He builds deal structures that lenders will accept and that both producer and buyer can live with for five years and more.</p>
           <div class="links"><a href="our-history.html">Read the full story <span>→</span></a><a href="locations.html">Where he has worked <span>→</span></a></div>
         </div>
-        <div class="deals">
-          <div class="deal glass" style="--c: var(--methanol)"><span class="nm"><i class="dot"></i>Energy</span><strong class="serif">28 yrs</strong><span class="d">in energy markets since 1998</span></div>
-          <div class="deal glass" style="--c: var(--efuels)"><span class="nm"><i class="dot"></i>Structuring</span><strong class="serif">20 yrs</strong><span class="d">structuring long-term supply agreements</span></div>
-          <div class="deal glass" style="--c: var(--saf)"><span class="nm"><i class="dot"></i>Markets</span><strong class="serif">5</strong><span class="d">continents of origination experience</span></div>
-          <div class="deal glass" style="--c: var(--rd)"><span class="nm"><i class="dot"></i>Tenor</span><strong class="serif">5+ yr</strong><span class="d">contracts built for project finance</span></div>
-        </div>
       </div>
     </section>
 
 
     <section class="wrap block" aria-label="Fuels and markets" data-scene="markets" style="padding-top: 10px">
       <div class="duo solo">
-        <div class="glass"><p class="eyebrow">Fuels and markets</p>
+        <div class="open"><p class="eyebrow">Fuels and markets</p>
           <ul class="pills">
             <li style="--c: var(--efuels)"><i class="dot"></i>eFuels</li><li style="--c: var(--methanol)"><i class="dot"></i>Green methanol</li><li style="--c: var(--saf)"><i class="dot"></i>SAF</li><li style="--c: var(--rd)"><i class="dot"></i>Renewable diesel</li><li style="--c: var(--rng)"><i class="dot"></i>Renewable natural gas</li><li style="--c: var(--muted)"><i class="dot"></i>Advanced biofuels</li><li style="--c: var(--muted)"><i class="dot"></i>Green hydrogen</li><li style="--c: var(--muted)"><i class="dot"></i>CO<sub>2</sub></li><li style="--c: var(--muted)"><i class="dot"></i>Feedstocks</li>
           </ul>
@@ -305,7 +290,7 @@
     </section>
   </main>
 
-  <div id="site-footer"></div>
+  <div id="site-footer"><noscript><footer class="ns-nav ns-foot"><a href="legal-notice.html">Legal notice</a><a href="terms.html">Terms of use</a><a href="privacy.html">Privacy notice</a><a href="cookies.html">Cookies</a><a href="accessibility.html">Accessibility</a><a href="credits.html">Trademarks &amp; credits</a><a href="contact.html">Contact us</a><p>9 Degrees East Limited is registered in England and Wales, company number 11587380.</p></footer></noscript></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

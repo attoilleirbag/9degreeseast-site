@@ -4,37 +4,47 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fuel Weather | 9 Degrees East</title>
+<meta name="description" content="Fuel Weather: tailwind or headwind for eFuels, green methanol, SAF, renewable diesel and RNG against their fossil rivals, from public data. Conditions, not forecasts.">
+<link rel="canonical" href="https://9degreeseast.com/fuel-weather">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="9 Degrees East">
+<meta property="og:title" content="Fuel Weather">
+<meta property="og:description" content="Fuel Weather: tailwind or headwind for eFuels, green methanol, SAF, renewable diesel and RNG against their fossil rivals, from public data. Conditions, not forecasts.">
+<meta property="og:url" content="https://9degreeseast.com/fuel-weather">
+<meta property="og:image" content="https://9degreeseast.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="site.css">
 <style>
-  :root { --ink: #061527; --text: #EEF2F5; --muted: #A8B7C6; --line: rgba(160,190,220,0.18); --accent: #D8B66E; --up: #F0B27A; --down: #8FC7E8; }
-  * { box-sizing: border-box; }
+  :root { --up: #F0B27A; --down: #8FC7E8; }
   html, body { margin: 0; min-height: 100%; background: var(--ink); color: var(--text); font-family: Manrope, system-ui, sans-serif; overflow-x: hidden; overflow-y: auto; -webkit-font-smoothing: antialiased; }
   #c { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
   .ui { position: relative; box-sizing: border-box; min-height: 100vh; min-height: 100dvh; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 32px 40px 26px; }
   .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
-  .title { position: relative; }
-  .title::before { content: ""; position: absolute; z-index: -1; left: -40px; top: -32px; width: min(760px, 120vw); height: 360px; background: radial-gradient(ellipse at 20% 35%, rgba(6,21,39,0.92) 0%, rgba(6,21,39,0.55) 45%, rgba(6,21,39,0) 75%); }
+  .title { position: relative; isolation: isolate; }
+  .title::before { content: ""; position: absolute; z-index: -1; left: -60px; top: -40px; width: min(820px, 130vw); height: 420px; background: radial-gradient(ellipse at 30% 45%, rgba(6,21,39,0.96) 0%, rgba(6,21,39,0.86) 40%, rgba(6,21,39,0.4) 68%, transparent 82%); pointer-events: none; }
   .home { pointer-events: auto; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 26px; color: var(--text); text-decoration: none; }
   .home svg { width: 34px; height: 34px; }
-  .home span { font-size: 10px; font-weight: 600; letter-spacing: 0.24em; }
-  .sitenav { pointer-events: auto; display: flex; gap: 22px; justify-content: flex-end; margin-bottom: 14px; font-size: 13px; }
+  .home span { font-size: 11.5px; font-weight: 600; letter-spacing: 0.24em; }
+  .sitenav { pointer-events: auto; display: flex; gap: 22px; justify-content: flex-end; margin-bottom: 14px; font-size: 14px; }
   .sitenav a { color: var(--muted); text-decoration: none; padding: 10px 0; }
   .sitenav a:hover, .sitenav a[aria-current="page"] { color: var(--text); }
   .sitenav .cta { color: var(--accent); }
   .right { display: flex; flex-direction: column; align-items: flex-end; }
-  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
   .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
   h1 { margin: 0; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(40px, 5vw, 70px); line-height: 1; letter-spacing: -0.02em; }
   h1 em { color: var(--accent); }
-  .sub { margin: 12px 0 0; max-width: 460px; font-size: 13px; line-height: 1.7; color: var(--muted); }
-  .stamp { pointer-events: auto; text-align: right; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); line-height: 1.9; background: rgba(6,21,39,0.6); padding: 10px 14px; border: 1px solid var(--line); border-radius: 2px; backdrop-filter: blur(6px); }
+  .sub { margin: 12px 0 0; max-width: 460px; font-size: 14px; line-height: 1.7; color: var(--muted); }
+  .stamp { pointer-events: auto; text-align: right; font-size: 11.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); line-height: 1.9; background: rgba(6,21,39,0.6); padding: 10px 14px; border: 1px solid var(--line); border-radius: 2px; backdrop-filter: blur(6px); }
   .stamp b { color: var(--text); font-weight: 600; }
-
   .deck { position: relative; pointer-events: auto; }
   .deck::before { content: ""; position: absolute; z-index: -1; left: -40px; right: -40px; bottom: -26px; height: 330px; background: linear-gradient(0deg, rgba(6,21,39,0.95), rgba(6,21,39,0)); }
   .cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
@@ -43,45 +53,42 @@
   .card[aria-pressed="true"] { border-color: var(--c); box-shadow: 0 0 0 1px var(--c) inset; }
   .card.off { opacity: 0.45; }
   .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-  .card .nm { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; }
+  .card .nm { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
   .card .nm i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
   .card .read { margin-top: 10px; font-family: 'Instrument Serif', Georgia, serif; font-size: 22px; line-height: 1.05; }
   .card .read .dir { color: var(--up); } .card .read .dir.down { color: var(--down); } .card .read .dir.flat { color: var(--muted); }
-  .card .meta { margin-top: 6px; font-size: 10px; letter-spacing: 0.08em; color: var(--muted); }
+  .card .meta { margin-top: 6px; font-size: 11.5px; letter-spacing: 0.08em; color: var(--muted); }
   .card svg { display: block; width: 100%; height: 28px; margin-top: 8px; }
-
   .panel { margin-bottom: 12px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; padding: 20px 22px; background: rgba(9,28,50,0.86); border: 1px solid var(--line); border-radius: 3px; backdrop-filter: blur(10px); animation: in 380ms ease both; }
   .panel[hidden] { display: none; }
   @keyframes in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
   .panel h2 { margin: 0 0 6px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: 28px; }
-  .panel .bench { margin: 0 0 12px; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
-  .panel p { margin: 0 0 10px; font-size: 13.5px; line-height: 1.7; color: #C9D6E3; }
-  .panel .caveat { font-size: 11.5px; color: var(--muted); }
+  .panel .bench { margin: 0 0 12px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .panel p { margin: 0 0 10px; font-size: 15px; line-height: 1.7; color: #C9D6E3; }
+  .panel .caveat { font-size: 12.5px; color: var(--muted); }
   .panel .nums { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px 18px; margin: 0 0 12px; }
-  .panel .nums div span { display: block; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .panel .nums div span { display: block; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
   .panel .nums div strong { display: block; margin-top: 4px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: 24px; }
-  .panel table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .panel table { width: 100%; border-collapse: collapse; font-size: 13px; }
   .panel td { padding: 5px 0; border-bottom: 1px solid var(--line); color: #C9D6E3; }
   .panel td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
-  .panel a { color: var(--accent); font-size: 12px; font-weight: 600; text-decoration: none; }
+  .panel a { color: var(--accent); font-size: 13px; font-weight: 600; text-decoration: none; }
   .panel a:hover { text-decoration: underline; }
-
   /* Charts (Chart.js). The number table stays as a fallback and for screen readers. */
   .chartbox { position: relative; height: 190px; margin: 2px 0 10px; }
   .chartbox canvas { display: block; }
-  .tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 0 0 10px; font-size: 11px; color: var(--muted); }
-  .tools label { display: inline-flex; align-items: center; gap: 8px; letter-spacing: 0.08em; text-transform: uppercase; font-size: 10px; }
-  .tools select, .tools button { font: 600 11px Manrope, system-ui, sans-serif; color: var(--text); background: rgba(6,21,39,0.7); border: 1px solid var(--line); border-radius: 2px; padding: 7px 10px; cursor: pointer; }
+  .tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 0 0 10px; font-size: 12px; color: var(--muted); }
+  .tools label { display: inline-flex; align-items: center; gap: 8px; letter-spacing: 0.08em; text-transform: uppercase; font-size: 11.5px; }
+  .tools select, .tools button { font: 600 12px Manrope, system-ui, sans-serif; color: var(--text); background: rgba(6,21,39,0.7); border: 1px solid var(--line); border-radius: 2px; padding: 7px 10px; cursor: pointer; }
   .tools select:focus-visible, .tools button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .tools button { margin-left: auto; color: var(--accent); }
   .tools button:hover { border-color: var(--accent); }
-  .panel details summary { cursor: pointer; font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+  .panel details summary { cursor: pointer; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
   .has-charts .panel table { margin-bottom: 4px; }
   .close { position: absolute; right: 10px; top: 8px; width: 40px; height: 40px; border: 0; background: none; color: var(--muted); font-size: 20px; cursor: pointer; }
   .close:focus-visible { outline: 2px solid var(--accent); }
   .panel-wrap { position: relative; }
-
-  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 12px; font-size: 10px; letter-spacing: 0.06em; color: #6F87A3; }
+  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 12px; font-size: 11.5px; letter-spacing: 0.06em; color: #8A9FB8; }
   .foot a { color: #8FA6BF; }
   @media (max-width: 900px) {
     html, body { overflow: auto; }
@@ -95,23 +102,25 @@
   }
   #site-nav { position: fixed; top: 0; left: 0; right: 0; }
   .ui { padding-top: 104px; }
+  /* Line the page up with the 1180px column the rest of the site uses */
+  @media (min-width: 901px) { .ui { padding-inline: max(40px, calc((100% - 1180px) / 2)); } }
   @media (max-width: 900px) { #site-nav { position: relative; } .ui { padding-top: 24px; } }
   .cond { margin-top: 8px; pointer-events: auto; } .cond b { color: var(--text); font-weight: 600; }
-  .howbtn { margin-left: 6px; padding: 0; border: 0; background: none; font: 600 12px Manrope, sans-serif; color: var(--accent); cursor: pointer; }
+  .howbtn { margin-left: 6px; padding: 0; border: 0; background: none; font: 600 13px Manrope, sans-serif; color: var(--accent); cursor: pointer; }
   .how { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(4,12,24,0.72); backdrop-filter: blur(4px); }
   .how[hidden] { display: none; }
   .how-box { position: relative; width: min(860px, 100%); max-height: calc(100vh - 40px); overflow: auto; padding: 28px 30px; background: rgba(9,28,50,0.97); border: 1px solid var(--line); border-radius: 3px; }
-  .how-box .eyebrow { margin: 0 0 8px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .how-box .eyebrow { margin: 0 0 8px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
   .how-box h2 { margin: 0 0 12px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: 34px; line-height: 1.05; }
   .how-box h2 em { color: var(--accent); }
-  .how-box > p { margin: 0 0 16px; font-size: 13.5px; line-height: 1.7; color: var(--muted); }
+  .how-box > p { margin: 0 0 16px; font-size: 15px; line-height: 1.7; color: var(--muted); }
   .how-x { position: absolute; top: 10px; right: 12px; width: 34px; height: 34px; border: 0; background: none; color: var(--muted); font-size: 24px; cursor: pointer; }
-  .how-table { border-top: 1px solid var(--line); font-size: 12.5px; line-height: 1.5; }
+  .how-table { border-top: 1px solid var(--line); font-size: 13.5px; line-height: 1.5; }
   .hr { display: grid; grid-template-columns: 0.8fr 1fr 1.4fr 1.1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); color: #C9D6E3; }
   .hr span:first-child { font-weight: 600; color: var(--text); }
-  .hh { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; } .hh span, .hh span:first-child { color: #6F87A3; }
-  .prem { margin: 18px 0 10px; padding: 12px 14px; border-left: 2px solid var(--accent); font-size: 13px; line-height: 1.6; color: #C9D6E3; } .prem b { color: var(--text); }
-  .fine { font-size: 11px !important; color: #6F87A3 !important; margin: 0 !important; }
+  .hh { font-size: 11.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; } .hh span, .hh span:first-child { color: #8A9FB8; }
+  .prem { margin: 18px 0 10px; padding: 12px 14px; border-left: 2px solid var(--accent); font-size: 14px; line-height: 1.6; color: #C9D6E3; } .prem b { color: var(--text); }
+  .fine { font-size: 12px !important; color: #8A9FB8 !important; margin: 0 !important; }
   @media (max-width: 700px) { .hr { grid-template-columns: 1fr 1fr; } .hh { display: none; } }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
@@ -119,7 +128,7 @@
 <style id="cls-fix">#site-nav{min-height:62px}</style>
 </head>
 <body>
-  <div id="site-nav"></div>
+  <div id="site-nav"><noscript><nav class="ns-nav" aria-label="Main"><a href="./">9 Degrees East</a><a href="about.html">About</a><a href="our-history.html">Our history</a><a href="purpose.html">Purpose, mission &amp; values</a><a href="how-we-work.html">How we work</a><a href="locations.html">Locations</a><a href="insights.html">Insights</a><a href="journal.html">The 9DE Journal</a><a href="fuel-weather.html">Fuel Weather</a><a href="policy-tracker.html">Policy Tracker</a><a href="market-conditions.html">Market Conditions</a><a href="services.html">Products &amp; Services</a><a href="offtake-strategy.html">Offtake strategy</a><a href="deal-structuring.html">Deal structuring</a><a href="supply-agreements.html">Supply agreements</a><a href="regulatory-advisory.html">Regulations</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></nav></noscript></div>
   <canvas id="c" aria-hidden="true"></canvas>
   <div class="ui">
     <div class="top">
@@ -545,6 +554,7 @@ if (window.Chart) document.documentElement.classList.add('has-charts');
   }
   function size() { dpr = Math.min(window.devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.fillStyle = '#061527'; ctx.fillRect(0, 0, W, H); seed(); }
   function rgba(hex, a) { var n = parseInt(hex.slice(1), 16); return 'rgba(' + (n >> 16) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')'; }
+  var STILL = matchMedia('(prefers-reduced-motion: reduce)').matches, frames = 0;
   function step() {
     t += 0.0035;
     ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = 'rgba(6,21,39,0.08)'; ctx.fillRect(0, 0, W, H);
@@ -572,6 +582,7 @@ if (window.Chart) document.documentElement.classList.add('has-charts');
       ctx.strokeStyle = rgba(rng.c, (g.a * 0.5 * (rng.focus ? 1 : 0.18)).toFixed(3)); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(g.x, g.y, g.r, 0, 7); ctx.stroke();
       if (g.a < 0.02) rings.splice(r, 1);
     }
+    if (STILL && ++frames > 200) return; // reduced motion: let the picture form, then hold it still
     requestAnimationFrame(step);
   }
   addEventListener('pointermove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; mouse.on = true; });

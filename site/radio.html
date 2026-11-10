@@ -6,40 +6,48 @@
 <title>Meridian Radio | 9 Degrees East</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#061527">
+<meta name="description" content="Meridian Radio: Tom Fox’s career, one stop at a time, from Cambridge, Massachusetts to 9 Degrees East today.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="9 Degrees East">
+<meta property="og:title" content="Meridian Radio">
+<meta property="og:description" content="Meridian Radio: Tom Fox’s career, one stop at a time, from Cambridge, Massachusetts to 9 Degrees East today.">
+<meta property="og:url" content="https://9degreeseast.com/radio">
+<meta property="og:image" content="https://9degreeseast.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="site.css">
 <style>
-  :root { --ink: #061527; --text: #EEF2F5; --muted: #A8B7C6; --line: #22395A; --accent: #D8B66E; }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; }
+  :root { --line: #22395A; }
   body { min-height: 100vh; display: flex; flex-direction: column; background: radial-gradient(1100px 700px at 70% 30%, rgba(31,74,122,0.32), transparent 65%), var(--ink); background-attachment: fixed; color: var(--text); font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
-  main { flex: 1; }
   .stage { position: relative; min-height: calc(100vh - 120px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); align-items: center; gap: 24px; padding: 0 5vw; }
   .copy { position: relative; z-index: 2; max-width: 440px; }
-  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 22px; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 22px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
   .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
   h1 { margin: 0 0 18px; font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-size: clamp(48px, 6vw, 84px); line-height: 1; letter-spacing: -0.02em; }
   h1 em { color: var(--accent); }
-  p { margin: 0 0 28px; font-size: 15px; line-height: 1.8; color: var(--muted); }
+  p { margin: 0 0 28px; font-size: 16px; line-height: 1.8; color: var(--muted); }
   .controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-  button { font: inherit; min-height: 48px; padding: 0 22px; border-radius: 2px; cursor: pointer; font-size: 13px; font-weight: 600; transition: transform 180ms ease, background 180ms ease, border-color 180ms ease; }
+  button { font: inherit; min-height: 48px; padding: 0 22px; border-radius: 2px; cursor: pointer; font-size: 14px; font-weight: 600; transition: transform 180ms ease, background 180ms ease, border-color 180ms ease; }
   .go { background: var(--accent); color: var(--ink); border: 0; }
   .go:hover { background: #E8C987; transform: translateY(-2px); }
   .ghost { background: transparent; color: var(--text); border: 1px solid #4A6585; }
   .ghost:hover { border-color: var(--muted); }
   .ghost[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
   .now { margin-top: 30px; min-height: 64px; border-top: 1px solid var(--line); padding-top: 16px; }
-  .now .lbl { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .now .lbl { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
   .now .city { margin-top: 8px; font-family: 'Instrument Serif', Georgia, serif; font-size: 30px; color: var(--text); transition: opacity 300ms ease; }
-  .sub { margin: 18px 0 0; font-size: 13px; line-height: 1.7; color: var(--muted); }
-  .now .yr { margin-top: 4px; font-size: 12px; color: var(--muted); min-height: 18px; }
+  .sub { margin: 18px 0 0; font-size: 14px; line-height: 1.7; color: var(--muted); }
+  .now .yr { margin-top: 4px; font-size: 13px; color: var(--muted); min-height: 18px; }
   .rec-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #E58C7A; margin-right: 8px; animation: blink 1s steps(2) infinite; }
   @keyframes blink { 50% { opacity: 0; } }
-  .now .city small { font-family: Manrope, sans-serif; font-size: 11px; letter-spacing: 0.14em; color: var(--accent); margin-left: 10px; }
+  .now .city small { font-family: Manrope, sans-serif; font-size: 12px; letter-spacing: 0.14em; color: var(--accent); margin-left: 10px; }
   .globe-wrap { position: relative; width: min(100%, 78vh); aspect-ratio: 520 / 490; justify-self: center; cursor: grab; touch-action: none; }
   .globe-wrap:active { cursor: grabbing; }
   .globe-wrap canvas, .globe-wrap .hud { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -47,8 +55,8 @@
   .ring-spin { transform-origin: 260px 244px; animation: spin 140s linear infinite; }
   .ring-spin.rev { animation-duration: 90s; animation-direction: reverse; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .hint { position: absolute; right: 5vw; bottom: 10px; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #6F87A3; }
-  .mark { display: none; font-size: 11px; letter-spacing: 0.24em; color: var(--muted); }
+  .hint { position: absolute; right: 5vw; bottom: 10px; font-size: 11.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #8A9FB8; }
+  .mark { display: none; font-size: 12px; letter-spacing: 0.24em; color: var(--muted); }
   @media (max-width: 860px) {
     .stage { grid-template-columns: 1fr; height: auto; padding: 40px 20px 80px; }
     .globe-wrap { width: 100%; }
@@ -60,7 +68,7 @@
 <style id="cls-fix">#site-nav{min-height:82px}@media (max-width:420px){#site-nav{min-height:74px}}</style>
 </head>
 <body>
-  <div id="site-nav"></div>
+  <div id="site-nav"><noscript><nav class="ns-nav" aria-label="Main"><a href="./">9 Degrees East</a><a href="about.html">About</a><a href="our-history.html">Our history</a><a href="purpose.html">Purpose, mission &amp; values</a><a href="how-we-work.html">How we work</a><a href="locations.html">Locations</a><a href="insights.html">Insights</a><a href="journal.html">The 9DE Journal</a><a href="fuel-weather.html">Fuel Weather</a><a href="policy-tracker.html">Policy Tracker</a><a href="market-conditions.html">Market Conditions</a><a href="services.html">Products &amp; Services</a><a href="offtake-strategy.html">Offtake strategy</a><a href="deal-structuring.html">Deal structuring</a><a href="supply-agreements.html">Supply agreements</a><a href="regulatory-advisory.html">Regulations</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></nav></noscript></div>
   <main class="stage">
     <section class="copy">
       <p class="eyebrow">You found it · A 9 Degrees East jam</p>
@@ -91,7 +99,7 @@
     </div>
   </main>
   <span class="hint">Drag to spin · tap a city to play it</span>
-  <div id="site-footer"></div>
+  <div id="site-footer"><noscript><footer class="ns-nav ns-foot"><a href="legal-notice.html">Legal notice</a><a href="terms.html">Terms of use</a><a href="privacy.html">Privacy notice</a><a href="cookies.html">Cookies</a><a href="accessibility.html">Accessibility</a><a href="credits.html">Trademarks &amp; credits</a><a href="contact.html">Contact us</a><p>9 Degrees East Limited is registered in England and Wales, company number 11587380.</p></footer></noscript></div>
 
 <script>
   // ===== Sound: a small ambient synth =====
@@ -277,7 +285,7 @@
 
     // View state
     var W, H, R, CX, CY, dpr;
-    var rot = -20 * D, spin = 0.11, tilt = 0.32, tiltT = 0.32, yaw = 0, yawT = 0;
+    var rot = -20 * D, spin = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 0.11, tilt = 0.32, tiltT = 0.32, yaw = 0, yawT = 0;
     var dragging = false, lastX = 0, vel = 0;
 
     function size() {
