@@ -1,0 +1,4 @@
+sample text: 700 characters
+ballad: ok, 825 KB
+fable: ok, 707 KB
+cedar: ok, 672 KB
