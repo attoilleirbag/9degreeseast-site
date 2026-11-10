@@ -1,0 +1,31 @@
+name: Voice samples (one-off)
+
+on:
+  push:
+    branches: [main]
+    paths: ['scripts/voice-sample.mjs']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sample:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Record short samples
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node scripts/voice-sample.mjs
+      - name: Save samples
+        run: |
+          git config user.name "journal-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add audio-samples
+          git commit -m "Voice samples for review" || echo "Nothing to save"
+          git pull --rebase origin main
+          git push
