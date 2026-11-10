@@ -49,7 +49,8 @@ export function md(src) {
     }
     if ((m = l.match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)\s*$/))) { out.push('<figure><img src="' + esc(m[2]) + '" alt="' + esc(m[1]) + '" loading="lazy">' + (m[3] ? '<figcaption>' + esc(m[3]) + '</figcaption>' : '') + '</figure>'); i++; continue; }
     const buf = [];
-    while (i < lines.length && lines[i].trim() && !/^(#{1,4}\s|>|```|\s*([-*+]|\d+[.)])\s+|(\*{3,}|-{3,})\s*$)/.test(lines[i])) buf.push(lines[i++]);
+    // An image on a line of its own always ends the paragraph, so it becomes a full-width figure with its caption
+    while (i < lines.length && lines[i].trim() && !/^(#{1,4}\s|>|```|\s*([-*+]|\d+[.)])\s+|(\*{3,}|-{3,})\s*$|!\[[^\]]*\]\([^)\s]+(?:\s+"[^"]*")?\)\s*$)/.test(lines[i])) buf.push(lines[i++]);
     out.push('<p>' + inline(buf.join('\n').replace(/\s*\\\s*$/, '')) + '</p>');
   }
   return out.join('\n');
