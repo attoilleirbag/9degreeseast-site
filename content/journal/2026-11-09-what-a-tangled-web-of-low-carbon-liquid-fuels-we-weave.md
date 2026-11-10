@@ -12,9 +12,9 @@
 
 Back on present day Earth, low carbon liquid fuels are undergoing their own Cambrian event. Technologies are being designed, invented, and redeployed in a dozen new approaches to breaking down our imperfect feedstock substitutes and building them back together as dense energy-rich oil product replacements. We are focussing on agricultural wastes, the tough ligno-celluloses nature builds to shoot trees into the skies, wood wastes, and even a manure or two. These are then taking a homogenous base Intermediate; a flow of synthetic gas, the universe’s lightest element hydrogen, and even the archenemy Carbon Dioxide; and chemically reconstructing them into perfect, dense, low carbon drop-in fuels that function in the world’s existing infrastructure. It’s a spaghetti bowl of technologies, each with a complicated cost structure bound up in volatile feedstocks, major capital expenditure (capex) programmes, and a maze through commercialisation.  Every project developer hopes for a eureka-moment manufacturing system that hits at the lowest cost replacement of oil; the equivalent of evolution’s final organised focus on arthropods, chordates and molluscs. But given the uncertainties in feedstock availability, capex costs, operational efficiencies and a hundred other variables that over time will likely determine a few winners, I wouldn’t rule out a five-eyed *Opabinia* or two placing in the finals. There is nothing obvious in the energy transition.   
 
-
-
 ![](/media/journal/lft-part2-fig0-opabinia.png)
+
+
 
 *The Oil Monoculture*
 
@@ -36,13 +36,13 @@ The Easy-Easies and increasingly the Easy-Hards are the quiet backbone of the lo
 
 ![](/media/journal/lft-part2-fig2-easy-hard-grid-final.png)
 
+
+
 *OK, So It’s Going to Be the Hard Way*
 
 So by regulation and economic limits, we’re now left with Hard Feedstocks being transformed by Hard Technology into Products. Given the scale of the challenge, this is also where we’re seeing most of the Cambrian Explosion of innovation, exploration, research and project development. What is a Hard Feedstock? It is something that is simply quite far (physically or chemically) from a Product. Because of this, it usually requires Hard Technology (energy intensive, complex, innovative, sometimes unproven) to refine. If your neighbour looks at it and exclaims “That can be fuel, for real?”, it’s generally a Hard Feedstock. They also generally and hopefully tend to have large volumes available because the entire point in digging around this new world is to eventually make sure the volumes can scale. The move to Hard-Hards is very much a scale volume quest that escapes the supply constraints of the Easy Feedstock world. The major categories of Hard Feedstocks include Agricultural Waste Biomass (think wheat straw, sugarcane bagasse, rice husks), Municipal Solid Waste (MSW) and Wood (trimmings, sawdust). In Feedstocks required for e-fuels I’d include renewable electricity (for its complexity and cost) as well as CO2 (for its cost of collection and availability).
 
 The landscape in liquid fuel Hard Technology is dizzying at the moment, and filled with more than a few 5-stalk-eyed proboscis-ed *Opabinias*, which is a compliment to innovation and not an evolutionary forecast. The Chart below details the major Hard Feedstocks and their various Hard Technologies necessary to transform to Intermediates and Products.  
-
-
 
 ![](/media/journal/lft-part2-fig1-pathway-menu-final.png)
 
