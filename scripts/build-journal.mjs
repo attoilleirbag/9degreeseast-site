@@ -67,6 +67,12 @@ function parse(file) {
   return data;
 }
 
+// Reading time, as on news sites: words in the article at about 230 words a minute, never less than 1.
+export function readMinutes(body) {
+  const words = String(body || '').replace(/!\[[^\]]*\]\([^)]*\)/g, ' ').replace(/\]\([^)]*\)/g, ' ').replace(/[#>*_`~\[\]\\]/g, ' ').split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 230));
+}
+
 function notesHtml(notes) {
   const list = (notes || []).map(n => typeof n === 'string' ? n : (n && n.note) || '').filter(n => n.trim());
   if (!list.length) return '';
@@ -120,7 +126,7 @@ function page(p, series) {
         <p class="k">${label}</p>
         <h1 class="serif">${esc(p.title)}</h1>
         ${p.summary ? '<p class="dek">' + esc(p.summary) + '</p>' : ''}
-        <p class="by">${esc(p.author || 'Tom Fox')} · <time datetime="${esc(p.date)}">${nice(p.date)}</time></p>
+        <p class="by">${esc(p.author || 'Tom Fox')} · <time datetime="${esc(p.date)}">${nice(p.date)}</time> · ${readMinutes(p.body)} min read</p>
       </header>
       ${p.cover ? '<figure class="cover"><img src="' + esc(p.cover) + '" alt="' + esc(p.cover_alt || '') + '"></figure>' : ''}
       <div class="body">
@@ -146,7 +152,7 @@ export function build(srcDir = SRC_DIR, outDir = OUT_DIR) {
   const series = posts.filter(p => p.series).slice().sort((a, b) => (+a.part || 0) - (+b.part || 0));
   if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });
   posts.forEach(p => writeFileSync(join(outDir, 'journal-' + p.slug + '.html'), page(p, series)));
-  const list = posts.map(p => ({ source: 'journal', date: String(p.date).slice(0, 10), title: p.title, summary: p.summary || '', series: p.series || '', part: p.part || '', url: 'journal-' + p.slug + '.html' }));
+  const list = posts.map(p => ({ source: 'journal', date: String(p.date).slice(0, 10), title: p.title, summary: p.summary || '', series: p.series || '', part: p.part || '', minutes: readMinutes(p.body), url: 'journal-' + p.slug + '.html' }));
   writeFileSync(join(outDir, 'journal-posts.json'), JSON.stringify({ updated: new Date().toISOString().slice(0, 10), items: list }, null, 2));
   console.log('Journal: built ' + posts.length + ' article(s)');
   return posts;
